@@ -17,7 +17,7 @@ This small application serves as a demo for setting up and using the DX SDK as a
 
 ## Prerequisites
 1. [Register an app](https://aps.autodesk.com/myapps/), and select the Data Management and the Data Exchange APIs. Note down the values of **Client ID, Client Secret and Auth Callback**. For more information on different types of apps, refer [Application Types](https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/App-types/) page.
-2. Verify that you have access to the [Autodesk Construction Cloud](https://aps.autodesk.com/myapps/) (ACC).
+2. Verify that you have access to the [Autodesk Construction Cloud](https://acc.autodesk.com/) (ACC).
 3. Visual Studio.
 4. Dot NET Framework 4.8 with basic knowledge of C#.
 
