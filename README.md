@@ -9,7 +9,8 @@
 This small application serves as a demo for setting up and using the DX SDK as a Nuget package. The sample demonstrates how one can Create or Update Data Exchanges using DX SDK.
 
 # Thumbnail
-![image](https://media.git.autodesk.com/user/21241/files/f41155d6-5ac5-46c4-8d62-e8d1e7927959)
+![image](https://github.com/autodesk-platform-services/DataExchange-sample-consoleapp/assets/143083177/00fee44d-6522-4612-b868-cab5d4dd185d)
+
 
 # Setup
 **DX SDK** is installed into this project as a package reference. All required packages are a part of packages.config and will be restored automatically on first build.
