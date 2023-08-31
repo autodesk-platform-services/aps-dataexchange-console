@@ -17,6 +17,9 @@ using PrimitiveGeometry = Autodesk.GeometryPrimitives;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
 {
+    /// <summary>
+    /// The Console App Helper
+    /// </summary>
     internal class ConsoleAppHelper : IConsoleAppHelper
     {
         public List<Command> Commands { get; set; } = new List<Command>();
