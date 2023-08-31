@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using Autodesk.DataExchange.Core.Enums;
-using Autodesk.DataExchange.Models.Revit;
-using Autodesk.GeometryPrimitives.Design;
-using Autodesk.GeometryPrimitives.Geometry;
+﻿using Autodesk.DataExchange.Core.Enums;
+using Autodesk.DataExchange.DataModels;
 using Autodesk.Parameters;
+using System;
 using Parameter = Autodesk.Parameters.Parameter;
-using PrimitiveGeometry = Autodesk.GeometryPrimitives;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
 {

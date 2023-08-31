@@ -1,29 +1,9 @@
-﻿using Autodesk.DataExchange;
-using Autodesk.DataExchange.Authentication;
-using Autodesk.DataExchange.Core.Enums;
-using Autodesk.DataExchange.Core.Interface;
-using Autodesk.DataExchange.Core.Models;
-using Autodesk.DataExchange.Extensions.Logging.File;
-using Autodesk.DataExchange.Extensions.Storage.File;
-using Autodesk.DataExchange.Interface;
-using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.Models.Revit;
-using Autodesk.DataExchange.SchemaObjects.Units;
-using Autodesk.GeometryPrimitives.Design;
-using Autodesk.GeometryPrimitives.Geometry;
-using Autodesk.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Autodesk.DataExchange.ConsoleApp.Helper;
+﻿using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
-using PrimitiveGeometry = Autodesk.GeometryPrimitives;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Autodesk.DataExchange.ConsoleApp
 {

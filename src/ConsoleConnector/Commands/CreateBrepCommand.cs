@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autodesk.DataExchange.ConsoleApp.Commands.Options;
-using Autodesk.DataExchange.ConsoleApp.Helper;
+﻿using Autodesk.DataExchange.ConsoleApp.Commands.Options;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
-using Autodesk.DataExchange.Core.Models;
-using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.Models.Revit;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Autodesk.DataExchange.DataModels;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
 {
@@ -52,7 +48,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
-            var revitExchangeData = RevitExchangeData.Create(ConsoleAppHelper.GetClient(), exchangeData);
+            var revitExchangeData = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
             var brep = ConsoleAppHelper.GetGeometryHelper().CreateBrep(revitExchangeData);
             ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, revitExchangeData.ExchangeData);
             Console.WriteLine("Element Id: " + brep.Id);
