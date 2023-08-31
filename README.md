@@ -8,7 +8,8 @@
 This small application serves as a demo for setting up and using the Data Exchange SDK as a Nuget package. The sample demonstrates how one can Create or Update Data Exchanges using DX SDK.
 
 # Thumbnail
-![image](https://media.git.autodesk.com/user/21241/files/f41155d6-5ac5-46c4-8d62-e8d1e7927959)
+![image](https://github.com/autodesk-platform-services/aps-dataexchange-console/assets/143083177/f4b36fe4-db5d-4f3c-b887-bc46f3e033e5)
+
 
 # Setup
 **Data Exchange SDK** is installed into this project as a package reference. All required packages are a part of packages.config and will be restored automatically on first build.
@@ -32,8 +33,8 @@ You can enter your credentials in the authentication page and on successful auth
 
 ## Further Reading
 ### Documentation:
-* [Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk/v1/developers_guide/overview/) 
-* [CLI developer guide](https://aps.autodesk.com/en/docs/dx-sdk/v1/tutorials/sdk-without-ui/) 
+* [Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/overview/) 
+* [CLI developer guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/tutorials/sdk-without-ui/create-an-exchange-container/) 
 <!--ToDo: Update links to new Prod SDK documentation-->
 
 # License
