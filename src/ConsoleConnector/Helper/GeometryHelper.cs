@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Autodesk.DataExchange.DataModels;
+using Autodesk.GeometryPrimitives.Design;
+using Autodesk.GeometryPrimitives.Geometry;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Autodesk.DataExchange.Core.Enums;
-using Autodesk.DataExchange.Models.Revit;
-using Autodesk.GeometryPrimitives.Design;
-using Autodesk.GeometryPrimitives.Geometry;
-using Autodesk.Parameters;
-using Parameter = Autodesk.Parameters.Parameter;
 using PrimitiveGeometry = Autodesk.GeometryPrimitives;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
@@ -49,35 +46,35 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             Transparency = 1
         };
 
-        public Element CreateBrep(RevitExchangeData revitExchangeData)
+        public Element CreateBrep(ElementDataModel revitExchangeData)
         {
             var details = brepFileDetails[random.Next(brepFileDetails.Count)];
             return CreateGeometry(revitExchangeData, details);
         }
 
-        public Element CreateMesh(RevitExchangeData revitExchangeData)
+        public Element CreateMesh(ElementDataModel revitExchangeData)
         {
             var details = meshFileDetails[random.Next(meshFileDetails.Count)];
             return CreateGeometry(revitExchangeData, details);
         }
 
-        public Element CreateIfc(RevitExchangeData revitExchangeData)
+        public Element CreateIfc(ElementDataModel revitExchangeData)
         {
             var details = ifcFileDetails[random.Next(ifcFileDetails.Count)];
             return CreateGeometry(revitExchangeData, details);
         }
 
-        private Element CreateGeometry(RevitExchangeData revitExchangeData, Tuple<string, string, string, string> geometryDetails)
+        private Element CreateGeometry(ElementDataModel revitExchangeData, Tuple<string, string, string, string> geometryDetails)
         {
             var path = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\" + geometryDetails.Item1;
-            var geometry = RevitExchangeData.CreateGeometry(path, commonRenderStyle);
+            var geometry = ElementDataModel.CreateGeometry(path, commonRenderStyle);
             var element = revitExchangeData.AddElement(Guid.NewGuid().ToString(), geometryDetails.Item2, geometryDetails.Item3, geometryDetails.Item4);
             var elementGeometry = new List<ElementGeometry> { geometry };
             revitExchangeData.SetElementGeometryByElement(element, elementGeometry);
             return element;
         }
 
-        public Element AddLine(RevitExchangeData revitExchangeData)
+        public Element AddLine(ElementDataModel revitExchangeData)
         {
             var newElement = revitExchangeData.AddElement(Guid.NewGuid().ToString(), "Line", "Line", "Generic Line");
 
@@ -97,22 +94,22 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
             setOfLines.Add(lineone);
 
-            newBRepElementGeometry.Add(RevitExchangeData.CreatePrimitiveGeometry(setOfLines, commonRenderStyle));
+            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(setOfLines, commonRenderStyle));
             revitExchangeData.SetElementGeometryByElement(newElement, newBRepElementGeometry);
             return newElement;
         }
 
-        public Element AddPoint(RevitExchangeData revitExchangeData)
+        public Element AddPoint(ElementDataModel revitExchangeData)
         {
             var newPointElement = revitExchangeData.AddElement(Guid.NewGuid().ToString(), "Point", "Point", "Point");
             var newPointElementGeometry = new List<ElementGeometry>();
             PrimitiveGeometry.Design.DesignPoint point = new PrimitiveGeometry.Design.DesignPoint(random.Next(999), random.Next(999), random.Next(999));
-            newPointElementGeometry.Add(RevitExchangeData.CreatePrimitiveGeometry(point, commonRenderStyle));
+            newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(point, commonRenderStyle));
             revitExchangeData.SetElementGeometryByElement(newPointElement, newPointElementGeometry);
             return newPointElement;
         }
 
-        public Element AddCircle(RevitExchangeData revitExchangeData)
+        public Element AddCircle(ElementDataModel revitExchangeData)
         {
             var circleElement = revitExchangeData.AddElement(Guid.NewGuid().ToString(), "Circle", "Circle", "Circle");
             var newPointElementGeometry = new List<ElementGeometry>();
@@ -120,12 +117,12 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             var normal = new PrimitiveGeometry.Math.Vector3d(0, 0, 1);
             var radius = new PrimitiveGeometry.Math.Vector3d(random.Next(50), 0, 0);
             var circle = new PrimitiveGeometry.Geometry.Circle(center, normal, radius);
-            newPointElementGeometry.Add(RevitExchangeData.CreatePrimitiveGeometry(circle, commonRenderStyle));
+            newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(circle, commonRenderStyle));
             revitExchangeData.SetElementGeometryByElement(circleElement, newPointElementGeometry);
             return circleElement;
         }
 
-        public Element AddPrimitive(RevitExchangeData revitExchangeData)
+        public Element AddPrimitive(ElementDataModel revitExchangeData)
         {
             //....Primitive geometry - Circle...
             var primitive = revitExchangeData.AddElement(Guid.NewGuid().ToString(), "Primitive", "Primitive", "Primitive");
@@ -225,7 +222,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                         },
             };
 
-            circleElementGeometry.Add(RevitExchangeData.CreatePrimitiveGeometry(geomContainer, commonRenderStyle));
+            circleElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(geomContainer, commonRenderStyle));
             revitExchangeData.SetElementGeometryByElement(primitive, circleElementGeometry);
             return primitive;
         }

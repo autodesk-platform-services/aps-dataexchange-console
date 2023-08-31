@@ -1,25 +1,18 @@
-﻿using System;
+﻿using Autodesk.DataExchange.ConsoleApp.Commands;
+using Autodesk.DataExchange.ConsoleApp.Interfaces;
+using Autodesk.DataExchange.Core.Interface;
+using Autodesk.DataExchange.Core.Models;
+using Autodesk.DataExchange.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Autodesk.DataExchange.Authentication;
-using Autodesk.DataExchange.ConsoleApp.Commands;
-using Autodesk.DataExchange.ConsoleApp.Interfaces;
-using Autodesk.DataExchange.Core.Interface;
-using Autodesk.DataExchange.Core.Models;
-using Autodesk.DataExchange.Extensions.Logging.File;
-using Autodesk.DataExchange.Extensions.Storage.File;
-using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.Models.Revit;
-using PrimitiveGeometry = Autodesk.GeometryPrimitives;
+using Autodesk.DataExchange.DataModels;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
 {
-    /// <summary>
-    /// The Console App Helper
-    /// </summary>
     internal class ConsoleAppHelper : IConsoleAppHelper
     {
         public List<Command> Commands { get; set; } = new List<Command>();
@@ -55,15 +48,12 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             var authCallBack = ConfigurationManager.AppSettings["AuthCallBack"];
             var authClientSecret = ConfigurationManager.AppSettings["AuthClientSecret"];
 
-            var appWorkspaceDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string appBasePath = Path.Combine(appWorkspaceDirectory, "ConsoleConnector");
-            var sdkOptions = new SDKOptions()
+            var sdkOptions = new SDKOptionsDefaultSetup()
             {
-                ApplicationRootPath = appBasePath,
+                ApplicationName = "ConsoleConnector",
                 ClientId = authClientId,
                 CallBack = authCallBack,
                 ClientSecret = authClientSecret,
-                GeometryConfiguration = new GeometryConfiguration()
             };
 
             Client = new Client(sdkOptions);
@@ -228,14 +218,17 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         {
             var name = exchangeTitle;
             TryGetFolderDetails(out _, out _, out var projectUrn, out var folderUrn);
-            var exchangeCreateRequest = new ExchangeCreateRequest(name, folderUrn, projectUrn)
+            var exchangeCreateRequest = new ExchangeCreateRequestACC()
             {
                 Host = Client.SDKOptions.HostingProvider,
                 Contract = new Autodesk.DataExchange.ContractProvider.ContractProvider(),
-                Description = string.Empty
+                Description = string.Empty,
+                FileName = name,
+                ACCFolderURN = folderUrn,
+                ACCProjectURN = projectUrn
             };
 
-            return Client.CreateExchangeAsync("", exchangeCreateRequest);
+            return Client.CreateExchangeAsync(exchangeCreateRequest);
         }
 
         public async Task<bool> SyncExchange(DataExchangeIdentifier dataExchangeIdentifier, ExchangeDetails exchangeDetails, ExchangeData exchangeData)
@@ -339,7 +332,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                     currentRevision = firstRev;
 
                     // Use Revit Wrapper
-                    var data = RevitExchangeData.Create(Client, currentExchangeData);
+                    var data = ElementDataModel.Create(Client, currentExchangeData);
 
                     //data.Elements.a
 
@@ -390,7 +383,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                     }
 
                     // Use Revit Wrapper
-                    var data = RevitExchangeData.Create(Client, currentExchangeData);
+                    var data = ElementDataModel.Create(Client, currentExchangeData);
 
                     // Get all Wall Elements
                     //var wallElements = data.Elements.Where(element => element.Category == "Walls").ToList();
