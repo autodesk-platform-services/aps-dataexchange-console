@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Autodesk.DataExchange.ConsoleApp.Commands.Options;
 using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
-using Autodesk.DataExchange.Models.Revit;
+using Autodesk.DataExchange.DataModels;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
 {
@@ -63,7 +63,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
-            var revitExchangeData = RevitExchangeData.Create(ConsoleAppHelper.GetClient(), exchangeData);
+            var revitExchangeData = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
             var element = revitExchangeData.Elements.ToList().FirstOrDefault(n => n.Id == elementId.Value);
             if (element == null)
             {

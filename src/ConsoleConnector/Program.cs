@@ -7,7 +7,6 @@ using Autodesk.DataExchange.Extensions.Logging.File;
 using Autodesk.DataExchange.Extensions.Storage.File;
 using Autodesk.DataExchange.Interface;
 using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.Models.Revit;
 using Autodesk.DataExchange.SchemaObjects.Units;
 using Autodesk.GeometryPrimitives.Design;
 using Autodesk.GeometryPrimitives.Geometry;

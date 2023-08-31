@@ -7,9 +7,9 @@ using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.Extensions.HostingProvider;
 using Autodesk.DataExchange.Interface;
-using Autodesk.DataExchange.Models.Revit;
 using Parameter = Autodesk.Parameters.Parameter;
 using Moq;
+using Autodesk.DataExchange.DataModels;
 
 namespace ConsoleConnector_Test
 {
@@ -34,7 +34,7 @@ namespace ConsoleConnector_Test
         [TestMethod]
         public void CreateInstanceParameters_Test()
         {
-            var exchangeData = RevitExchangeData.Create(_client.Object);
+            var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.CreateBrep(exchangeData);
             parameterHelper.AddInstanceParameter(element, Parameter.AllModelDescription, "test", ParameterDataType.String);
             parameterHelper.AddInstanceParameter(element, Parameter.HostVolumeComputed, "300.50", ParameterDataType.Float64);
@@ -70,7 +70,7 @@ namespace ConsoleConnector_Test
         [TestMethod]
         public void CreateCustomParameters_Test()
         {
-            var exchangeData = RevitExchangeData.Create(_client.Object);
+            var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.CreateBrep(exchangeData);
             parameterHelper.AddCustomParameter("Test", element, "test", ParameterDataType.String);
             var totalParameters = element.InstanceParameters.Count;

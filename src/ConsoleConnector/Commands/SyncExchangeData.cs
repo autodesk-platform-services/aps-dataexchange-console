@@ -8,7 +8,6 @@ using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
 using Autodesk.DataExchange.Core.Models;
 using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.Models.Revit;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
 {

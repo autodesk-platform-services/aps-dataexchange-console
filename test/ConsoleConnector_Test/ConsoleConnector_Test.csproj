@@ -57,50 +57,50 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autodesk.DataExchange, Version=1.0.8623.3923, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.3-alpha\lib\net48\Autodesk.DataExchange.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange, Version=2.2.6.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Authentication, Version=1.0.8623.3916, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.3-alpha\lib\net48\Autodesk.DataExchange.Authentication.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Authentication, Version=2.2.6.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.Authentication.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.ContractProvider, Version=1.0.8623.3906, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.3-alpha\lib\net48\Autodesk.DataExchange.ContractProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.ContractProvider, Version=2.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.ContractProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Core, Version=1.0.8622.339, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.3-alpha\lib\net48\Autodesk.DataExchange.Core.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Core, Version=2.2.6.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Exceptions, Version=1.0.8622.351, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.3-alpha\lib\net48\Autodesk.DataExchange.Exceptions.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Exceptions, Version=2.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.HostingProvider, Version=1.0.8623.3902, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.DataExchange.Extensions.HostingProvider.ACC.2.2.3-alpha\lib\net48\Autodesk.DataExchange.Extensions.HostingProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.HostingProvider, Version=2.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.Extensions.HostingProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Logging.File, Version=1.0.8623.3912, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.DataExchange.Extensions.Logging.File.2.2.3-alpha\lib\net48\Autodesk.DataExchange.Extensions.Logging.File.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.Logging.File, Version=2.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.Extensions.Logging.File.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Storage.File, Version=1.0.8623.2744, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.DataExchange.Extensions.Storage.File.2.2.2-alpha\lib\net48\Autodesk.DataExchange.Extensions.Storage.File.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.Storage.File, Version=2.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.Extensions.Storage.File.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Metrics, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.3-alpha\lib\net48\Autodesk.DataExchange.Metrics.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Metrics, Version=2.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.Metrics.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.OpenAPI, Version=1.0.8622.399, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.3-alpha\lib\net48\Autodesk.DataExchange.OpenAPI.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.OpenAPI, Version=2.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.OpenAPI.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Resiliency, Version=1.0.8622.363, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.3-alpha\lib\net48\Autodesk.DataExchange.Resiliency.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Resiliency, Version=2.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.Resiliency.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Schemas, Version=1.0.8623.3918, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.3-alpha\lib\net48\Autodesk.DataExchange.Schemas.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Schemas, Version=2.2.6.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.Schemas.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.SourceProvider, Version=1.0.8623.3921, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.3-alpha\lib\net48\Autodesk.DataExchange.SourceProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.SourceProvider, Version=2.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autodesk.DataExchange.2.2.6-alpha\lib\net48\Autodesk.DataExchange.SourceProvider.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Extensions.Http.ForgeRetry, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autodesk.Extensions.Http.ForgeRetry.8.0.0\lib\netstandard2.0\Autodesk.Extensions.Http.ForgeRetry.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Forge, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.Forge.1.9.1\lib\net48\Autodesk.Forge.dll</HintPath>
+    <Reference Include="Autodesk.Forge, Version=1.9.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autodesk.Forge.1.9.8\lib\net48\Autodesk.Forge.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Castle.Core.5.1.1\lib\net462\Castle.Core.dll</HintPath>
@@ -288,11 +288,11 @@
     <Error Condition="!Exists('..\..\packages\ForgeUnits-csharp_win_release_intel64_v142.4.0.3\build\ForgeUnits-csharp_win_release_intel64_v142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ForgeUnits-csharp_win_release_intel64_v142.4.0.3\build\ForgeUnits-csharp_win_release_intel64_v142.targets'))" />
     <Error Condition="!Exists('..\..\packages\ForgeParameters-csharp_win_release_intel64_v142.1.0.1\build\ForgeParameters-csharp_win_release_intel64_v142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ForgeParameters-csharp_win_release_intel64_v142.1.0.1\build\ForgeParameters-csharp_win_release_intel64_v142.targets'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Autodesk.DataExchange.2.2.3-alpha\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Autodesk.DataExchange.2.2.3-alpha\build\Autodesk.DataExchange.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Autodesk.DataExchange.2.2.6-alpha\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Autodesk.DataExchange.2.2.6-alpha\build\Autodesk.DataExchange.targets'))" />
   </Target>
   <Import Project="..\..\packages\MSTest.TestAdapter.2.1.2\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\..\packages\MSTest.TestAdapter.2.1.2\build\net45\MSTest.TestAdapter.targets')" />
   <Import Project="..\..\packages\ForgeUnits-csharp_win_release_intel64_v142.4.0.3\build\ForgeUnits-csharp_win_release_intel64_v142.targets" Condition="Exists('..\..\packages\ForgeUnits-csharp_win_release_intel64_v142.4.0.3\build\ForgeUnits-csharp_win_release_intel64_v142.targets')" />
   <Import Project="..\..\packages\ForgeParameters-csharp_win_release_intel64_v142.1.0.1\build\ForgeParameters-csharp_win_release_intel64_v142.targets" Condition="Exists('..\..\packages\ForgeParameters-csharp_win_release_intel64_v142.1.0.1\build\ForgeParameters-csharp_win_release_intel64_v142.targets')" />
   <Import Project="..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
-  <Import Project="..\..\packages\Autodesk.DataExchange.2.2.3-alpha\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\packages\Autodesk.DataExchange.2.2.3-alpha\build\Autodesk.DataExchange.targets')" />
+  <Import Project="..\..\packages\Autodesk.DataExchange.2.2.6-alpha\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\packages\Autodesk.DataExchange.2.2.6-alpha\build\Autodesk.DataExchange.targets')" />
 </Project>

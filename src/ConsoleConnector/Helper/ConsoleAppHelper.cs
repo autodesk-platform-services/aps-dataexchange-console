@@ -9,11 +9,10 @@ using Autodesk.DataExchange.ConsoleApp.Commands;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
 using Autodesk.DataExchange.Core.Interface;
 using Autodesk.DataExchange.Core.Models;
+using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Extensions.Logging.File;
 using Autodesk.DataExchange.Extensions.Storage.File;
 using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.Models.Revit;
-using PrimitiveGeometry = Autodesk.GeometryPrimitives;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
 {
@@ -57,9 +56,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
             var appWorkspaceDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string appBasePath = Path.Combine(appWorkspaceDirectory, "ConsoleConnector");
-            var sdkOptions = new SDKOptions()
+            var sdkOptions = new SDKOptionsDefaultSetup()
             {
-                ApplicationRootPath = appBasePath,
                 ClientId = authClientId,
                 CallBack = authCallBack,
                 ClientSecret = authClientSecret,
@@ -228,14 +226,18 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         {
             var name = exchangeTitle;
             TryGetFolderDetails(out _, out _, out var projectUrn, out var folderUrn);
-            var exchangeCreateRequest = new ExchangeCreateRequest(name, folderUrn, projectUrn)
+
+            var exchangeCreateRequest = new ExchangeCreateRequestACC()
             {
+                FileName = name,
+                ACCFolderURN = folderUrn,
+                ACCProjectURN = projectUrn,
                 Host = Client.SDKOptions.HostingProvider,
                 Contract = new Autodesk.DataExchange.ContractProvider.ContractProvider(),
                 Description = string.Empty
             };
 
-            return Client.CreateExchangeAsync("", exchangeCreateRequest);
+            return Client.CreateExchangeAsync(exchangeCreateRequest);
         }
 
         public async Task<bool> SyncExchange(DataExchangeIdentifier dataExchangeIdentifier, ExchangeDetails exchangeDetails, ExchangeData exchangeData)
@@ -338,8 +340,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                     currentExchangeData = await Client.GetExchangeDataAsync(exchangeIdentifier);
                     currentRevision = firstRev;
 
-                    // Use Revit Wrapper
-                    var data = RevitExchangeData.Create(Client, currentExchangeData);
+                    var data = ElementDataModel.Create(Client, currentExchangeData);
 
                     //data.Elements.a
 
@@ -389,8 +390,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
                     }
 
-                    // Use Revit Wrapper
-                    var data = RevitExchangeData.Create(Client, currentExchangeData);
+                    var data = ElementDataModel.Create(Client, currentExchangeData);
 
                     // Get all Wall Elements
                     //var wallElements = data.Elements.Where(element => element.Category == "Walls").ToList();

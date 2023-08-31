@@ -8,8 +8,8 @@ using Autodesk.DataExchange.ConsoleApp.Commands.Options;
 using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
 using Autodesk.DataExchange.Core.Models;
+using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.Models.Revit;
 using Newtonsoft.Json;
 
 
@@ -61,7 +61,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
             var exchangeTitle = this.GetOption<ExchangeTitle>();
             ExchangeDetails = await ConsoleAppHelper.CreateExchange(exchangeTitle.Value);
-            var revitExchangeData = RevitExchangeData.Create(ConsoleAppHelper.GetClient());
+            var revitExchangeData = ElementDataModel.Create(ConsoleAppHelper.GetClient());
             ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, revitExchangeData.ExchangeData);
             ConsoleAppHelper.AddExchangeDetails(exchangeTitle.Value, ExchangeDetails);
             Console.WriteLine(exchangeTitle.Value + " exchange created!!!");

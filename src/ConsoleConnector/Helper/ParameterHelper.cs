@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Autodesk.DataExchange.Core.Enums;
-using Autodesk.DataExchange.Models.Revit;
+using Autodesk.DataExchange.DataModels;
 using Autodesk.GeometryPrimitives.Design;
 using Autodesk.GeometryPrimitives.Geometry;
 using Autodesk.Parameters;

@@ -7,9 +7,9 @@ using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.Extensions.HostingProvider;
 using Autodesk.DataExchange.Interface;
-using Autodesk.DataExchange.Models.Revit;
 using Parameter = Autodesk.Parameters.Parameter;
 using Moq;
+using Autodesk.DataExchange.DataModels;
 
 namespace ConsoleConnector_Test
 {
@@ -31,7 +31,7 @@ namespace ConsoleConnector_Test
         [TestMethod]
         public void CreateBrep_Test()
         {
-            var exchangeData = RevitExchangeData.Create(_client.Object);
+            var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.CreateBrep(exchangeData);
             Assert.IsNotNull(element);
             Assert.AreEqual(exchangeData.Elements.Count(),1);
@@ -40,7 +40,7 @@ namespace ConsoleConnector_Test
         [TestMethod]
         public void CreateIfc_Test()
         {
-            var exchangeData = RevitExchangeData.Create(_client.Object);
+            var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.CreateIfc(exchangeData);
             Assert.IsNotNull(element);
             Assert.AreEqual(exchangeData.Elements.Count(), 1);
@@ -50,7 +50,7 @@ namespace ConsoleConnector_Test
         [TestMethod]
         public void CreateMesh_Test()
         {
-            var exchangeData = RevitExchangeData.Create(_client.Object);
+            var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.CreateMesh(exchangeData);
             Assert.IsNotNull(element);
             Assert.AreEqual(exchangeData.Elements.Count(), 1);
@@ -59,7 +59,7 @@ namespace ConsoleConnector_Test
         [TestMethod]
         public void CreateLine_Test()
         {
-            var exchangeData = RevitExchangeData.Create(_client.Object);
+            var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.AddLine(exchangeData);
             Assert.IsNotNull(element);
             Assert.AreEqual(exchangeData.Elements.Count(), 1);
@@ -68,7 +68,7 @@ namespace ConsoleConnector_Test
         [TestMethod]
         public void CreatePoint_Test()
         {
-            var exchangeData = RevitExchangeData.Create(_client.Object);
+            var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.AddPoint(exchangeData);
             Assert.IsNotNull(element);
             Assert.AreEqual(exchangeData.Elements.Count(), 1);
@@ -77,7 +77,7 @@ namespace ConsoleConnector_Test
         [TestMethod]
         public void CreateCircle_Test()
         {
-            var exchangeData = RevitExchangeData.Create(_client.Object);
+            var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.AddCircle(exchangeData);
             Assert.IsNotNull(element);
             Assert.AreEqual(exchangeData.Elements.Count(), 1);
@@ -86,7 +86,7 @@ namespace ConsoleConnector_Test
         [TestMethod]
         public void CreatePrimitiveAll_Test()
         {
-            var exchangeData = RevitExchangeData.Create(_client.Object);
+            var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.AddPrimitive(exchangeData);
             Assert.IsNotNull(element);
             Assert.AreEqual(exchangeData.Elements.Count(), 1);
