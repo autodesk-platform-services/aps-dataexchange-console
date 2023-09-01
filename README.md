@@ -8,7 +8,7 @@
 This small application serves as a demo for setting up and using the Data Exchange SDK as a Nuget package. The sample demonstrates how one can Create or Update Data Exchanges using DX SDK.
 
 # Thumbnail
-![image](https://github.com/autodesk-platform-services/aps-dataexchange-console/assets/143083177/86fd8408-602f-4e65-8df4-b7510475e383)
+![image](images/thumbnail.png)
 
 
 
