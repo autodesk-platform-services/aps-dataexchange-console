@@ -26,7 +26,7 @@ This small application serves as a demo for setting up and using the Data Exchan
 2. Follow [these](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure) instructions for installing the Data Exchange .Net SDK NuGet package in Visual Studio.[Note: Autodesk.DataExchange.UI is not required for console application.]
 3. Restore the Data Exchange SDK packages by one of the following approaches:
     * Building the solution using Visual Studio IDE, or 
-    * Building the solution using *BuildSolution.bat* [Note:Prior to executing "BuildSolution.bat," either add the path of msbuild.exe to the environment variables or utilize the Visual Studio developer command.]
+    * Building the solution using *BuildSolution.bat* [Note:Prior to executing "BuildSolution.bat," follow these steps Step-1 download and uninstall nuget packages with appropriate versions to parent direcotry of repo. Step-2 either add the path of msbuild.exe (VS 2022) to the environment variables or utilize the developer command prompt ( for VS 2022 only).]
 4. Add values for Client Id, Client Secret and Auth callback in the App.config file in the sample console connector.
 
 Once you build and run the sample console connector, it will open the URL for authentication in a web browser. 
@@ -39,7 +39,7 @@ You can enter your credentials in the authentication page and on successful auth
 <!--ToDo: Update links to new Prod SDK documentation-->
 
 # License
-This sample code is part of the Autodesk Data Exchange SDK beta. It is subject to the license in Center Code covering the Autodesk Data Exchange SDK beta.
+This sample code is part of the Autodesk Data Exchange.NET SDK (Software Development Kit) beta. It is subject to the license in Center Code covering the Autodesk Data Exchange.NET SDK (Software Development Kit) beta.
 
 # Written by
 Dhiraj Lotake, PSET , Autodesk
