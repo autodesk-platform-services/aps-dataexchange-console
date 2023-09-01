@@ -5,7 +5,11 @@
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 
 # Description
-This small application serves as a demo for setting up and using the Data Exchange SDK as a Nuget package. The sample demonstrates how one can Create or Update Data Exchanges using DX SDK.
+This is a code sample that provides a working example of using the Autodesk Data Exchange SDK without the UI component. The sample code contains examples of creating and updating as well as retrieving an exchange via a console and provides integration points for client-side integrations.
+
+This is recommended for solutions that require integration with the Autodesk Data Exchange via a service or a custom UI.
+
+For samples that use the built-in UI see https://github.com/autodesk-platform-services/aps-dataexchange-connector
 
 # Thumbnail
 ![image](images/thumbnail.png)
@@ -13,7 +17,7 @@ This small application serves as a demo for setting up and using the Data Exchan
 
 
 # Setup
-**Data Exchange SDK** is installed into this project as a package reference. All required packages are a part of packages.config and will be restored automatically on first build.
+The **Autodesk Data Exchange SDK** is installed into this project as a package reference. All required packages are a part of packages.config and will be restored automatically on first build.
 
 ## Prerequisites
 1. [Register an app](https://aps.autodesk.com/myapps/), and select the Data Management and the Data Exchange APIs. Note down the values of **Client ID, Client Secret and Auth Callback**. For more information on different types of apps, refer [Application Types](https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/App-types/) page.
@@ -34,16 +38,16 @@ This small application serves as a demo for setting up and using the Data Exchan
 4. Add values for Client Id, Client Secret and Auth callback in the App.config file in the sample console connector.
 
 Once you build and run the sample console connector, it will open the URL for authentication in a web browser. 
-You can enter your credentials in the authentication page and on successful authentication, you will see the Console connector screen as seen in the Thumbnail above. 
+You can enter your credentials in the authentication page and on successful authentication, you will see the Console connector screen as seen in the thumbnail above. 
 
 ## Further Reading
 ### Documentation:
-* [Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/overview/) 
+* [Autodesk Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/overview/) 
 * [CLI developer guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/tutorials/sdk-without-ui/create-an-exchange-container/) 
 <!--ToDo: Update links to new Prod SDK documentation-->
 
 # License
-This sample code is part of the Autodesk Data Exchange.NET SDK (Software Development Kit) beta. It is subject to the license in Center Code covering the Autodesk Data Exchange.NET SDK (Software Development Kit) beta.
+This sample code is part of the Autodesk Data Exchange .NET SDK (Software Development Kit) beta. It is subject to the license in Center Code covering the Autodesk Data Exchange .NET SDK (Software Development Kit) beta.
 
 # Written by
-Dhiraj Lotake, PSET , Autodesk
+Dhiraj Lotake, Autodesk
