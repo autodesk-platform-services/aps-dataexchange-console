@@ -8,7 +8,8 @@
 This small application serves as a demo for setting up and using the Data Exchange SDK as a Nuget package. The sample demonstrates how one can Create or Update Data Exchanges using DX SDK.
 
 # Thumbnail
-![image](https://github.com/autodesk-platform-services/aps-dataexchange-console/assets/143083177/f4b36fe4-db5d-4f3c-b887-bc46f3e033e5)
+![image](https://github.com/autodesk-platform-services/aps-dataexchange-console/assets/143083177/86fd8408-602f-4e65-8df4-b7510475e383)
+
 
 
 # Setup
@@ -22,7 +23,7 @@ This small application serves as a demo for setting up and using the Data Exchan
 
 ## Running locally
 1. Clone this repository using *git clone*.
-2. Follow [these](https://aps.autodesk.com/en/docs/dx-sdk/v1/developers_guide/installing_the_sdk/#procedure) instructions for installing the Data Exchange .Net SDK NuGet package in Visual Studio.[Note: Autodesk.DataExchange.UI is not required for console application.]
+2. Follow [these](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure) instructions for installing the Data Exchange .Net SDK NuGet package in Visual Studio.[Note: Autodesk.DataExchange.UI is not required for console application.]
 3. Restore the Data Exchange SDK packages by one of the following approaches:
     * Building the solution using Visual Studio IDE, or 
     * Building the solution using *BuildSolution.bat* [Note:Prior to executing "BuildSolution.bat," either add the path of msbuild.exe to the environment variables or utilize the Visual Studio developer command.]
