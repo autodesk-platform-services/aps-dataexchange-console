@@ -124,6 +124,13 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             return exchangeDetails;
         }
 
+        public ExchangeDetails GetUpdatedExchangeDetails(DataExchangeIdentifier dataExchangeIdentifier)
+        {
+            var updatedExchangeData = Client.GetExchangeDetailsAsync(dataExchangeIdentifier);
+            updatedExchangeData.Wait();
+            return updatedExchangeData.Result;
+        }
+
         public void SetFolder(string region, string hubId, string projectUrn, string folderUrn)
         {
             this._region = region;

@@ -75,6 +75,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
             ExchangeSync = await ConsoleAppHelper.SyncExchange(exchangeIdentifier, exchangeDetails, exchangeData);
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value,false);
+            exchangeDetails = ConsoleAppHelper.GetUpdatedExchangeDetails(exchangeIdentifier);
+            ConsoleAppHelper.AddExchangeDetails(exchangeTitle.Value, exchangeDetails);
             Console.WriteLine(exchangeDetails.DisplayName+ " ("+ GetFileVersion(exchangeDetails.FileVersionUrn) + ") Exchange updated.");
             return true;
         }

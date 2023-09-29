@@ -16,6 +16,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Interfaces
         ExchangeData GetExchangeData(string exchangeTitle);
         void AddExchangeDetails(string exchangeTitle,ExchangeDetails exchangeDetails);
         ExchangeDetails GetExchangeDetails(string exchangeTitle);
+        ExchangeDetails GetUpdatedExchangeDetails(DataExchangeIdentifier dataExchangeIdentifier);
         void SetFolder(string region,string hubId,string projectUrn,string folderUrn);
         bool TryGetFolderDetails(out string region, out string hubId, out string projectUrn, out string folderUrn);
         void SetExchangeUpdated(string exchangeTitle,bool status);
