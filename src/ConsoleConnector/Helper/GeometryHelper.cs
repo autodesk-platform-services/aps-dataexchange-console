@@ -66,7 +66,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
         private Element CreateGeometry(ElementDataModel revitExchangeData, Tuple<string, string, string, string> geometryDetails)
         {
-            var path = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\" + geometryDetails.Item1;
+            var path = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\Assets\\" + geometryDetails.Item1;
             var geometry = ElementDataModel.CreateGeometry(new GeometryProperties(path, commonRenderStyle));
             var element = revitExchangeData.AddElement(new ElementProperties(Guid.NewGuid().ToString(), geometryDetails.Item2, geometryDetails.Item3, geometryDetails.Item4));
             var elementGeometry = new List<ElementGeometry> { geometry };

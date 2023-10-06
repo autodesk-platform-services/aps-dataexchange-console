@@ -302,40 +302,40 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
-    <None Include="InputStepFile\1000mm_rod.stp">
+    <None Include="Assets\1000mm_rod.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\11DB159F6864D8FC02B33D7E9280498F08DFC4FB.stp">
+    <None Include="Assets\11DB159F6864D8FC02B33D7E9280498F08DFC4FB.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\BasinAdvancedBrep.ifc">
+    <None Include="Assets\BasinAdvancedBrep.ifc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\Beam.ifc">
+    <None Include="Assets\Beam.ifc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\box.stp">
+    <None Include="Assets\box.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\cone.stp">
+    <None Include="Assets\cone.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\cylinder.stp">
+    <None Include="Assets\cylinder.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\fcdc7083-ed51-31d1-9d0e-c608b400ede8.stp">
+    <None Include="Assets\fcdc7083-ed51-31d1-9d0e-c608b400ede8.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\mesh1.obj">
+    <None Include="Assets\mesh1.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\mesh2.obj">
+    <None Include="Assets\mesh2.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\nist_ftc_09_asme1_rd.stp">
+    <None Include="Assets\nist_ftc_09_asme1_rd.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\sphere.stp">
+    <None Include="Assets\sphere.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
