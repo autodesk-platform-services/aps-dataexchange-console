@@ -192,8 +192,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             Commands.Add(new CreateBrepCommand(this));
             Commands.Add(new CreateMeshCommand(this));
             Commands.Add(new CreateIfcCommand(this));
-            Commands.Add(new CustomParameterCommand(this));
-            Commands.Add(new CreateInstanceParameterCommand(this));
+            Commands.Add(new AddInstanceParamCommand(this));
+            Commands.Add(new AddTypeParamCommand(this));
             Commands.Add(new CreatePrimitiveGeometryCommand(this));
             Commands.Add(new SyncExchangeData(this));
             Commands.Add(new HelpCommand(this));

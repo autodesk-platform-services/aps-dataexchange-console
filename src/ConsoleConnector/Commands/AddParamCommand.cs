@@ -1,38 +1,31 @@
-﻿using Autodesk.DataExchange.ConsoleApp.Commands.Options;
-using Autodesk.DataExchange.ConsoleApp.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Autodesk.DataExchange.ConsoleApp.Commands.Options;
+using Autodesk.DataExchange.ConsoleApp.Helper;
+using Autodesk.DataExchange.ConsoleApp.Interfaces;
 using Autodesk.DataExchange.DataModels;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
 {
-    /// <summary>
-    /// Create custom parameters to element. 
-    /// </summary>
-    internal class CustomParameterCommand : Command
+    internal abstract class AddParamCommand : Command
     {
-        public CustomParameterCommand(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
+        public bool IsInstanceParameter = false;
+        public AddParamCommand(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
         {
-            this.Name = "AddCustomParam";
-            Description = "Add custom parameter to element.";
             Options = new List<CommandOption>
             {
                 new ExchangeTitle(),
                 new ElementId(),
+                new ParamName(),
                 new ParameterValue(),
-                new ParameterValueDataType()
             };
         }
 
-        public CustomParameterCommand(CustomParameterCommand parameterCommand) : base(parameterCommand)
+        public AddParamCommand(AddParamCommand addParamCommand) : base(addParamCommand)
         {
-        }
-
-        public override Command Clone()
-        {
-            return new CustomParameterCommand(this);
         }
 
         public override Task<bool> Execute()
@@ -42,22 +35,15 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 Console.WriteLine("Invalid inputs!!!");
                 return Task.FromResult(false);
             }
-            var exchangeTitle = this.GetOption<ExchangeTitle>();
-            var value = this.GetOption<ParameterValue>();
-            var elementId = this.GetOption<ElementId>();
-            var parameterDataType = this.GetOption<ParameterValueDataType>();
 
+            var exchangeTitle = this.GetOption<ExchangeTitle>();
+            var elementId = this.GetOption<ElementId>();
+            var parameterName = this.GetOption<ParamName>();
+            var parameterValue = this.GetOption<ParameterValue>();
             var exchangeData = ConsoleAppHelper.GetExchangeData(exchangeTitle.Value);
             if (exchangeData == null)
             {
                 Console.WriteLine("Exchange data not found.\n");
-                return Task.FromResult(false);
-            }
-
-            var exchangeDetails = ConsoleAppHelper.GetExchangeDetails(exchangeTitle.Value);
-            if (exchangeDetails == null)
-            {
-                Console.WriteLine("Exchange details not found.\n");
                 return Task.FromResult(false);
             }
 
@@ -69,11 +55,15 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
-            //need to check.
-            ConsoleAppHelper.GetParameterHelper().AddCustomParameter(exchangeDetails.SchemaNamespace,element, value.Value, parameterDataType.Value);
+            if (parameterName.Value != null)
+                ConsoleAppHelper.GetParameterHelper().AddInstanceParameter(element, parameterName.Value.Value, parameterValue.Value, parameterValue.ParameterValueType, IsInstanceParameter);
+            else
+                ConsoleAppHelper.GetParameterHelper().AddCustomParameter(parameterName.ParameterName, element, parameterValue.Value, parameterValue.ParameterValueType, IsInstanceParameter);
+
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
-            Console.WriteLine("Custom parameter is added.\n");
+            Console.WriteLine("Parameter is added.\n");
             return Task.FromResult(true);
+            return base.Execute();
         }
     }
 }

@@ -260,6 +260,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddInstanceParamCommand.cs" />
+    <Compile Include="Commands\AddParamCommand.cs" />
+    <Compile Include="Commands\AddTypeParamCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\GetExchangeCommand.cs" />
     <Compile Include="Commands\Options\ExchangeId.cs" />
@@ -269,7 +272,6 @@
     <Compile Include="Commands\CreateExchangeCommand.cs" />
     <Compile Include="Commands\CreateIfcCommand.cs" />
     <Compile Include="Commands\CreateMeshCommand.cs" />
-    <Compile Include="Commands\CreateCustomParameter.cs" />
     <Compile Include="Commands\ExitCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\Options\ElementId.cs" />
@@ -280,10 +282,10 @@
     <Compile Include="Commands\Options\InstanceParameterType.cs" />
     <Compile Include="Commands\Options\ParameterValue.cs" />
     <Compile Include="Commands\Options\ParameterValueDataType.cs" />
+    <Compile Include="Commands\Options\ParamName.cs" />
     <Compile Include="Commands\Options\PrimitiveGeometry.cs" />
     <Compile Include="Commands\Options\ProjectUrn.cs" />
     <Compile Include="Commands\Options\Region.cs" />
-    <Compile Include="Commands\CreateInstanceParameterCommand.cs" />
     <Compile Include="Commands\CreatePrimitiveGeometryCommand.cs" />
     <Compile Include="Commands\SetFolderCommand.cs" />
     <Compile Include="Commands\SyncExchangeData.cs" />

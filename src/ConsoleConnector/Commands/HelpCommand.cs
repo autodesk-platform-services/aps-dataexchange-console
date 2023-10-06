@@ -59,7 +59,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 }
                 Console.WriteLine();
 
-                if (command is CreateInstanceParameterCommand)
+                if (command is AddInstanceParamCommand || command is AddTypeParamCommand)
                 {
                     Console.WriteLine("Instance parameter data types");
                     foreach (ParameterDataType parameter in (ParameterDataType[])Enum.GetValues(typeof(ParameterDataType)))
