@@ -4,29 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autodesk.DataExchange.ConsoleApp.Commands.Options;
-using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
 using Autodesk.DataExchange.DataModels;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
 {
-    internal abstract class AddParamCommand : Command
+    internal abstract class RemoveParameter:Command
     {
         public bool IsInstanceParameter = false;
-        public AddParamCommand(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
+        public RemoveParameter(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
         {
             Options = new List<CommandOption>
             {
                 new ExchangeTitle(),
                 new ElementId(),
-                new ParameterName(),
-                new ParameterValue(),
-                new ParameterValueDataType()
+                new ParameterName()
             };
         }
 
-        public AddParamCommand(AddParamCommand addParamCommand) : base(addParamCommand)
+        public RemoveParameter(RemoveParameter removeParameter) : base(removeParameter)
         {
+
         }
 
         public override Task<bool> Execute()
@@ -40,8 +38,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             var exchangeTitle = this.GetOption<ExchangeTitle>();
             var elementId = this.GetOption<ElementId>();
             var parameterName = this.GetOption<ParameterName>();
-            var parameterValue = this.GetOption<ParameterValue>();
-            var parameterValueType = this.GetOption<ParameterValueDataType>();
+
             var exchangeData = ConsoleAppHelper.GetExchangeData(exchangeTitle.Value);
             if (exchangeData == null)
             {
@@ -57,25 +54,34 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
-            DataModels.Parameter parameter = null;
-            if (parameterName.Value != null)
-                parameter = ConsoleAppHelper.GetParameterHelper().AddBuiltInParameter(element, parameterName.Value.Value, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
-            else
-                parameter = ConsoleAppHelper.GetParameterHelper().AddCustomParameter(parameterName.SchemaName, element, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
-
-            ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
-            if (parameter == null)
+            var parameterIsDeleted = false;
+            if (parameterName.Value != null && IsInstanceParameter)
             {
-                Console.WriteLine("Parameter is not added.\n");
+                parameterIsDeleted = true;
+                element.DeleteParameter(parameterName.Value.Value);
             }
-            else
+            else if (parameterName.Value != null && IsInstanceParameter==false)
             {
-                var builtInParameter = parameterName.Value == null ? "Custom" : "Built-In";
-                Console.WriteLine("Parameter is added.\nThis is "+builtInParameter+" parameter"+"\nParameter value type is "+ parameterValueType.Value);
+                parameterIsDeleted = element.DeleteTypeParameter(parameterName.Value.Value);
+            }
+            else if (parameterName.Value == null && IsInstanceParameter)
+            {
+                parameterIsDeleted = true;
+                element.DeleteParameter(parameterName.SchemaName);
+            }
+            else if (parameterName.Value == null && IsInstanceParameter == false)
+            {
+                parameterIsDeleted = element.DeleteTypeParameter(parameterName.SchemaName);
             }
 
-            return Task.FromResult(true);
-            return base.Execute();
+            if (parameterIsDeleted)
+            {
+                Console.WriteLine("Parameter is deleted.");
+                return Task.FromResult(true);
+            }
+
+            Console.WriteLine("Parameter is not found.Please check schema.");
+            return Task.FromResult(false);
         }
     }
 }

@@ -2,14 +2,20 @@
 using Autodesk.DataExchange.DataModels;
 using Autodesk.Parameters;
 using System;
+using System.Linq;
+using Autodesk.DataExchange.ConsoleApp.Commands.Options;
 using Parameter = Autodesk.Parameters.Parameter;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
 {
     internal class ParameterHelper
     {
-        public void AddCustomParameter(string schemaNamespace, Element element, string value, ParameterDataType parameterDataType,bool isTypeParameter)
+        public DataModels.Parameter AddCustomParameter(string schemaNamespace, Element element, string value, ParameterDataType parameterDataType,bool isTypeParameter)
         {
+            var instanceParameters = element.InstanceParameters.Count;
+            var modelStructureParameters = element.ModelStructureParameters.Count;
+            var typeParameters = element.TypeParameters.Count;
+
             if (parameterDataType == ParameterDataType.String)
             {
                 AddCustomParameter_String(schemaNamespace, element, value, isTypeParameter);
@@ -30,10 +36,27 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             {
                 AddCustomParameter_Float64(schemaNamespace, element, value, isTypeParameter);
             }
+
+            var instanceParameters2 = element.InstanceParameters.Count;
+            var modelStructureParameters2 = element.ModelStructureParameters.Count;
+            var typeParameters2 = element.TypeParameters.Count;
+
+            // this is workaround until we get DEXC-1855 fix.
+            if (instanceParameters != instanceParameters2)
+                return element.InstanceParameters.LastOrDefault();
+            if (typeParameters != typeParameters2)
+                return element.TypeParameters.LastOrDefault();
+            if (modelStructureParameters != modelStructureParameters2)
+                return element.ModelStructureParameters.LastOrDefault();
+            return null;
         }
 
-        public void AddInstanceParameter(Element element, Autodesk.Parameters.Parameter parameterType, string value, ParameterDataType parameterDataType, bool isTypeParameter)
+        public DataModels.Parameter AddBuiltInParameter(Element element, Autodesk.Parameters.Parameter parameterType, string value, ParameterDataType parameterDataType, bool isTypeParameter)
         {
+            var instanceParameters = element.InstanceParameters.Count;
+            var modelStructureParameters = element.ModelStructureParameters.Count;
+            var typeParameters = element.TypeParameters.Count;
+
             if (parameterDataType == ParameterDataType.String)
             {
                 AddBuiltInParameter_String(element, parameterType, value, isTypeParameter);
@@ -54,6 +77,20 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             {
                 AddBuiltInParameter_Bool(element, parameterType, value, isTypeParameter);
             }
+
+            var instanceParameters2 = element.InstanceParameters.Count;
+            var modelStructureParameters2 = element.ModelStructureParameters.Count;
+            var typeParameters2 = element.TypeParameters.Count;
+
+            // this is workaround until we get DEXC-1855 fix.
+
+            if (instanceParameters != instanceParameters2)
+                return element.InstanceParameters.LastOrDefault();
+            if (typeParameters != typeParameters2)
+                return element.TypeParameters.LastOrDefault();
+            if (modelStructureParameters != modelStructureParameters2)
+                return element.ModelStructureParameters.LastOrDefault();
+            return null;
         }
 
 
