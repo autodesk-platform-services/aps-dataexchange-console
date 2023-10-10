@@ -84,6 +84,15 @@ namespace ConsoleConnector_Test
         }
 
         [TestMethod]
+        public void CreatePolyline_Test()
+        {
+            var exchangeData = ElementDataModel.Create(_client.Object);
+            var element = GeometryHelper.AddPolyline(exchangeData);
+            Assert.IsNotNull(element);
+            Assert.AreEqual(exchangeData.Elements.Count(), 1);
+        }
+
+        [TestMethod]
         public void CreatePrimitiveAll_Test()
         {
             var exchangeData = ElementDataModel.Create(_client.Object);
