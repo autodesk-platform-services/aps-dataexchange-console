@@ -1,4 +1,6 @@
-﻿namespace Autodesk.DataExchange.ConsoleApp.Commands.Options
+﻿using Autodesk.DataExchange.SchemaObjects.Components;
+
+namespace Autodesk.DataExchange.ConsoleApp.Commands.Options
 {
     /// <summary>
     /// Parameter Value command option.
@@ -10,6 +12,12 @@
         {
             this.Description = "Specify value for parameter.";
         }
+
+        public override void SetValue(string value)
+        {
+            base.SetValue(value);
+        }
+
         public override string ToString()
         {
             return "ParameterValue[" + Description + "]";

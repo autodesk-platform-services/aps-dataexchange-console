@@ -192,8 +192,10 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             Commands.Add(new CreateBrepCommand(this));
             Commands.Add(new CreateMeshCommand(this));
             Commands.Add(new CreateIfcCommand(this));
-            Commands.Add(new CustomParameterCommand(this));
-            Commands.Add(new CreateInstanceParameterCommand(this));
+            Commands.Add(new AddInstanceParamCommand(this));
+            Commands.Add(new AddTypeParamCommand(this));
+            Commands.Add(new DeleteInstanceParameter(this));
+            Commands.Add(new DeleteTypeParameter(this));
             Commands.Add(new CreatePrimitiveGeometryCommand(this));
             Commands.Add(new SyncExchangeData(this));
             Commands.Add(new HelpCommand(this));
@@ -284,7 +286,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             // Add the last part
             string lastPart = input.Substring(startIndex);
             parts.Add(lastPart);
-
+            parts = parts.Where(n => string.IsNullOrEmpty(n)==false).ToList();
             return parts;
         }
 
@@ -338,7 +340,6 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                     currentExchangeData = await Client.GetExchangeDataAsync(exchangeIdentifier);
                     currentRevision = firstRev;
 
-                    // Use Revit Wrapper
                     var data = ElementDataModel.Create(Client, currentExchangeData);
 
                     //data.Elements.a
@@ -389,7 +390,6 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
                     }
 
-                    // Use Revit Wrapper
                     var data = ElementDataModel.Create(Client, currentExchangeData);
 
                     // Get all Wall Elements

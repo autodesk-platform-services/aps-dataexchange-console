@@ -2,62 +2,99 @@
 using Autodesk.DataExchange.DataModels;
 using Autodesk.Parameters;
 using System;
+using System.Linq;
+using Autodesk.DataExchange.ConsoleApp.Commands.Options;
 using Parameter = Autodesk.Parameters.Parameter;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
 {
     internal class ParameterHelper
     {
-        public void AddCustomParameter(string schemaNamespace, Element element, string value, ParameterDataType parameterDataType)
+        public DataModels.Parameter AddCustomParameter(string schemaNamespace, Element element, string value, ParameterDataType parameterDataType,bool isTypeParameter)
         {
+            var instanceParameters = element.InstanceParameters.Count;
+            var modelStructureParameters = element.ModelStructureParameters.Count;
+            var typeParameters = element.TypeParameters.Count;
+
             if (parameterDataType == ParameterDataType.String)
             {
-                AddCustomParameter_String(schemaNamespace, element, value);
+                AddCustomParameter_String(schemaNamespace, element, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Int32)
             {
-                AddCustomParameter_Int32(schemaNamespace, element, value);
+                AddCustomParameter_Int32(schemaNamespace, element, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Int64)
             {
-                AddCustomParameter_Int64(schemaNamespace, element, value);
+                AddCustomParameter_Int64(schemaNamespace, element, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Bool)
             {
-                AddCustomParameter_Bool(schemaNamespace, element, value);
+                AddCustomParameter_Bool(schemaNamespace, element, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Float64)
             {
-                AddCustomParameter_Float64(schemaNamespace, element, value);
+                AddCustomParameter_Float64(schemaNamespace, element, value, isTypeParameter);
             }
+
+            var instanceParameters2 = element.InstanceParameters.Count;
+            var modelStructureParameters2 = element.ModelStructureParameters.Count;
+            var typeParameters2 = element.TypeParameters.Count;
+
+            // this is workaround until we get DEXC-1855 fix.
+            if (instanceParameters != instanceParameters2)
+                return element.InstanceParameters.LastOrDefault();
+            if (typeParameters != typeParameters2)
+                return element.TypeParameters.LastOrDefault();
+            if (modelStructureParameters != modelStructureParameters2)
+                return element.ModelStructureParameters.LastOrDefault();
+            return null;
         }
 
-        public void AddInstanceParameter(Element element, Autodesk.Parameters.Parameter parameterType, string value, ParameterDataType parameterDataType)
+        public DataModels.Parameter AddBuiltInParameter(Element element, Autodesk.Parameters.Parameter parameterType, string value, ParameterDataType parameterDataType, bool isTypeParameter)
         {
+            var instanceParameters = element.InstanceParameters.Count;
+            var modelStructureParameters = element.ModelStructureParameters.Count;
+            var typeParameters = element.TypeParameters.Count;
+
             if (parameterDataType == ParameterDataType.String)
             {
-                AddInstanceParameter_String(element, parameterType, value);
+                AddBuiltInParameter_String(element, parameterType, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Float64)
             {
-                AddInstanceParameter_Float64(element, parameterType, value);
+                AddBuiltInParameter_Float64(element, parameterType, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Int32)
             {
-                AddInstanceParameter_Int32(element, parameterType, value);
+                AddIBuiltInParameter_Int32(element, parameterType, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Int64)
             {
-                AddInstanceParameter_Int64(element, parameterType, value);
+                AddBuiltInParameter_Int64(element, parameterType, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Bool)
             {
-                AddInstanceParameter_Bool(element, parameterType, value);
+                AddBuiltInParameter_Bool(element, parameterType, value, isTypeParameter);
             }
+
+            var instanceParameters2 = element.InstanceParameters.Count;
+            var modelStructureParameters2 = element.ModelStructureParameters.Count;
+            var typeParameters2 = element.TypeParameters.Count;
+
+            // this is workaround until we get DEXC-1855 fix.
+
+            if (instanceParameters != instanceParameters2)
+                return element.InstanceParameters.LastOrDefault();
+            if (typeParameters != typeParameters2)
+                return element.TypeParameters.LastOrDefault();
+            if (modelStructureParameters != modelStructureParameters2)
+                return element.ModelStructureParameters.LastOrDefault();
+            return null;
         }
 
 
-        private static void AddCustomParameter_Float64(string schemaNamespace, Element element, string value)
+        private static void AddCustomParameter_Float64(string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToDouble(value);
             var schemaId = "exchange.parameter." + schemaNamespace + ":Float64TestCustomParameter-1.0.0";
@@ -66,13 +103,14 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             customParameterFloat.SampleText = "SampleText-FloatCustomParam";
             customParameterFloat.Description = "Description-FloatCustomParam";
             customParameterFloat.ReadOnly = false;
+            customParameterFloat.IsTypeParameter = isTypeParameter;
             customParameterFloat.GroupID = Group.Dimensions.DisplayName();
             customParameterFloat.SpecID = Spec.Number.DisplayName();
             ((MeasurableParameterDefinition)customParameterFloat).Value = data;
             element.CreateParameter(customParameterFloat);
         }
 
-        private static void AddCustomParameter_Bool(string schemaNamespace, Element element, string value)
+        private static void AddCustomParameter_Bool(string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToBoolean(value);
             string schemaId = "exchange.parameter." + schemaNamespace + ":BoolTestCustomParameter-1.0.0";
@@ -80,13 +118,14 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             customParameter.Name = "Test" + Guid.NewGuid();
             customParameter.SampleText = "";
             customParameter.Description = "";
+            customParameter.IsTypeParameter = isTypeParameter;
             customParameter.ReadOnly = false;
             customParameter.GroupID = Group.General.DisplayName();
             ((BoolParameterDefinition)customParameter).Value = data;
             element.CreateParameter(customParameter);
         }
 
-        private static void AddCustomParameter_Int64(string schemaNamespace, Element element, string value)
+        private static void AddCustomParameter_Int64(string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt64(value);
             var schemaId = "exchange.parameter." + schemaNamespace + ":Int64TestCustomParameter-1.0.0";
@@ -94,13 +133,14 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             customParameterInt.Name = "TestInt64" + Guid.NewGuid();
             customParameterInt.SampleText = "";
             customParameterInt.Description = "";
+            customParameterInt.IsTypeParameter = isTypeParameter;
             customParameterInt.ReadOnly = false;
             customParameterInt.GroupID = Group.General.DisplayName();
             ((Int64ParameterDefinition)customParameterInt).Value = data;
             element.CreateParameter(customParameterInt);
         }
 
-        private static void AddCustomParameter_String(string schemaNamespace, Element element, string value)
+        private static void AddCustomParameter_String(string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var schemaId = "exchange.parameter." + schemaNamespace + ":StringTestCustomParameter-1.0.0";
             ParameterDefinition customParameterString = ParameterDefinition.Create(schemaId, ParameterDataType.String);
@@ -108,12 +148,13 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             customParameterString.SampleText = "SampleTest-String";
             customParameterString.Description = "Description-String";
             customParameterString.ReadOnly = false;
+            customParameterString.IsTypeParameter = isTypeParameter;
             customParameterString.GroupID = Group.Graphics.DisplayName();
             ((StringParameterDefinition)customParameterString).Value = value;
             element.CreateParameter(customParameterString);
         }
 
-        public void AddCustomParameter_Int32(string schemaNamespace, Element element, string value)
+        private void AddCustomParameter_Int32(string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt32(value);
             var schemaId = "exchange.parameter." + schemaNamespace + ":Int32TestCustomParameter-1.0.0";
@@ -121,47 +162,53 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             customParameterInt.Name = "TestInt32" + Guid.NewGuid();
             customParameterInt.SampleText = "";
             customParameterInt.Description = "";
+            customParameterInt.IsTypeParameter = isTypeParameter;
             customParameterInt.ReadOnly = false;
             customParameterInt.GroupID = Group.General.DisplayName();
             ((Int32ParameterDefinition)customParameterInt).Value = data;
             element.CreateParameter(customParameterInt);
         }
 
-        private static void AddInstanceParameter_Bool(Element element, Parameter parameterType, string value)
+        private static void AddBuiltInParameter_Bool(Element element, Parameter parameterType, string value, bool isTypeParameter)
         {
             var data = Convert.ToBoolean(value);
             var parameter = ParameterDefinition.Create(parameterType, ParameterDataType.Bool);
+            parameter.IsTypeParameter = isTypeParameter;
             ((BoolParameterDefinition)parameter).Value = data;
             element.CreateParameter(parameter);
         }
 
-        private static void AddInstanceParameter_Int64(Element element, Parameter parameterType, string value)
+        private static void AddBuiltInParameter_Int64(Element element, Parameter parameterType, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt64(value);
             var parameter = ParameterDefinition.Create(parameterType, ParameterDataType.Int64);
+            parameter.IsTypeParameter = isTypeParameter;
             ((Int64ParameterDefinition)parameter).Value = data;
             element.CreateParameter(parameter);
         }
 
-        private static void AddInstanceParameter_Int32(Element element, Parameter parameterType, string value)
+        private static void AddIBuiltInParameter_Int32(Element element, Parameter parameterType, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt32(value);
-            var hostAreaComputed = ParameterDefinition.Create(parameterType, ParameterDataType.Int32);
-            ((Int32ParameterDefinition)hostAreaComputed).Value = data;
-            element.CreateParameter(hostAreaComputed);
+            var parameter = ParameterDefinition.Create(parameterType, ParameterDataType.Int32);
+            parameter.IsTypeParameter = isTypeParameter;
+            ((Int32ParameterDefinition)parameter).Value = data;
+            element.CreateParameter(parameter);
         }
 
-        private static void AddInstanceParameter_Float64(Element element, Parameter parameterType, string value)
+        private static void AddBuiltInParameter_Float64(Element element, Parameter parameterType, string value, bool isTypeParameter)
         {
             var data = Convert.ToDouble(value);
             var parameter = ParameterDefinition.Create(parameterType, ParameterDataType.Float64);
+            parameter.IsTypeParameter = isTypeParameter;
             ((MeasurableParameterDefinition)parameter).Value = data;
             element.CreateParameter(parameter);
         }
 
-        private static void AddInstanceParameter_String(Element element, Parameter parameterType, string value)
+        private static void AddBuiltInParameter_String(Element element, Parameter parameterType, string value,bool isTypeParameter)
         {
             var parameter = ParameterDefinition.Create(parameterType, ParameterDataType.String);
+            parameter.IsTypeParameter = isTypeParameter;
             ((StringParameterDefinition)parameter).Value = value;
             element.CreateParameter(parameter);
         }

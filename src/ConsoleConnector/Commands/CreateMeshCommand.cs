@@ -47,9 +47,9 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
-            var revitExchangeData = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
-            var mesh = ConsoleAppHelper.GetGeometryHelper().CreateMesh(revitExchangeData);
-            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, revitExchangeData.ExchangeData);
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
+            var mesh = ConsoleAppHelper.GetGeometryHelper().CreateMesh(elementDataModel);
+            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel.ExchangeData);
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
             Console.WriteLine("Element Id: " + mesh.Id);
             Console.WriteLine("Element Name: " + mesh.Name);

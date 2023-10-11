@@ -57,8 +57,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
             var exchangeTitle = this.GetOption<ExchangeTitle>();
             ExchangeDetails = await ConsoleAppHelper.CreateExchange(exchangeTitle.Value);
-            var revitExchangeData = ElementDataModel.Create(ConsoleAppHelper.GetClient());
-            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, revitExchangeData.ExchangeData);
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient());
+            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel.ExchangeData);
             ConsoleAppHelper.AddExchangeDetails(exchangeTitle.Value, ExchangeDetails);
             Console.WriteLine(exchangeTitle.Value + " exchange created!!!");
             Console.WriteLine("ExchangeId: " + ExchangeDetails.ExchangeID);

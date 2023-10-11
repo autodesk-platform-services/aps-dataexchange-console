@@ -260,6 +260,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddInstanceParamCommand.cs" />
+    <Compile Include="Commands\AddParamCommand.cs" />
+    <Compile Include="Commands\AddTypeParamCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\GetExchangeCommand.cs" />
     <Compile Include="Commands\Options\ExchangeId.cs" />
@@ -269,7 +272,6 @@
     <Compile Include="Commands\CreateExchangeCommand.cs" />
     <Compile Include="Commands\CreateIfcCommand.cs" />
     <Compile Include="Commands\CreateMeshCommand.cs" />
-    <Compile Include="Commands\CreateCustomParameter.cs" />
     <Compile Include="Commands\ExitCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\Options\ElementId.cs" />
@@ -278,13 +280,17 @@
     <Compile Include="Commands\Options\HelpCommand.cs" />
     <Compile Include="Commands\Options\HubId.cs" />
     <Compile Include="Commands\Options\InstanceParameterType.cs" />
+    <Compile Include="Commands\Options\ParameterSchema.cs" />
     <Compile Include="Commands\Options\ParameterValue.cs" />
     <Compile Include="Commands\Options\ParameterValueDataType.cs" />
+    <Compile Include="Commands\Options\ParameterName.cs" />
     <Compile Include="Commands\Options\PrimitiveGeometry.cs" />
     <Compile Include="Commands\Options\ProjectUrn.cs" />
     <Compile Include="Commands\Options\Region.cs" />
-    <Compile Include="Commands\CreateInstanceParameterCommand.cs" />
     <Compile Include="Commands\CreatePrimitiveGeometryCommand.cs" />
+    <Compile Include="Commands\DeleteInstanceParameter.cs" />
+    <Compile Include="Commands\DeleteParameter.cs" />
+    <Compile Include="Commands\DeleteTypeParameter.cs" />
     <Compile Include="Commands\SetFolderCommand.cs" />
     <Compile Include="Commands\SyncExchangeData.cs" />
     <Compile Include="Helper\ConsoleAppHelper.cs" />
@@ -300,40 +306,40 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
-    <None Include="InputStepFile\1000mm_rod.stp">
+    <None Include="Assets\1000mm_rod.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\11DB159F6864D8FC02B33D7E9280498F08DFC4FB.stp">
+    <None Include="Assets\11DB159F6864D8FC02B33D7E9280498F08DFC4FB.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\BasinAdvancedBrep.ifc">
+    <None Include="Assets\BasinAdvancedBrep.ifc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\Beam.ifc">
+    <None Include="Assets\Beam.ifc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\box.stp">
+    <None Include="Assets\box.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\cone.stp">
+    <None Include="Assets\cone.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\cylinder.stp">
+    <None Include="Assets\cylinder.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\fcdc7083-ed51-31d1-9d0e-c608b400ede8.stp">
+    <None Include="Assets\fcdc7083-ed51-31d1-9d0e-c608b400ede8.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\mesh1.obj">
+    <None Include="Assets\mesh1.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\mesh2.obj">
+    <None Include="Assets\mesh2.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\nist_ftc_09_asme1_rd.stp">
+    <None Include="Assets\nist_ftc_09_asme1_rd.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InputStepFile\sphere.stp">
+    <None Include="Assets\sphere.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

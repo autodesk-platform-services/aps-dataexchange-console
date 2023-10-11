@@ -48,9 +48,9 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
-            var revitExchangeData = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
-            var brep = ConsoleAppHelper.GetGeometryHelper().CreateBrep(revitExchangeData);
-            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, revitExchangeData.ExchangeData);
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
+            var brep = ConsoleAppHelper.GetGeometryHelper().CreateBrep(elementDataModel);
+            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel.ExchangeData);
             Console.WriteLine("Element Id: " + brep.Id);
             Console.WriteLine("Element Name: " + brep.Name);
             Console.WriteLine("Category: " + brep.Category);

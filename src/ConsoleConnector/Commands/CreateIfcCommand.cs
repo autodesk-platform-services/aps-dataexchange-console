@@ -50,9 +50,9 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
-            var revitExchangeData = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
-            var ifc = ConsoleAppHelper.GetGeometryHelper().CreateIfc(revitExchangeData);
-            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value,revitExchangeData.ExchangeData);
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
+            var ifc = ConsoleAppHelper.GetGeometryHelper().CreateIfc(elementDataModel);
+            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value,elementDataModel.ExchangeData);
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
             Console.WriteLine("Element Id: " + ifc.Id);
             Console.WriteLine("Element Name: " + ifc.Name);
