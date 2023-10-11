@@ -11,6 +11,7 @@ namespace Autodesk.DataExchange.ConsoleApp
         All,
         Line,
         Point,
-        Circle
+        Circle,
+        Polyline
     }
 }

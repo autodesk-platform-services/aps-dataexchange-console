@@ -229,5 +229,32 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             revitExchangeData.SetElementGeometryByElement(primitive, circleElementGeometry);
             return primitive;
         }
+
+        public Element AddPolyline(ElementDataModel dataModel)
+        {
+            var polyLineElement = dataModel.AddElement(new ElementProperties("Polyline", "PolylineGenerics", "PolylineGeneric", "PolylineElement"));
+            var polyLineElementGeometry = new List<ElementGeometry>();
+            var geomContainer = new GeometryContainer()
+            {
+                Curves = new CurveArray()
+                {
+                    new Polyline()
+                    {
+                        Range = new ParamRange(ParamRange.RangeType.Finite, 0.0, 2.0),
+                        Closed = false,
+                        Points = new List<PrimitiveGeometry.Math.Point3d>()
+                        {
+                            new PrimitiveGeometry.Math.Point3d(12.5, 4, 0),
+                            new PrimitiveGeometry.Math.Point3d(4.5, 4, 0),
+                            new PrimitiveGeometry.Math.Point3d(11.25, 0, 0)
+                        }
+                    }
+                }
+            };
+
+            polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
+            dataModel.SetElementGeometryByElement(polyLineElement, polyLineElementGeometry);
+            return polyLineElement;
+        }
     }
 }
