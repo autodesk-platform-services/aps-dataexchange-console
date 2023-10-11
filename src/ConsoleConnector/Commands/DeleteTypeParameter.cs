@@ -9,13 +9,13 @@ using Autodesk.DataExchange.DataModels;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
 {
-    internal class RemoveTypeParameter : RemoveParameter
+    internal class DeleteTypeParameter : DeleteParameter
     {
-        public RemoveTypeParameter(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
+        public DeleteTypeParameter(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
         {
             this.IsInstanceParameter = false;
-            this.Name = "RemoveTypeParam";
-            Description = "Remove type parameters from element.";
+            this.Name = "DeleteTypeParam";
+            Description = "Delete type parameters from element.";
             Options = new List<CommandOption>
             {
                 new ExchangeTitle(),
@@ -24,7 +24,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             };
         }
 
-        public RemoveTypeParameter(RemoveParameter removeParameter) : base(removeParameter)
+        public DeleteTypeParameter(DeleteParameter removeParameter) : base(removeParameter)
         {
             this.IsInstanceParameter = removeParameter.IsInstanceParameter;
 
@@ -32,7 +32,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
         public override Command Clone()
         {
-            return new RemoveInstanceParameter(this);
+            return new DeleteInstanceParameter(this);
         }
     }
 }

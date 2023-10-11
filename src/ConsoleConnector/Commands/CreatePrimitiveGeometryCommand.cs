@@ -50,24 +50,24 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
-            var revitExchangeData = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
 
             Element element;
             if (primitiveGeometryOption.Value == PrimitiveGeometryType.Circle)
             {
-                element = ConsoleAppHelper.GetGeometryHelper().AddCircle(revitExchangeData);
+                element = ConsoleAppHelper.GetGeometryHelper().AddCircle(elementDataModel);
             }
             else if (primitiveGeometryOption.Value == PrimitiveGeometryType.Line)
             {
-                element = ConsoleAppHelper.GetGeometryHelper().AddLine(revitExchangeData);
+                element = ConsoleAppHelper.GetGeometryHelper().AddLine(elementDataModel);
             }
             else if (primitiveGeometryOption.Value == PrimitiveGeometryType.Point)
             {
-                element = ConsoleAppHelper.GetGeometryHelper().AddPoint(revitExchangeData);
+                element = ConsoleAppHelper.GetGeometryHelper().AddPoint(elementDataModel);
             }
             else
             {
-                element = ConsoleAppHelper.GetGeometryHelper().AddPrimitive(revitExchangeData);
+                element = ConsoleAppHelper.GetGeometryHelper().AddPrimitive(elementDataModel);
             }
 
             Console.WriteLine("Element Id: " + element.Id);

@@ -194,8 +194,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             Commands.Add(new CreateIfcCommand(this));
             Commands.Add(new AddInstanceParamCommand(this));
             Commands.Add(new AddTypeParamCommand(this));
-            Commands.Add(new RemoveInstanceParameter(this));
-            Commands.Add(new RemoveTypeParameter(this));
+            Commands.Add(new DeleteInstanceParameter(this));
+            Commands.Add(new DeleteTypeParameter(this));
             Commands.Add(new CreatePrimitiveGeometryCommand(this));
             Commands.Add(new SyncExchangeData(this));
             Commands.Add(new HelpCommand(this));
@@ -340,7 +340,6 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                     currentExchangeData = await Client.GetExchangeDataAsync(exchangeIdentifier);
                     currentRevision = firstRev;
 
-                    // Use Revit Wrapper
                     var data = ElementDataModel.Create(Client, currentExchangeData);
 
                     //data.Elements.a
@@ -391,7 +390,6 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
                     }
 
-                    // Use Revit Wrapper
                     var data = ElementDataModel.Create(Client, currentExchangeData);
 
                     // Get all Wall Elements

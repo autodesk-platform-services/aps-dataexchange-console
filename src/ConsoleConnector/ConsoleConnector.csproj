@@ -288,9 +288,9 @@
     <Compile Include="Commands\Options\ProjectUrn.cs" />
     <Compile Include="Commands\Options\Region.cs" />
     <Compile Include="Commands\CreatePrimitiveGeometryCommand.cs" />
-    <Compile Include="Commands\RemoveInstanceParameter.cs" />
-    <Compile Include="Commands\RemoveParameter.cs" />
-    <Compile Include="Commands\RemoveTypeParameter.cs" />
+    <Compile Include="Commands\DeleteInstanceParameter.cs" />
+    <Compile Include="Commands\DeleteParameter.cs" />
+    <Compile Include="Commands\DeleteTypeParameter.cs" />
     <Compile Include="Commands\SetFolderCommand.cs" />
     <Compile Include="Commands\SyncExchangeData.cs" />
     <Compile Include="Helper\ConsoleAppHelper.cs" />

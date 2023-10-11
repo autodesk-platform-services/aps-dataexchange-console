@@ -49,8 +49,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
-            var revitExchangeData = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
-            var element = revitExchangeData.Elements.ToList().FirstOrDefault(n => n.Id == elementId.Value);
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
+            var element = elementDataModel.Elements.ToList().FirstOrDefault(n => n.Id == elementId.Value);
             if (element == null)
             {
                 Console.WriteLine("Element not found");

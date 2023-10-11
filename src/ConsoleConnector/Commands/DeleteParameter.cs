@@ -9,10 +9,10 @@ using Autodesk.DataExchange.DataModels;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
 {
-    internal abstract class RemoveParameter:Command
+    internal abstract class DeleteParameter:Command
     {
         public bool IsInstanceParameter = false;
-        public RemoveParameter(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
+        public DeleteParameter(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
         {
             Options = new List<CommandOption>
             {
@@ -22,7 +22,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             };
         }
 
-        public RemoveParameter(RemoveParameter removeParameter) : base(removeParameter)
+        public DeleteParameter(DeleteParameter removeParameter) : base(removeParameter)
         {
 
         }
@@ -46,8 +46,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
-            var revitExchangeData = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
-            var element = revitExchangeData.Elements.ToList().FirstOrDefault(n => n.Id == elementId.Value);
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
+            var element = elementDataModel.Elements.ToList().FirstOrDefault(n => n.Id == elementId.Value);
             if (element == null)
             {
                 Console.WriteLine("Element not found");
