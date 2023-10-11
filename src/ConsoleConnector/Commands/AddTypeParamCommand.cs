@@ -15,7 +15,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         public AddTypeParamCommand(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
         {
             this.IsInstanceParameter = false;
-            this.Name = "AddTypeParam";
+            this.Name = "AddTypeParameter";
             Description = "Add type parameters to element.";
         }
 

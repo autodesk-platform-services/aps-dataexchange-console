@@ -15,7 +15,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         public AddInstanceParamCommand(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
         {
             this.IsInstanceParameter = true;
-            this.Name = "AddInstanceParam";
+            this.Name = "AddInstanceParameter";
             Description = "Add instance parameters to element.";
         }
 
