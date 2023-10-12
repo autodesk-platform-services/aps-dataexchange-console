@@ -42,6 +42,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             var parameterName = this.GetOption<ParameterName>();
             var parameterValue = this.GetOption<ParameterValue>();
             var parameterValueType = this.GetOption<ParameterValueDataType>();
+            if (parameterValueType.IsValidDataType == false)
+            {
+                Console.WriteLine("Invalid data type. Please try Help command to get more details.");
+                return Task.FromResult(false);
+            }
             var exchangeData = ConsoleAppHelper.GetExchangeData(exchangeTitle.Value);
             if (exchangeData == null)
             {

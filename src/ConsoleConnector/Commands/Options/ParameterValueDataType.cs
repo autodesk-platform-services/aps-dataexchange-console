@@ -9,6 +9,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands.Options
 {
     internal class ParameterValueDataType:CommandOption
     {
+        public bool IsValidDataType { get; private set; } = false;
         public new ParameterDataType Value { get; private set; } = ParameterDataType.String;
         public ParameterValueDataType()
         {
@@ -17,21 +18,30 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands.Options
 
         public override void SetValue(string value)
         {
+            IsValidDataType = false;
             if (Enum.TryParse(value, true, out ParameterDataType parameterDataType))
             {
                 switch (parameterDataType)
                 {
                     case ParameterDataType.Float64:
+                        IsValidDataType = true;
                         Value = ParameterDataType.Float64;
                         break;
                     case ParameterDataType.Bool:
+                        IsValidDataType = true;
                         Value = ParameterDataType.Bool;
                         break;
                     case ParameterDataType.Int64:
+                        IsValidDataType = true;
                         Value = ParameterDataType.Float64;
                         break;
                     case ParameterDataType.Int32:
+                        IsValidDataType = true;
                         Value = ParameterDataType.Int32;
+                        break;
+                    case ParameterDataType.String:
+                        IsValidDataType = true;
+                        Value = ParameterDataType.String;
                         break;
                 }
             }
