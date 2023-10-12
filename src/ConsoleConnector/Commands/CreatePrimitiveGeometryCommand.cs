@@ -67,7 +67,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             }
             else if (primitiveGeometryOption.Value == PrimitiveGeometryType.Polyline)
             {
-                element = ConsoleAppHelper.GetGeometryHelper().AddPolyline(revitExchangeData);
+                element = ConsoleAppHelper.GetGeometryHelper().AddPolyline(elementDataModel);
             }
             else
             {
