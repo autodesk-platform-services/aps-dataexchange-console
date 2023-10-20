@@ -371,3 +371,6 @@ CoberturaXML
 garasign.exe
 
 !**/InputStepFile/*.obj
+
+!mesh1.obj
+!mesh2.obj
