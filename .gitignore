@@ -370,4 +370,4 @@ CoberturaXML
 # Garasign
 garasign.exe
 
-!**/InputStepFile/*.obj
+!**/Assets/*.obj
