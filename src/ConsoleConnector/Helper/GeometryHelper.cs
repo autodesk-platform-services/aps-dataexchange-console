@@ -134,6 +134,35 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             {
                 Curves = new CurveArray()
                         {
+                            new CompositeCurve()
+                            {
+                                Curves = new CurveArray()
+                                {
+                                    new Line()
+                                    {
+                                        Position = PrimitiveGeometry.Math.Point3d.Origin,
+                                        Direction = PrimitiveGeometry.Math.Vector3d.XAxis,
+                                        Range = new ParamRange(ParamRange.RangeType.Finite, 0, 12.5)
+                                    },
+                                    new Line()
+                                    {
+                                        Position = new PrimitiveGeometry.Math.Point3d(12.5, 0, 0),
+                                        Direction = PrimitiveGeometry.Math.Vector3d.YAxis,
+                                        Range = new ParamRange(ParamRange.RangeType.Finite, 0, 4)
+                                    },
+                                    new Polyline()
+                                    {
+                                        Range = new ParamRange(ParamRange.RangeType.Finite, 0.0, 2.0),
+                                        Closed = false,
+                                        Points = new List<PrimitiveGeometry.Math.Point3d>()
+                                        {
+                                            new PrimitiveGeometry.Math.Point3d(12.5, 4, 0),
+                                            new PrimitiveGeometry.Math.Point3d(4.5, 4, 0),
+                                            new PrimitiveGeometry.Math.Point3d(11.25, 0, 0)
+                                        }
+                                    }
+                                }
+                            },
                              new Line()
                              {
                                 Position = new PrimitiveGeometry.Math.Point3d(0, 0, 0),
