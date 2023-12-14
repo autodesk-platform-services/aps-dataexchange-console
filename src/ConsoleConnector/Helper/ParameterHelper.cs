@@ -12,6 +12,12 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
     {
         public DataModels.Parameter AddCustomParameter(string parameterName, string schemaNamespace, Element element, string value, ParameterDataType parameterDataType,bool isTypeParameter)
         {
+            if(parameterName.Contains(" "))
+            {
+                Console.WriteLine("Space in Parameter name is not allowed.\n");
+                return null;
+            }
+
             if(element.InstanceParameters.FirstOrDefault(n=>n.Name == parameterName) != null ||
                 element.ModelStructureParameters.FirstOrDefault(n => n.Name == parameterName) != null ||
                 element.TypeParameters.FirstOrDefault(n => n.Name == parameterName) != null)
