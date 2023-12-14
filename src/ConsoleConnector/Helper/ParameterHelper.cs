@@ -12,6 +12,12 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
     {
         public DataModels.Parameter AddCustomParameter(string parameterName, string schemaNamespace, Element element, string value, ParameterDataType parameterDataType,bool isTypeParameter)
         {
+            if(parameterName.Contains(" "))
+            {
+                Console.WriteLine("Space in Parameter name is not allowed.\n");
+                return null;
+            }
+
             if(element.InstanceParameters.FirstOrDefault(n=>n.Name == parameterName) != null ||
                 element.ModelStructureParameters.FirstOrDefault(n => n.Name == parameterName) != null ||
                 element.TypeParameters.FirstOrDefault(n => n.Name == parameterName) != null)
@@ -105,7 +111,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         private static void AddCustomParameter_Float64(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToDouble(value);
-            var schemaId = "exchange.parameter." + schemaNamespace + ":Float64TestCustomParameter-1.0.0";
+            var schemaId = "exchange.parameter." + schemaNamespace + ":Float64" + parameterName + "TestCustomParameter-1.0.0";
             ParameterDefinition customParameterFloat = ParameterDefinition.Create(schemaId, ParameterDataType.Float64);
             customParameterFloat.Name = parameterName;
             customParameterFloat.SampleText = "SampleText-FloatCustomParam";
@@ -121,7 +127,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         private static void AddCustomParameter_Bool(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToBoolean(value);
-            string schemaId = "exchange.parameter." + schemaNamespace + ":BoolTestCustomParameter-1.0.0";
+            string schemaId = "exchange.parameter." + schemaNamespace + ":Bool" + parameterName + "TestCustomParameter-1.0.0";
             ParameterDefinition customParameter = ParameterDefinition.Create(schemaId, ParameterDataType.Bool);
             customParameter.Name = parameterName;
             customParameter.SampleText = "";
@@ -136,7 +142,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         private static void AddCustomParameter_Int64(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt64(value);
-            var schemaId = "exchange.parameter." + schemaNamespace + ":Int64TestCustomParameter-1.0.0";
+            var schemaId = "exchange.parameter." + schemaNamespace + ":Int64T" + parameterName + "estCustomParameter-1.0.0";
             ParameterDefinition customParameterInt = ParameterDefinition.Create(schemaId, ParameterDataType.Int64);
             customParameterInt.Name = parameterName;
             customParameterInt.SampleText = "";
@@ -150,7 +156,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
         private static void AddCustomParameter_String(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
-            var schemaId = "exchange.parameter." + schemaNamespace + ":StringTestCustomParameter-1.0.0";
+            var schemaId = "exchange.parameter." + schemaNamespace + ":String"+ parameterName + "TestCustomParameter-1.0.0";
             ParameterDefinition customParameterString = ParameterDefinition.Create(schemaId, ParameterDataType.String);
             customParameterString.Name = parameterName;
             customParameterString.SampleText = "SampleTest-String";
@@ -165,7 +171,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         private void AddCustomParameter_Int32(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt32(value);
-            var schemaId = "exchange.parameter." + schemaNamespace + ":Int32TestCustomParameter-1.0.0";
+            var schemaId = "exchange.parameter." + schemaNamespace + ":Int32"+parameterName+"TestCustomParameter-1.0.0";
             ParameterDefinition customParameterInt = ParameterDefinition.Create(schemaId, ParameterDataType.Int32);
             customParameterInt.Name = parameterName;
             customParameterInt.SampleText = "";
