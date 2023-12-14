@@ -54,8 +54,15 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
 
+            var exchangeDetails = ConsoleAppHelper.GetExchangeDetails(exchangeTitle.Value);
+            if(exchangeDetails == null)
+            {
+                Console.WriteLine("Exchange details not found.\n");
+                return Task.FromResult(false);
+            }
+
             var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
-            var element = elementDataModel.Elements.ToList().FirstOrDefault(n => n.Id == elementId.Value);
+            var element = elementDataModel.Elements.ToList().FirstOrDefault(n => n.Id == elementId.Value);            
             if (element == null)
             {
                 Console.WriteLine("Element not found");
@@ -66,7 +73,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             if (parameterName.Value != null)
                 parameter = ConsoleAppHelper.GetParameterHelper().AddBuiltInParameter(element, parameterName.Value.Value, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
             else
-                parameter = ConsoleAppHelper.GetParameterHelper().AddCustomParameter(parameterName.SchemaName, element, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
+                parameter = ConsoleAppHelper.GetParameterHelper().AddCustomParameter(parameterName.SchemaName, exchangeDetails.SchemaNamespace, element, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
 
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
             if (parameter == null)
