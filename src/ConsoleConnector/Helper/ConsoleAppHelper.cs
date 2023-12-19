@@ -243,8 +243,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         public async Task<bool> SyncExchange(DataExchangeIdentifier dataExchangeIdentifier, ExchangeDetails exchangeDetails, ExchangeData exchangeData)
         {
             await Client.SyncExchangeDataAsync(dataExchangeIdentifier, exchangeData);
-            await Client.GenerateViewableAsync(exchangeDetails.DisplayName, exchangeDetails.ExchangeID,
-                exchangeDetails.CollectionID, exchangeDetails.FileUrn);
+            await Client.GenerateViewableAsync(exchangeDetails.ExchangeID,
+                exchangeDetails.CollectionID);
             return true;
         }
 
@@ -301,9 +301,9 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             return exchangeDetails.DisplayName;
         }
 
-        public async Task<Tuple<string,bool>> GetExchange(string exchangeId, string collectionId, string hubId, string hubRegion)
+        public async Task<Tuple<string,bool>> GetExchange(string exchangeId, string collectionId, string hubId, string hubRegion, string fileFormat)
         {
-            var stepFile = string.Empty;
+            var exchangeFile = string.Empty;
             var isUpdated = false;
 
             try
@@ -366,8 +366,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
                     await Task.WhenAll(geometryResults).ConfigureAwait(false);
 
-                    //Get Geometry of whole exchange file as STEP
-                    stepFile =  Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeID);
+                    //Get Geometry of whole exchange file
+                    if(fileFormat == "OBJ")
+                        exchangeFile = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, collectionId);
+                    else
+                        exchangeFile =  Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeID);
                     isUpdated = false;
                 }
                 else
@@ -414,8 +417,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                     await Task.WhenAll(geometryResults).ConfigureAwait(false);
 
 
-                    //Get Geometry of whole exchange file as STEP
-                    stepFile = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeID);
+                    //Get Geometry of whole exchange file
+                    if (fileFormat == "OBJ")
+                        exchangeFile = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID,collectionId);
+                    else 
+                        exchangeFile = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeID);
                     isUpdated = true;
                 }
 
@@ -427,7 +433,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                 Console.WriteLine(e);
             }
 
-            return new Tuple<string, bool>(stepFile, isUpdated);
+            return new Tuple<string, bool>(exchangeFile, isUpdated);
         }
     }
 }

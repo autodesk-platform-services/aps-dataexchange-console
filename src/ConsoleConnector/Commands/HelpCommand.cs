@@ -46,6 +46,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 Console.WriteLine();
                 Console.Write(command.Description + "\n");
                 var allOptions = string.Join(" ", command.Options.Select(n => "[" + n.GetType().Name.Replace("Option", "") + "]"));
+                if (command is GetExchangeCommand)
+                    allOptions += "(Optional)";
                 Console.Write(command.Name.ToUpper() + " " + allOptions + "\n");
                 var maxNameLength = command.Options.Count > 0 ? command.Options.Max(n => n.GetType().Name.Replace("Option", "").Length) + 5 : 0;
                 var maxDescriptionLength = command.Options.Count > 0 ? command.Options.Max(n => n.Description.Length) + 5 : 0;

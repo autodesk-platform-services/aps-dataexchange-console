@@ -265,6 +265,7 @@
     <Compile Include="Commands\AddTypeParamCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\GetExchangeCommand.cs" />
+    <Compile Include="Commands\Options\ExchangeFileFormat.cs" />
     <Compile Include="Commands\Options\ExchangeId.cs" />
     <Compile Include="Commands\Options\CollectionId.cs" />
     <Compile Include="Commands\Options\CommandOption.cs" />

@@ -31,7 +31,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Interfaces
         GeometryHelper GetGeometryHelper();
         ParameterHelper GetParameterHelper();
 
-        Task<Tuple<string, bool>> GetExchange(string exchangeId, string collectionId, string hubId, string hubRegion);
+        Task<Tuple<string, bool>> GetExchange(string exchangeId, string collectionId, string hubId, string hubRegion,string fileFormat);
 
     }
 }

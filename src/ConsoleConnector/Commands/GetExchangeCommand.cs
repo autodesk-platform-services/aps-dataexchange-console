@@ -13,11 +13,12 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         public GetExchangeCommand(ConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
         {
             Name = "GetExchange";
-            Description = "Get exchange and download as a STEP file.";
+            Description = "Get exchange and download as a [STEP(Default)/OBJ] file.";
             Options = new List<CommandOption>
             {
                 new ExchangeId(),
-                new CollectionId()
+                new CollectionId(),
+                new ExchangeFileFormat()
             };
         }
 
@@ -47,9 +48,18 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
             var exchangeId = GetOption<ExchangeId>().Value;
             var collectionId = GetOption<CollectionId>().Value;
+            var exchangeDownLoadFileFormat = GetOption<ExchangeFileFormat>().Value?.ToUpper()?.Trim();
+            if (string.IsNullOrEmpty(exchangeDownLoadFileFormat))
+                exchangeDownLoadFileFormat = "STEP";
+            if(exchangeDownLoadFileFormat!="STEP" &&
+                exchangeDownLoadFileFormat != "OBJ")
+            {
+                Console.WriteLine("File format for exchange is not correct. Please specify STEP/OBJ or keep it blank.");
+                return false;
+            }
 
             Console.WriteLine("Downloading exchange...");
-            var status = await ConsoleAppHelper.GetExchange(exchangeId, collectionId, hubId, region);
+            var status = await ConsoleAppHelper.GetExchange(exchangeId, collectionId, hubId, region, exchangeDownLoadFileFormat);
             if (status == null || string.IsNullOrEmpty(status.Item1))
             {
                 Console.WriteLine("Downloading exchange is failed.");
@@ -58,6 +68,22 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
             Console.WriteLine("Exchange downloaded.");
             Console.WriteLine("Exchange STEP file: "+status.Item1);
+            return true;
+        }
+
+        public override bool ValidateOptions()
+        {
+            foreach (var option in this.Options)
+            {
+                if(option is ExchangeFileFormat)
+                {
+                    continue;
+                }
+                if (option.IsValid() == false)
+                {
+                    return false;
+                }
+            }
             return true;
         }
     }
