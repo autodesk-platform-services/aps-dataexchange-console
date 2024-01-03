@@ -226,7 +226,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         public Task<ExchangeDetails> CreateExchange(string exchangeTitle)
         {
             var name = exchangeTitle;
-            TryGetFolderDetails(out _, out _, out var projectUrn, out var folderUrn);
+            TryGetFolderDetails(out var region, out var hubId, out var projectUrn, out var folderUrn);
             var exchangeCreateRequest = new ExchangeCreateRequestACC()
             {
                 Host = Client.SDKOptions.HostingProvider,
@@ -234,7 +234,9 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                 Description = string.Empty,
                 FileName = name,
                 ACCFolderURN = folderUrn,
-                ACCProjectURN = projectUrn
+                ACCProjectURN = projectUrn,
+                Region = region,
+                HubId = hubId
             };
 
             return Client.CreateExchangeAsync(exchangeCreateRequest);
