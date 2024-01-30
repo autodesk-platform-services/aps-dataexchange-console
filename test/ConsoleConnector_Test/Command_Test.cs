@@ -7,6 +7,8 @@ using Autodesk.DataExchange.ConsoleApp.Commands;
 using Autodesk.DataExchange.ConsoleApp.Commands.Options;
 using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
+using Autodesk.DataExchange.Core.Models;
+using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Interface;
 using Autodesk.DataExchange.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,6 +36,11 @@ namespace ConsoleConnector_Test
 
             });
 
+            consoleAppHelper.Setup(n => n.GetUpdatedExchangeDetails(It.IsAny<DataExchangeIdentifier>())).Returns(() =>
+             JsonConvert.DeserializeObject<ExchangeDetails>(
+                    "{\"ProjectUrn\":\"b.e3be8c87-1df5-470f-9214-1b6cc85452fa\",\"FileUrn\":\"urn:adsk.wipprod:dm.lineage:IpFw2xoRRTS__n5-kV5XXA\",\"FileVersionUrn\":\"urn:adsk.wipprod:fs.file:vf.IpFw2xoRRTS__n5-kV5XXA?version=2\",\"FolderUrn\":\"urn:adsk.wipprod:fs.folder:co.NBWiKlvJSqOo1B4iUajHeA\",\"ExchangeID\":\"7a3102e6-645c-3b88-8e08-b5f3f0e243be\",\"CollectionID\":\"co.cBMZ-5QhTym2c-nfa1Fx2Q\",\"DisplayName\":\"TestExchange\",\"CreatedTime\":\"2023-08-21T15:41:30.0481133+05:30\",\"LastModifiedTime\":\"2023-08-21T15:41:30.0481133+05:30\",\"CreatedBy\":\"DhirajLotake\",\"LastModifiedBy\":\"DhirajLotake\",\"Attributes\":{},\"FolderPath\":\"\",\"SchemaNamespace\":\"c73cae7ea1540e39f45528aa243d4d26\",\"HubId\":null,\"HubRegion\":null}")
+            );
+
             consoleAppHelper.Setup(n => n.CreateExchange("TestExchange")).ReturnsAsync(() =>
             {
                  return JsonConvert.DeserializeObject<ExchangeDetails>(
@@ -52,7 +59,7 @@ namespace ConsoleConnector_Test
 
             consoleAppHelper.Setup(n => n.GetExchangeData(It.IsAny<string>())).Returns(() =>
             {
-                return new ExchangeData();
+                return ElementDataModel.Create(null).ExchangeData;
             });
         }
 

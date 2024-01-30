@@ -69,8 +69,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             {
                 CollectionId = exchangeDetails.CollectionID,
                 ExchangeId = exchangeDetails.ExchangeID,
-                HubId = hubId,
-                Region = region
+                HubId = hubId
             };
 
             ExchangeSync = await ConsoleAppHelper.SyncExchange(exchangeIdentifier, exchangeDetails, exchangeData);
