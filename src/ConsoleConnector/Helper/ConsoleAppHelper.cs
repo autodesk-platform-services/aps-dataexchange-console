@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Autodesk.DataExchange.DataModels;
+using Autodesk.DataExchange.Core.Enums;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
 {
@@ -223,10 +224,17 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             return cloneCommand;
         }
 
-        public Task<ExchangeDetails> CreateExchange(string exchangeTitle)
+        public async Task<ExchangeDetails> CreateExchange(string exchangeTitle)
         {
             var name = exchangeTitle;
             TryGetFolderDetails(out var region, out var hubId, out var projectUrn, out var folderUrn);
+            var projectDetails = await Client.SDKOptions.HostingProvider.GetProjectInformationAsync(hubId, projectUrn);
+            var projectType = ProjectType.ACC;
+            if (projectDetails != null)
+            {
+                projectType = projectDetails.ProjectType;
+            }
+
             var exchangeCreateRequest = new ExchangeCreateRequestACC()
             {
                 Host = Client.SDKOptions.HostingProvider,
@@ -234,12 +242,12 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                 Description = string.Empty,
                 FileName = name,
                 ACCFolderURN = folderUrn,
-                ACCProjectURN = projectUrn,
+                ProjectId = projectUrn,
                 Region = region,
-                HubId = hubId
+                HubId = hubId,         
+                ProjectType = projectType
             };
-
-            return Client.CreateExchangeAsync(exchangeCreateRequest);
+            return await Client.CreateExchangeAsync(exchangeCreateRequest);
         }
 
         public async Task<bool> SyncExchange(DataExchangeIdentifier dataExchangeIdentifier, ExchangeDetails exchangeDetails, ExchangeData exchangeData)
