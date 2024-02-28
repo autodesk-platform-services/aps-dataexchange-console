@@ -78,7 +78,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                 var currentExchangeData = Client.GetExchangeDataAsync(new DataExchangeIdentifier
                 {
                     ExchangeId = exchangeDetails.ExchangeID, CollectionId = exchangeDetails.CollectionID,
-                    Region = region, HubId = hubId
+                    HubId = hubId
                 });
                 currentExchangeData.Wait();
                 _exchangeData[exchangeTitle] = currentExchangeData.Result;
@@ -315,8 +315,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                 {
                     CollectionId = collectionId,
                     ExchangeId = exchangeId,
-                    HubId = hubId,
-                    Region = hubRegion
+                    HubId = hubId
                 };
 
                 //Get a list of all revisions

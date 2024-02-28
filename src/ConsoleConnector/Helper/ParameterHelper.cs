@@ -108,7 +108,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         }
 
 
-        private static void AddCustomParameter_Float64(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
+        private static async void AddCustomParameter_Float64(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToDouble(value);
             var schemaId = "exchange.parameter." + schemaNamespace + ":Float64" + parameterName + "TestCustomParameter-1.0.0";
@@ -121,10 +121,10 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             customParameterFloat.GroupID = Group.Dimensions.DisplayName();
             customParameterFloat.SpecID = Spec.Number.DisplayName();
             ((MeasurableParameterDefinition)customParameterFloat).Value = data;
-            element.CreateParameter(customParameterFloat);
+            await element.CreateParameterAsync(customParameterFloat);
         }
 
-        private static void AddCustomParameter_Bool(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
+        private static async void AddCustomParameter_Bool(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToBoolean(value);
             string schemaId = "exchange.parameter." + schemaNamespace + ":Bool" + parameterName + "TestCustomParameter-1.0.0";
@@ -136,10 +136,10 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             customParameter.ReadOnly = false;
             customParameter.GroupID = Group.General.DisplayName();
             ((BoolParameterDefinition)customParameter).Value = data;
-            element.CreateParameter(customParameter);
+            await element.CreateParameterAsync(customParameter);
         }
 
-        private static void AddCustomParameter_Int64(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
+        private static async void AddCustomParameter_Int64(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt64(value);
             var schemaId = "exchange.parameter." + schemaNamespace + ":Int64T" + parameterName + "estCustomParameter-1.0.0";
@@ -151,10 +151,10 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             customParameterInt.ReadOnly = false;
             customParameterInt.GroupID = Group.General.DisplayName();
             ((Int64ParameterDefinition)customParameterInt).Value = data;
-            element.CreateParameter(customParameterInt);
+            await element.CreateParameterAsync(customParameterInt);
         }
 
-        private static void AddCustomParameter_String(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
+        private static async void AddCustomParameter_String(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var schemaId = "exchange.parameter." + schemaNamespace + ":String"+ parameterName + "TestCustomParameter-1.0.0";
             ParameterDefinition customParameterString = ParameterDefinition.Create(schemaId, ParameterDataType.String);
@@ -165,10 +165,10 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             customParameterString.IsTypeParameter = isTypeParameter;
             customParameterString.GroupID = Group.Graphics.DisplayName();
             ((StringParameterDefinition)customParameterString).Value = value;
-            element.CreateParameter(customParameterString);
+            await element.CreateParameterAsync(customParameterString);
         }
 
-        private void AddCustomParameter_Int32(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
+        private async void AddCustomParameter_Int32(string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt32(value);
             var schemaId = "exchange.parameter." + schemaNamespace + ":Int32"+parameterName+"TestCustomParameter-1.0.0";
@@ -180,51 +180,51 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             customParameterInt.ReadOnly = false;
             customParameterInt.GroupID = Group.General.DisplayName();
             ((Int32ParameterDefinition)customParameterInt).Value = data;
-            element.CreateParameter(customParameterInt);
+            await element.CreateParameterAsync(customParameterInt);
         }
 
-        private static void AddBuiltInParameter_Bool(Element element, Parameter parameterType, string value, bool isTypeParameter)
+        private static async void AddBuiltInParameter_Bool(Element element, Parameter parameterType, string value, bool isTypeParameter)
         {
             var data = Convert.ToBoolean(value);
             var parameter = ParameterDefinition.Create(parameterType, ParameterDataType.Bool);
             parameter.IsTypeParameter = isTypeParameter;
             ((BoolParameterDefinition)parameter).Value = data;
-            element.CreateParameter(parameter);
+            await element.CreateParameterAsync(parameter);
         }
 
-        private static void AddBuiltInParameter_Int64(Element element, Parameter parameterType, string value, bool isTypeParameter)
+        private static async void AddBuiltInParameter_Int64(Element element, Parameter parameterType, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt64(value);
             var parameter = ParameterDefinition.Create(parameterType, ParameterDataType.Int64);
             parameter.IsTypeParameter = isTypeParameter;
             ((Int64ParameterDefinition)parameter).Value = data;
-            element.CreateParameter(parameter);
+            await element.CreateParameterAsync(parameter);
         }
 
-        private static void AddIBuiltInParameter_Int32(Element element, Parameter parameterType, string value, bool isTypeParameter)
+        private static async void AddIBuiltInParameter_Int32(Element element, Parameter parameterType, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt32(value);
             var parameter = ParameterDefinition.Create(parameterType, ParameterDataType.Int32);
             parameter.IsTypeParameter = isTypeParameter;
             ((Int32ParameterDefinition)parameter).Value = data;
-            element.CreateParameter(parameter);
+            await element.CreateParameterAsync(parameter);
         }
 
-        private static void AddBuiltInParameter_Float64(Element element, Parameter parameterType, string value, bool isTypeParameter)
+        private static async void AddBuiltInParameter_Float64(Element element, Parameter parameterType, string value, bool isTypeParameter)
         {
             var data = Convert.ToDouble(value);
             var parameter = ParameterDefinition.Create(parameterType, ParameterDataType.Float64);
             parameter.IsTypeParameter = isTypeParameter;
             ((MeasurableParameterDefinition)parameter).Value = data;
-            element.CreateParameter(parameter);
+            await element.CreateParameterAsync(parameter);
         }
 
-        private static void AddBuiltInParameter_String(Element element, Parameter parameterType, string value,bool isTypeParameter)
+        private static async void AddBuiltInParameter_String(Element element, Parameter parameterType, string value,bool isTypeParameter)
         {
             var parameter = ParameterDefinition.Create(parameterType, ParameterDataType.String);
             parameter.IsTypeParameter = isTypeParameter;
             ((StringParameterDefinition)parameter).Value = value;
-            element.CreateParameter(parameter);
+            await element.CreateParameterAsync(parameter);
         }
     }
 }
