@@ -55,6 +55,10 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                 ClientId = authClientId,
                 CallBack = authCallBack,
                 ClientSecret = authClientSecret,
+                ConnectorName = "ConsoleConnector",
+                ConnectorVersion = "1.0.0",
+                ApplicationProductId = "Dummy",
+                ApplicationVersion = "1.0",
             };
 
             Client = new Client(sdkOptions);
