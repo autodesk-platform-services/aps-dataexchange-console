@@ -51,7 +51,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             var exchangeDownLoadFileFormat = GetOption<ExchangeFileFormat>().Value?.ToUpper()?.Trim();
             if (string.IsNullOrEmpty(exchangeDownLoadFileFormat))
                 exchangeDownLoadFileFormat = "STEP";
-            if(exchangeDownLoadFileFormat!="STEP" &&
+            if (exchangeDownLoadFileFormat!="STEP" &&
                 exchangeDownLoadFileFormat != "OBJ")
             {
                 Console.WriteLine("File format for exchange is not correct. Please specify STEP/OBJ or keep it blank.");
@@ -75,7 +75,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         {
             foreach (var option in this.Options)
             {
-                if(option is ExchangeFileFormat)
+                if (option is ExchangeFileFormat)
                 {
                     continue;
                 }

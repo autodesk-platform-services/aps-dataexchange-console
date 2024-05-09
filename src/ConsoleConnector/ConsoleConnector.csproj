@@ -449,6 +449,8 @@
     <Compile Include="Commands\DeleteTypeParameter.cs" />
     <Compile Include="Commands\SetFolderCommand.cs" />
     <Compile Include="Commands\SyncExchangeData.cs" />
+    <Compile Include="Commands\WorkFlowTestCommand.cs" />
+    <Compile Include="Exceptions\AuthenticationMissingException.cs" />
     <Compile Include="Helper\ConsoleAppHelper.cs" />
     <Compile Include="Helper\GeometryHelper.cs" />
     <Compile Include="Helper\ParameterHelper.cs" />

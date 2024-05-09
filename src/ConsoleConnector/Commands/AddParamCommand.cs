@@ -29,12 +29,12 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         {
         }
 
-        public override Task<bool> Execute()
+        public override async Task<bool> Execute()
         {
             if (this.ValidateOptions() == false)
             {
                 Console.WriteLine("Invalid inputs!!!");
-                return Task.FromResult(false);
+                return false;
             }
 
             var exchangeTitle = this.GetOption<ExchangeTitle>();
@@ -45,20 +45,20 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             if (parameterValueType.IsValidDataType == false)
             {
                 Console.WriteLine("Invalid data type. Please try Help command to get more details.");
-                return Task.FromResult(false);
+                return false;
             }
             var exchangeData = ConsoleAppHelper.GetExchangeData(exchangeTitle.Value);
             if (exchangeData == null)
             {
                 Console.WriteLine("Exchange data not found.\n");
-                return Task.FromResult(false);
+                return false;
             }
 
             var exchangeDetails = ConsoleAppHelper.GetExchangeDetails(exchangeTitle.Value);
-            if(exchangeDetails == null)
+            if (exchangeDetails == null)
             {
                 Console.WriteLine("Exchange details not found.\n");
-                return Task.FromResult(false);
+                return false;
             }
 
             var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
@@ -66,14 +66,14 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             if (element == null)
             {
                 Console.WriteLine("Element not found");
-                return Task.FromResult(false);
+                return false;
             }
 
             DataModels.Parameter parameter = null;
             if (parameterName.Value != null)
-                parameter = ConsoleAppHelper.GetParameterHelper().AddBuiltInParameter(element, parameterName.Value.Value, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
+                parameter = await ConsoleAppHelper.GetParameterHelper().AddBuiltInParameter(elementDataModel, element, parameterName.Value.Value, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
             else
-                parameter = ConsoleAppHelper.GetParameterHelper().AddCustomParameter(parameterName.SchemaName, exchangeDetails.SchemaNamespace, element, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
+                parameter = ConsoleAppHelper.GetParameterHelper().AddCustomParameter(elementDataModel, parameterName.SchemaName, exchangeDetails.SchemaNamespace, element, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
 
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
             if (parameter == null)
@@ -86,8 +86,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 Console.WriteLine("Parameter is added.\nThis is "+builtInParameter+" parameter"+"\nParameter value type is "+ parameterValueType.Value);
             }
 
-            return Task.FromResult(true);
-            return base.Execute();
+            return true;
         }
     }
 }

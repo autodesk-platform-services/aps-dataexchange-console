@@ -1,14 +1,24 @@
-﻿using Autodesk.DataExchange.ConsoleApp.Helper;
+﻿using Autodesk.DataExchange.ConsoleApp.Exceptions;
+using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Autodesk.DataExchange.ConsoleApp
 {
     class Program
     {
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
+        static extern IntPtr FindWindowByCaption(IntPtr zeroOnly, string lpWindowName);
+
         static Program()
         {
 
@@ -18,12 +28,17 @@ namespace Autodesk.DataExchange.ConsoleApp
         static async Task Main(string[] args)
         {
             try
-            {
+            {                
+                Console.Title = "Console Connector";
+                IntPtr handle = FindWindowByCaption(IntPtr.Zero, Console.Title);
+
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
                 _consoleAppHelper = new ConsoleAppHelper();
                 _consoleAppHelper.Start();
 
+                SetForegroundWindow(handle);
+                
                 Console.Clear();
                 Console.WriteLine(
                     "The Data Exchange CLI is a sample application that demonstrates usage of the Data Exchange SDK and the various operations like loading exchanges, creating exchanges, updating and exchange with various types of data, etc.\nPlease type help to get a list of all the commands supported. \nType help commandName to get detailed information on a specific command.\n");
@@ -48,6 +63,11 @@ namespace Autodesk.DataExchange.ConsoleApp
                     }
 
                 }
+            }
+            catch (AuthenticationMissingException authenticationMissingException)
+            {
+                Console.WriteLine(authenticationMissingException.Message);
+                Console.ReadKey();
             }
             catch (Exception a)
             {

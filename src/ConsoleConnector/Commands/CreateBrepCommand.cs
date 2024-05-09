@@ -51,6 +51,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
             var brep = ConsoleAppHelper.GetGeometryHelper().CreateBrep(elementDataModel);
             ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel.ExchangeData);
+            CommandOutput["ElementId"] = brep.Id;
+
             Console.WriteLine("Element Id: " + brep.Id);
             Console.WriteLine("Element Name: " + brep.Name);
             Console.WriteLine("Category: " + brep.Category);
