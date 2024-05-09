@@ -78,6 +78,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             createPrimitive.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             createPrimitive.GetOption<PrimitiveGeometry>().SetValue("Polyline");
 
+            Console.WriteLine("Adding Instance Parameter 1");
             var addInstanceParameter = new AddInstanceParamCommand(ConsoleAppHelper);
             addInstanceParameter.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             addInstanceParameter.GetOption<ElementId>().SetValue(addBrep.CommandOutput["ElementId"].ToString());
@@ -86,6 +87,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             addInstanceParameter.GetOption<ParameterValueDataType>().SetValue("String");
             await addInstanceParameter.Execute();
 
+            Console.WriteLine("Adding Instance Parameter 2");
             var addInstanceParameter2 = new AddInstanceParamCommand(ConsoleAppHelper);
             addInstanceParameter2.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             addInstanceParameter2.GetOption<ElementId>().SetValue(addBrep2.CommandOutput["ElementId"].ToString());
@@ -94,6 +96,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             addInstanceParameter2.GetOption<ParameterValueDataType>().SetValue("String");
             await addInstanceParameter2.Execute();
 
+            Console.WriteLine("Adding Type Parameter 1");
             var addTypeParamCommand = new AddTypeParamCommand(ConsoleAppHelper);
             addTypeParamCommand.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             addTypeParamCommand.GetOption<ElementId>().SetValue(addBrep.CommandOutput["ElementId"].ToString());
@@ -102,6 +105,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             addTypeParamCommand.GetOption<ParameterValueDataType>().SetValue("String");
             await addTypeParamCommand.Execute();
 
+            Console.WriteLine("Adding Type Parameter 2");
             var addTypeParamCommand2 = new AddTypeParamCommand(ConsoleAppHelper);
             addTypeParamCommand2.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             addTypeParamCommand2.GetOption<ElementId>().SetValue(addBrep2.CommandOutput["ElementId"].ToString());
