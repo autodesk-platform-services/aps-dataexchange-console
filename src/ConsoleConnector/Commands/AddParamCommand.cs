@@ -73,7 +73,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             if (parameterName.Value != null)
                 parameter = await ConsoleAppHelper.GetParameterHelper().AddBuiltInParameter(elementDataModel, element, parameterName.Value.Value, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
             else
-                parameter = ConsoleAppHelper.GetParameterHelper().AddCustomParameter(elementDataModel, parameterName.SchemaName, exchangeDetails.SchemaNamespace, element, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
+                parameter = await ConsoleAppHelper.GetParameterHelper().AddCustomParameter(elementDataModel, parameterName.SchemaName, exchangeDetails.SchemaNamespace, element, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
 
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
             if (parameter == null)

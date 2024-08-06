@@ -11,7 +11,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 {
     internal class ParameterHelper
     {
-        public DataModels.Parameter AddCustomParameter(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, ParameterDataType parameterDataType,bool isTypeParameter)
+        public async Task<DataModels.Parameter> AddCustomParameter(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, ParameterDataType parameterDataType,bool isTypeParameter)
         {
             if (parameterName.Contains(" "))
             {
@@ -31,23 +31,23 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
             if (parameterDataType == ParameterDataType.String)
             {
-                AddCustomParameter_String(elementDataModel,parameterName, schemaNamespace, element, value, isTypeParameter);
+                 await AddCustomParameter_String(elementDataModel,parameterName, schemaNamespace, element, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Int32)
             {
-                AddCustomParameter_Int32(elementDataModel, parameterName, schemaNamespace, element, value, isTypeParameter);
+                await AddCustomParameter_Int32(elementDataModel, parameterName, schemaNamespace, element, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Int64)
             {
-                AddCustomParameter_Int64(elementDataModel, parameterName, schemaNamespace, element, value, isTypeParameter);
+                await AddCustomParameter_Int64(elementDataModel, parameterName, schemaNamespace, element, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Bool)
             {
-                AddCustomParameter_Bool(elementDataModel, parameterName, schemaNamespace, element, value, isTypeParameter);
+                await AddCustomParameter_Bool(elementDataModel, parameterName, schemaNamespace, element, value, isTypeParameter);
             }
             else if (parameterDataType == ParameterDataType.Float64)
             {
-                AddCustomParameter_Float64(elementDataModel, parameterName,schemaNamespace, element, value, isTypeParameter);
+                await AddCustomParameter_Float64(elementDataModel, parameterName, schemaNamespace, element, value, isTypeParameter);
             }
 
             var instanceParameters2 = element.InstanceParameters.Count;
@@ -115,7 +115,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         }
 
 
-        private static async void AddCustomParameter_Float64(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
+        private static async Task AddCustomParameter_Float64(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToDouble(value);
             var schemaId = "exchange.parameter." + schemaNamespace + ":Float64" + parameterName + "TestCustomParameter-1.0.0";
@@ -137,7 +137,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             }
         }
 
-        private static async void AddCustomParameter_Bool(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
+        private static async Task AddCustomParameter_Bool(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToBoolean(value);
             string schemaId = "exchange.parameter." + schemaNamespace + ":Bool" + parameterName + "TestCustomParameter-1.0.0";
@@ -158,7 +158,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             }
         }
 
-        private static async void AddCustomParameter_Int64(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
+        private static async Task AddCustomParameter_Int64(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt64(value);
             var schemaId = "exchange.parameter." + schemaNamespace + ":Int64T" + parameterName + "estCustomParameter-1.0.0";
@@ -179,7 +179,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             }
         }
 
-        private static async void AddCustomParameter_String(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
+        private static async Task AddCustomParameter_String(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var schemaId = "exchange.parameter." + schemaNamespace + ":String"+ parameterName + "TestCustomParameter-1.0.0";
             ParameterDefinition customParameterString = ParameterDefinition.Create(schemaId, ParameterDataType.String);
@@ -199,7 +199,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             }
         }
 
-        private async void AddCustomParameter_Int32(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
+        private async Task AddCustomParameter_Int32(ElementDataModel elementDataModel, string parameterName, string schemaNamespace, Element element, string value, bool isTypeParameter)
         {
             var data = Convert.ToInt32(value);
             var schemaId = "exchange.parameter." + schemaNamespace + ":Int32"+parameterName+"TestCustomParameter-1.0.0";
