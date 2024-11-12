@@ -68,7 +68,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         {
             var path = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\Assets\\" + geometryDetails.Item1;
             var geometry = ElementDataModel.CreateGeometry(new GeometryProperties(path, commonRenderStyle));
-            var element = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(), geometryDetails.Item2, geometryDetails.Item3, geometryDetails.Item4));
+            var element = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(),"SampleGeometry", geometryDetails.Item2, geometryDetails.Item3, geometryDetails.Item4));
             var elementGeometry = new List<ElementGeometry> { geometry };
             elementDataModel.SetElementGeometryByElement(element, elementGeometry);
             return element;
@@ -76,7 +76,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
         public Element AddLine(ElementDataModel elementDataModel)
         {
-            var newElement = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(), "Line", "Line", "Generic Line"));
+            var newElement = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(), "SampleLine", "Line", "Line", "Generic Line"));
 
             var newBRepElementGeometry = new List<ElementGeometry>();
 
@@ -102,7 +102,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         public Element AddPoint(ElementDataModel elementDataModel)
         {
             var geomContainer = new GeometryContainer();
-            var newPointElement = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(), "Point", "Point", "Point"));
+            var newPointElement = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(),"SamplePoint", "Point", "Point", "Point"));
             var newPointElementGeometry = new List<ElementGeometry>();
             PrimitiveGeometry.Design.DesignPoint point = new PrimitiveGeometry.Design.DesignPoint(random.Next(999), random.Next(999), random.Next(999));
             newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(point, commonRenderStyle)));
@@ -113,7 +113,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         public Element AddCircle(ElementDataModel elementDataModel)
         {
             var geomContainer = new GeometryContainer();
-            var circleElement = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(), "Circle", "Circle", "Circle"));
+            var circleElement = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(),"SampleCircle", "Circle", "Circle", "Circle"));
             var newPointElementGeometry = new List<ElementGeometry>();
             var center = new PrimitiveGeometry.Math.Point3d(random.Next(999), random.Next(999), random.Next(999));
             var normal = new PrimitiveGeometry.Math.Vector3d(0, 0, 1);
@@ -128,7 +128,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         public Element AddPrimitive(ElementDataModel elementDataModel)
         {
             //....Primitive geometry - Circle...
-            var primitive = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(), "Primitive", "Primitive", "Primitive"));
+            var primitive = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(),"SamplePrimitive", "Primitive", "Primitive", "Primitive"));
             var circleElementGeometry = new List<ElementGeometry>();
             var geomContainer = new GeometryContainer()
             {
@@ -232,7 +232,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
         public Element AddPolyline(ElementDataModel dataModel)
         {
-            var polyLineElement = dataModel.AddElement(new ElementProperties("Polyline", "PolylineGenerics", "PolylineGeneric", "PolylineElement"));
+            var polyLineElement = dataModel.AddElement(new ElementProperties("Polyline","SamplePolyline", "PolylineGenerics", "PolylineGeneric", "PolylineElement"));
             var polyLineElementGeometry = new List<ElementGeometry>();
             var geomContainer = new GeometryContainer()
             {

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Core.Enums;
+using Autodesk.DataExchange.ConsoleApp.Exceptions;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
 {
@@ -48,13 +49,21 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             var authClientId = ConfigurationManager.AppSettings["AuthClientID"];
             var authCallBack = ConfigurationManager.AppSettings["AuthCallBack"];
             var authClientSecret = ConfigurationManager.AppSettings["AuthClientSecret"];
-
+            if (string.IsNullOrEmpty(authClientId) || string.IsNullOrEmpty(authCallBack) || string.IsNullOrEmpty(authClientSecret))
+            {             
+                var message = "Authentication details are missing.";
+                message += "\nPlease add AuthClientID, AuthCallBack, AuthClientSecret in App.config file.";
+                throw new AuthenticationMissingException(message);
+            }
             var sdkOptions = new SDKOptionsDefaultSetup()
             {
-                ApplicationName = "ConsoleConnector",
+                HostApplicationName = "ConsoleConnector",
                 ClientId = authClientId,
                 CallBack = authCallBack,
                 ClientSecret = authClientSecret,
+                ConnectorName = "ConsoleConnector",
+                ConnectorVersion = "1.0.0",
+                HostApplicationVersion = "1.0",
             };
 
             Client = new Client(sdkOptions);
@@ -78,7 +87,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                     return null;
                 var currentExchangeData = Client.GetExchangeDataAsync(new DataExchangeIdentifier
                 {
-                    ExchangeId = exchangeDetails.ExchangeID, CollectionId = exchangeDetails.CollectionID,
+                    ExchangeId = exchangeDetails.ExchangeID,
+                    CollectionId = exchangeDetails.CollectionID,
                     HubId = hubId
                 });
                 currentExchangeData.Wait();
@@ -202,6 +212,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             Commands.Add(new HelpCommand(this));
             Commands.Add(new ExitCommand());
 
+#if DEBUG
+            Commands.Add(new WorkFlowTestCommand(this));
+#endif
+
+
         }
 
 
@@ -244,7 +259,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                 ACCFolderURN = folderUrn,
                 ProjectId = projectUrn,
                 Region = region,
-                HubId = hubId,         
+                HubId = hubId,
                 ProjectType = projectType
             };
             return await Client.CreateExchangeAsync(exchangeCreateRequest);
@@ -296,13 +311,13 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             // Add the last part
             string lastPart = input.Substring(startIndex);
             parts.Add(lastPart);
-            parts = parts.Where(n => string.IsNullOrEmpty(n)==false).ToList();
+            parts = parts.Where(n => string.IsNullOrEmpty(n) == false).ToList();
             return parts;
         }
 
         private string GetExchangeTitle(string exchangeId)
         {
-            var exchangeDetails =_exchangeDetails.FirstOrDefault(n => n.Value.ExchangeID == exchangeId).Value;
+            var exchangeDetails = _exchangeDetails.FirstOrDefault(n => n.Value.ExchangeID == exchangeId).Value;
             if (exchangeDetails == null)
             {
                 return string.Empty;
@@ -311,7 +326,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             return exchangeDetails.DisplayName;
         }
 
-        public async Task<Tuple<string,bool>> GetExchange(string exchangeId, string collectionId, string hubId, string hubRegion, string fileFormat)
+        public async Task<Tuple<string, bool>> GetExchange(string exchangeId, string collectionId, string hubId, string hubRegion, string fileFormat)
         {
             var exchangeFile = string.Empty;
             var isUpdated = false;
@@ -334,13 +349,13 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                 var firstRev = revisions.First().Id;
 
                 _exchangeVersions.TryGetValue(exchangeId, out var currentRevision);
-                if (!string.IsNullOrEmpty(currentRevision) && currentRevision == firstRev && string.IsNullOrEmpty(exchangeTitle)==false)
+                if (!string.IsNullOrEmpty(currentRevision) && currentRevision == firstRev && string.IsNullOrEmpty(exchangeTitle) == false)
                 {
                     Console.WriteLine("No changes found on exchange.");
                     return null;
                 }
 
-                _exchangeData.TryGetValue(exchangeTitle,out var currentExchangeData);
+                _exchangeData.TryGetValue(exchangeTitle, out var currentExchangeData);
 
                 // Get Exchange data
                 if (currentExchangeData == null || currentExchangeData?.ExchangeID != exchangeIdentifier.ExchangeId)
@@ -361,25 +376,29 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
                     // Get all modified Elements
                     //var modifiedElements = data.GetModifiedElements(new List<string> { currentRevision });
-                    
+
 
                     // Get all deleted Elements
                     //var deletedElements = data.DeletedElements.ToList();
 
 
-                    List<Task> geometryResults = new List<Task>();
-                    foreach (var element in data.Elements)
-                    {
-                        geometryResults.Add(data.GetElementGeometryByElementAsync(element));
-                    }
-
-                    await Task.WhenAll(geometryResults).ConfigureAwait(false);
+                    await data.GetElementGeometriesByElementsAsync(data.Elements).ConfigureAwait(false);
 
                     //Get Geometry of whole exchange file
-                    if(fileFormat == "OBJ")
+                    if (fileFormat == "OBJ")
+                    {
                         exchangeFile = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, collectionId);
+                    }
                     else
-                        exchangeFile =  Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeID);
+                    {
+                        exchangeFile = Client.DownloadCompleteExchangeAsSTEP(new DataExchangeIdentifier
+                        {
+                            ExchangeId = data.ExchangeData.ExchangeID,
+                            CollectionId = collectionId,
+                            HubId = hubId
+                        });
+                    }
+
                     isUpdated = false;
                 }
                 else
@@ -416,21 +435,23 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                     // Get all deleted Elements
                     //var deletedElements = data.GetDeletedElements(newerRevisions);
 
-
-                    List<Task> geometryResults = new List<Task>();
-                    foreach (var element in data.Elements)
-                    {
-                        geometryResults.Add(data.GetElementGeometryByElementAsync(element));
-                    }
-
-                    await Task.WhenAll(geometryResults).ConfigureAwait(false);
+                    await data.GetElementGeometriesByElementsAsync(data.Elements).ConfigureAwait(false);
 
 
                     //Get Geometry of whole exchange file
                     if (fileFormat == "OBJ")
-                        exchangeFile = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID,collectionId);
-                    else 
-                        exchangeFile = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeID);
+                    {
+                        exchangeFile = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, collectionId);
+                    }
+                    else
+                    {
+                        exchangeFile = Client.DownloadCompleteExchangeAsSTEP(new DataExchangeIdentifier
+                        {
+                            ExchangeId = data.ExchangeData.ExchangeID,
+                            CollectionId = collectionId,
+                            HubId = hubId
+                        });
+                    }
                     isUpdated = true;
                 }
 

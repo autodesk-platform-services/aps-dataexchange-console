@@ -25,15 +25,17 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         /// Command parameters
         /// </summary>
         public List<CommandOption> Options { get; set; }
+        public Dictionary<string, object> CommandOutput { get; set; }
         internal IConsoleAppHelper ConsoleAppHelper { get; set; }
 
         protected Command()
         {
+            CommandOutput = new Dictionary<string, object>();
             Options = new List<CommandOption>();
         }
 
         protected Command(IConsoleAppHelper consoleAppHelper):this()
-        {
+        {          
             this.ConsoleAppHelper = consoleAppHelper;
         }
 
@@ -43,6 +45,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             this.ConsoleAppHelper = command.ConsoleAppHelper;
             this.Name = command.Name;
             this.Description = command.Description;
+            this.CommandOutput = command.CommandOutput.ToDictionary(n=>n.Key,n=>n.Value);
             this.Options = command.Options.Select(n=>n).ToList();
         }
 
