@@ -58,20 +58,20 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             if (parameterName.Value != null && IsInstanceParameter)
             {
                 parameterIsDeleted = true;
-                element.DeleteParameter(parameterName.Value.Value);
+                element.DeleteInstanceParameter(parameterName.Value.Value);
             }
             else if (parameterName.Value != null && IsInstanceParameter==false)
             {
-                parameterIsDeleted = element.DeleteTypeParameter(parameterName.Value.Value);
+                parameterIsDeleted = elementDataModel.DeleteTypeParameter(element.Type ,parameterName.Value.Value);
             }
             else if (parameterName.Value == null && IsInstanceParameter)
             {
                 parameterIsDeleted = true;
-                element.DeleteParameter(parameterName.SchemaName);
+                element.DeleteInstanceParameter(parameterName.SchemaName);
             }
             else if (parameterName.Value == null && IsInstanceParameter == false)
             {
-                parameterIsDeleted = element.DeleteTypeParameter(parameterName.SchemaName);
+                parameterIsDeleted = elementDataModel.DeleteTypeParameter(element.Type, parameterName.SchemaName);
             }
 
             if (parameterIsDeleted)
