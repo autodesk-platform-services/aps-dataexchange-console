@@ -218,7 +218,6 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         {
             Commands.Add(new GetExchangeCommand(this));
             Commands.Add(new SetFolderCommand(this));
-            Commands.Add(new SetFolderUrlCommand(this));
             Commands.Add(new CreateExchangeCommand(this));
             Commands.Add(new CreateBrepCommand(this));
             Commands.Add(new CreateMeshCommand(this));
