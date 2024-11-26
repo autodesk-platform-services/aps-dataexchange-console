@@ -432,6 +432,7 @@
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\Options\ElementId.cs" />
     <Compile Include="Commands\Options\ExchangeTitle.cs" />
+    <Compile Include="Commands\Options\FolderUrl.cs" />
     <Compile Include="Commands\Options\FolderUrn.cs" />
     <Compile Include="Commands\Options\HelpCommand.cs" />
     <Compile Include="Commands\Options\HubId.cs" />
