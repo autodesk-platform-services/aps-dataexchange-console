@@ -24,7 +24,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Interfaces
         void BuildCommands();
         Command GetCommand(string input);
         Task<ExchangeDetails> CreateExchange(string exchangeTitle);
-
+        void GetHubId(string projectUrn, out string hubId);
+        void GetRegion(string hubId, out string region);
         Task<bool> SyncExchange(DataExchangeIdentifier dataExchangeIdentifier,ExchangeDetails exchangeDetails, ExchangeData exchangeData);
 
         Client GetClient();

@@ -48,6 +48,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 var allOptions = string.Join(" ", command.Options.Select(n => "[" + n.GetType().Name.Replace("Option", "") + "]"));
                 if (command is GetExchangeCommand)
                     allOptions += "(Optional)";
+
+                if(command is SetFolderCommand)
+                {
+                    allOptions += "\nSETFOLDER [FolderUrl]";
+                }
                 Console.Write(command.Name.ToUpper() + " " + allOptions + "\n");
                 var maxNameLength = command.Options.Count > 0 ? command.Options.Max(n => n.GetType().Name.Replace("Option", "").Length) + 5 : 0;
                 var maxDescriptionLength = command.Options.Count > 0 ? command.Options.Max(n => n.Description.Length) + 5 : 0;
@@ -58,6 +63,16 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
                     var str = string.Format("|{0,-" + maxNameLength + "} | {1,-" + maxDescriptionLength + "} |", typeName, option.Description);
                     Console.WriteLine(str);
+                }
+
+                if (command is SetFolderCommand)
+                {
+                    FolderUrl option = new FolderUrl();
+                    var typeName = option.GetType().Name;
+                    typeName = typeName.Replace("Option", "");
+
+                    var str = string.Format("|{0,-" + maxNameLength + "} | {1,-" + maxDescriptionLength + "} |", typeName, option.Description);
+                    Console.WriteLine(str); Console.WriteLine();
                 }
                 Console.WriteLine();
 

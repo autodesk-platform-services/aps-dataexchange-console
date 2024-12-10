@@ -77,6 +77,25 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             _exchangeData[exchangeTitle] = exchangeData;
         }
 
+        public async Task<string> GetRegionAsync(string hubId)
+        {
+            return await Client.SDKOptions.HostingProvider.GetRegionAsync(hubId);
+        }
+        public async Task<string> GetHubIdAsync(string projectUrn)
+        {
+            return await Client.GetHubIdAsync(projectUrn);
+        }
+
+        public void GetHubId(string projectUrn, out string hubId)
+        {
+            hubId = GetHubIdAsync(projectUrn).Result;
+        }
+
+        public void GetRegion(string hubId, out string region)
+        {
+            region = GetRegionAsync(hubId).Result;
+        }
+
         public ExchangeData GetExchangeData(string exchangeTitle)
         {
             if (_exchangeData.TryGetValue(exchangeTitle, out _) == false)
