@@ -69,17 +69,17 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 return Task.FromResult(false);
             }
             ConsoleAppHelper.GetRegion(hubId, out string region);
-            if(string.IsNullOrEmpty(region)) 
+            if (string.IsNullOrEmpty(region)) 
             {
                 Console.WriteLine("Invalid FolderUrl!!!");
                 return Task.FromResult(false);
             }
-            if(string.IsNullOrEmpty(folderUrn))
+            if (string.IsNullOrEmpty(folderUrn))
             {
                 Console.WriteLine("Invalid FolderUrl!!!");
                 return Task.FromResult(false);
             }
-            if(string.IsNullOrEmpty(projectUrn))
+            if (string.IsNullOrEmpty(projectUrn))
             {
                 Console.WriteLine("Invalid FolderUrl!!!");
                 return Task.FromResult(false);
