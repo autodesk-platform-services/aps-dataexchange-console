@@ -34,7 +34,7 @@ namespace ConsoleConnector_Test
             var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.CreateBrep(exchangeData);
             Assert.IsNotNull(element);
-            Assert.AreEqual(exchangeData.Elements.Count(),1);
+            Assert.AreEqual(exchangeData.Elements.Count(), 1);
         }
 
         [TestMethod]
@@ -52,8 +52,10 @@ namespace ConsoleConnector_Test
         {
             var exchangeData = ElementDataModel.Create(_client.Object);
             var element = GeometryHelper.CreateMesh(exchangeData);
+            var element2 = GeometryHelper.CreateMeshThroughMeshApi(exchangeData);
             Assert.IsNotNull(element);
-            Assert.AreEqual(exchangeData.Elements.Count(), 1);
+            Assert.IsNotNull(element2);
+            Assert.AreEqual(exchangeData.Elements.Count(), 2);
         }
 
         [TestMethod]
@@ -102,3 +104,9 @@ namespace ConsoleConnector_Test
         }
     }
 }
+
+
+
+
+
+
