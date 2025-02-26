@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.ConsoleApp.Exceptions;
+using System.Reflection;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
 {
@@ -46,9 +47,13 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         /// </summary>
         private void CreateClient()
         {
-            var authClientId = ConfigurationManager.AppSettings["AuthClientID"];
-            var authCallBack = ConfigurationManager.AppSettings["AuthCallBack"];
-            var authClientSecret = ConfigurationManager.AppSettings["AuthClientSecret"];
+            var connectorInstallationDir = new Uri(Assembly.GetExecutingAssembly().Location).LocalPath;
+            var installationPath = Path.GetDirectoryName(connectorInstallationDir);
+            var msBclAsyncInterfaceDllPath = Path.Combine(installationPath, "Serilog.Sinks.File.dll");
+            Assembly.LoadFrom(msBclAsyncInterfaceDllPath);
+            var authClientId = "FRPXHvYZaHUPhUqzF0UdhRFhOaaf2w6a";// ConfigurationManager.AppSettings["AuthClientID"];
+            var authCallBack = "http://localhost:3498/";//ConfigurationManager.AppSettings["AuthCallBack"];
+            var authClientSecret = "JxtIYjsJ4zDdsYqR";//ConfigurationManager.AppSettings["AuthClientSecret"];
             if (string.IsNullOrEmpty(authClientId) || string.IsNullOrEmpty(authCallBack) || string.IsNullOrEmpty(authClientSecret))
             {             
                 var message = "Authentication details are missing.";
