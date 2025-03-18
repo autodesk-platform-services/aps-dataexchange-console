@@ -49,7 +49,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 if (command is GetExchangeCommand)
                     allOptions += "(Optional)";
 
-                if (command is SetFolderCommand)
+                if(command is SetFolderCommand)
                 {
                     allOptions += "\nSETFOLDER [FolderUrl]";
                 }

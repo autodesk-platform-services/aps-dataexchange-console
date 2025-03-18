@@ -49,7 +49,6 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
             var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
             var mesh = ConsoleAppHelper.GetGeometryHelper().CreateMesh(elementDataModel);
-            var meshApiObject = ConsoleAppHelper.GetGeometryHelper().CreateMeshThroughMeshApi(elementDataModel);
             ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel.ExchangeData);
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
             Console.WriteLine("Element Id: " + mesh.Id);
@@ -57,12 +56,6 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             Console.WriteLine("Category: " + mesh.Category);
             Console.WriteLine("Family: " + mesh.Family);
             Console.WriteLine("Type: " + mesh.Type);
-            Console.WriteLine();
-            Console.WriteLine("Element Id: " + meshApiObject.Id);
-            Console.WriteLine("Element Name: " + meshApiObject.Name);
-            Console.WriteLine("Category: " + meshApiObject.Category);
-            Console.WriteLine("Family: " + meshApiObject.Family);
-            Console.WriteLine("Type: " + meshApiObject.Type);
             Console.WriteLine();
             return Task.FromResult(true);
         }
