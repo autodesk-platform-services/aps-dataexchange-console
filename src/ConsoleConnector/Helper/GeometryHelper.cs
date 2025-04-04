@@ -1,11 +1,10 @@
 ﻿using Autodesk.DataExchange.DataModels;
-using Autodesk.GeometryPrimitives.Design;
-using Autodesk.GeometryPrimitives.Geometry;
+using Autodesk.GeometryPrimitives.Data;
+using Autodesk.GeometryPrimitives.Data.DX;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using PrimitiveGeometry = Autodesk.GeometryPrimitives;
 
 namespace Autodesk.DataExchange.ConsoleApp.Helper
 {
@@ -80,21 +79,20 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
             var newBRepElementGeometry = new List<ElementGeometry>();
 
-            PrimitiveGeometry.Design.CurveSet setOfLines = new PrimitiveGeometry.Design.CurveSet();
+            CurveSet setOfLines = new CurveSet();
 
-            PrimitiveGeometry.Geometry.Line lineone = new PrimitiveGeometry.Geometry.Line(new 
-                PrimitiveGeometry.Math.Point3d { X = random.Next(999), Y = random.Next(999), Z = random.Next(999) }, 
-                new PrimitiveGeometry.Math.Vector3d { X = random.Next(999), Y = random.Next(999), Z = random.Next(999) });
-            lineone.Range = new PrimitiveGeometry.Geometry.ParamRange()
+            Line lineone = new Line(new Point3d { X = random.Next(999), Y = random.Next(999), Z = random.Next(999) },
+                new Vector3d { X = random.Next(999), Y = random.Next(999), Z = random.Next(999) });
+            lineone.Range = new ParamRange()
             {
                 High = 3.5,
                 Low = 0,
-                Type = PrimitiveGeometry.Geometry.ParamRange.RangeType.Finite
+                Type = ParamRange.RangeType.Finite,
             };
 
             setOfLines.Add(lineone);
 
-            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(setOfLines, commonRenderStyle)));
+            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(curveSet: setOfLines, commonRenderStyle)));
             elementDataModel.SetElementGeometryByElement(newElement, newBRepElementGeometry);
             return newElement;
         }
@@ -104,7 +102,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             var geomContainer = new GeometryContainer();
             var newPointElement = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(),"SamplePoint", "Point", "Point", "Point"));
             var newPointElementGeometry = new List<ElementGeometry>();
-            PrimitiveGeometry.Design.DesignPoint point = new PrimitiveGeometry.Design.DesignPoint(random.Next(999), random.Next(999), random.Next(999));
+            DesignPoint point = new DesignPoint(random.Next(999), random.Next(999), random.Next(999));
             newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(point, commonRenderStyle)));
             elementDataModel.SetElementGeometryByElement(newPointElement, newPointElementGeometry);
             return newPointElement;
@@ -115,10 +113,10 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             var geomContainer = new GeometryContainer();
             var circleElement = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(),"SampleCircle", "Circle", "Circle", "Circle"));
             var newPointElementGeometry = new List<ElementGeometry>();
-            var center = new PrimitiveGeometry.Math.Point3d(random.Next(999), random.Next(999), random.Next(999));
-            var normal = new PrimitiveGeometry.Math.Vector3d(0, 0, 1);
-            var radius = new PrimitiveGeometry.Math.Vector3d(random.Next(50), 0, 0);
-            var circle = new PrimitiveGeometry.Geometry.Circle(center, normal, radius);
+            var center = new Point3d(random.Next(999), random.Next(999), random.Next(999));
+            var normal = new Vector3d(0, 0, 1);
+            var radius = new Vector3d(random.Next(50), 0, 0);
+            var circle = new Circle(center, normal, radius);
             geomContainer.Curves.Add(circle);
             newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
             elementDataModel.SetElementGeometryByElement(circleElement, newPointElementGeometry);
@@ -132,37 +130,37 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             var circleElementGeometry = new List<ElementGeometry>();
             var geomContainer = new GeometryContainer()
             {
-                Curves = new CurveArray()
+                Curves = new List<Curve>()
                         {
                              new Line()
                              {
-                                Position = new PrimitiveGeometry.Math.Point3d(0, 0, 0),
-                                Direction = new PrimitiveGeometry.Math.Vector3d(1, 0, 0),
+                                Position = new Point3d(0, 0, 0),
+                                Direction = new Vector3d(1, 0, 0),
                                 Range = new ParamRange(ParamRange.RangeType.Finite, -1000, 1000)
                              },
                             new Circle()
                             {
-                                Center = new PrimitiveGeometry.Math.Point3d(0, 0, 0),
-                                Normal = new PrimitiveGeometry.Math.Vector3d(0, 0, 1),
-                                Radius = new PrimitiveGeometry.Math.Vector3d(500, 0, 0)
+                                Center = new Point3d(0, 0, 0),
+                                Normal = new Vector3d(0, 0, 1),
+                                Radius = new Vector3d(500, 0, 0)
                             },
                             //CCW 90degree
                             new Circle()
                             {
-                                Center = new PrimitiveGeometry.Math.Point3d(700, 0, 0),
-                                Normal = new PrimitiveGeometry.Math.Vector3d(0, 0, 1),
-                                Radius = new PrimitiveGeometry.Math.Vector3d(200, 0, 0),
+                                Center = new Point3d(700, 0, 0),
+                                Normal = new Vector3d(0, 0, 1),
+                                Radius = new Vector3d(200, 0, 0),
                                 Range = new ParamRange(ParamRange.RangeType.Finite,0,1.5708)
                             },
                             //CW 90degree
                             new Circle()
                             {
-                                Center = new PrimitiveGeometry.Math.Point3d(1000, 0, 0),
-                                Normal = new PrimitiveGeometry.Math.Vector3d(0, 0, 1),
-                                Radius = new PrimitiveGeometry.Math.Vector3d(200, 0, 0),
+                                Center = new Point3d(1000, 0, 0),
+                                Normal = new Vector3d(0, 0, 1),
+                                Radius = new Vector3d(200, 0, 0),
                                 Range = new ParamRange(ParamRange.RangeType.Finite,-1.5708,0)
                             },
-                            new Autodesk.GeometryPrimitives.Geometry.BCurve()
+                            new BCurve()
                             {
                                 Degree = 3,
                                 Knots = new List<double>() {
@@ -170,58 +168,58 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                                     22.052499319464456,
                                     39.56011633518649,
                                     61.767382623682536,
-                                    86.37111048613733, 86.37111048613733, 86.37111048613733, 86.37111048613733
+                                    86.37111048613733, 86.37111048613733, 86.37111048613733, 86.37111048613733,
                                 },
-                                ControlPoints = new List<Autodesk.GeometryPrimitives.Math.Point3d>()
+                                ControlPoints = new List<Point3d>()
                                 {
-                                    new Autodesk.GeometryPrimitives.Math.Point3d(-2117.6323100866352, -578.0819231498238, 0),
-                                    new Autodesk.GeometryPrimitives.Math.Point3d(-1412.0457600104123, -249.06151135811626, 0),
-                                    new Autodesk.GeometryPrimitives.Math.Point3d(-1846.6021471151125, 185.49487574658576, 0),
-                                    new Autodesk.GeometryPrimitives.Math.Point3d(-1223.20576487363, 185.49487574658374, 0),
-                                    new Autodesk.GeometryPrimitives.Math.Point3d(-908.8865372007543, 366.96716645499356, 0),
-                                    new Autodesk.GeometryPrimitives.Math.Point3d(-981.7326274133812, -674.7804577820922, 0),
-                                    new Autodesk.GeometryPrimitives.Math.Point3d(-218.14218928271805, -1030.8485267763535, 0)
+                                    new Point3d(-2117.6323100866352, -578.0819231498238, 0),
+                                    new Point3d(-1412.0457600104123, -249.06151135811626, 0),
+                                    new Point3d(-1846.6021471151125, 185.49487574658576, 0),
+                                    new Point3d(-1223.20576487363, 185.49487574658374, 0),
+                                    new Point3d(-908.8865372007543, 366.96716645499356, 0),
+                                    new Point3d(-981.7326274133812, -674.7804577820922, 0),
+                                    new Point3d(-218.14218928271805, -1030.8485267763535, 0),
                                 },
                                 Weights = new List<double>() { 1, 1, 1, 1, 1, 1, 1 }
                             },
                             new Ellipse()
                             {
-                                Center = new PrimitiveGeometry.Math.Point3d(0, 0, 0),
-                                Normal = new PrimitiveGeometry.Math.Vector3d(0, 0, 1),
-                                MajorRadius = new PrimitiveGeometry.Math.Vector3d(500, 0, 0),
-                                RadiusRatio = 0.7
-                            }
+                                Center = new Point3d(0, 0, 0),
+                                Normal = new Vector3d(0, 0, 1),
+                                MajorRadius = new Vector3d(500, 0, 0),
+                                RadiusRatio = 0.7,
+                            },
 
                         },
-                Surfaces = new Autodesk.GeometryPrimitives.Design.SurfaceArray()
+                Surfaces = new List<Surface>()
                         {
-                             new Autodesk.GeometryPrimitives.Geometry.Plane()
+                             new Plane()
                              {
-                                 Origin = new Autodesk.GeometryPrimitives.Math.Point3d(0, -270.888, 7.8900e-3),
-                                 Normal = new Autodesk.GeometryPrimitives.Math.Vector3d(1, 0, 0),
-                                 UAxis = new Autodesk.GeometryPrimitives.Math.Vector3d(0, 1, 0),
-                                 URange = new Autodesk.GeometryPrimitives.Geometry.ParamRange(
-                                     Autodesk.GeometryPrimitives.Geometry.ParamRange.RangeType.Finite,
+                                 Origin = new Point3d(0, -270.888, 7.8900e-3),
+                                 Normal = new Vector3d(1, 0, 0),
+                                 UAxis = new Vector3d(0, 1, 0),
+                                 URange = new ParamRange(
+                                     ParamRange.RangeType.Finite,
                                      0,
                                      2000
                                  ),
-                                 VRange = new Autodesk.GeometryPrimitives.Geometry.ParamRange(
-                                     Autodesk.GeometryPrimitives.Geometry.ParamRange.RangeType.Finite,
+                                 VRange = new ParamRange(
+                                     ParamRange.RangeType.Finite,
                                      0,
                                      1000
-                                 )
+                                 ),
                              },
-                             new Autodesk.GeometryPrimitives.Geometry.Plane()
+                             new Plane()
                              {
-                                 Origin = new Autodesk.GeometryPrimitives.Math.Point3d(0, -2000, 0),
-                                 Normal = new Autodesk.GeometryPrimitives.Math.Vector3d(1, 0, 0),
-                                 UAxis = new Autodesk.GeometryPrimitives.Math.Vector3d(0, 1, 0),
-                                 URange = new Autodesk.GeometryPrimitives.Geometry.ParamRange(
-                                     Autodesk.GeometryPrimitives.Geometry.ParamRange.RangeType.Finite,
+                                 Origin = new Point3d(0, -2000, 0),
+                                 Normal = new Vector3d(1, 0, 0),
+                                 UAxis = new Vector3d(0, 1, 0),
+                                 URange = new ParamRange(
+                                     ParamRange.RangeType.Finite,
                                      0,
                                      700
                                  ),
-                             }
+                             },
                         },
             };
 
@@ -236,20 +234,20 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             var polyLineElementGeometry = new List<ElementGeometry>();
             var geomContainer = new GeometryContainer()
             {
-                Curves = new CurveArray()
+                Curves = new List<Curve>()
                 {
                     new Polyline()
                     {
                         Range = new ParamRange(ParamRange.RangeType.Finite, 0.0, 2.0),
                         Closed = false,
-                        Points = new List<PrimitiveGeometry.Math.Point3d>()
+                        Points = new List<Point3d>()
                         {
-                            new PrimitiveGeometry.Math.Point3d(12.5, 4, 0),
-                            new PrimitiveGeometry.Math.Point3d(4.5, 4, 0),
-                            new PrimitiveGeometry.Math.Point3d(11.25, 0, 0)
-                        }
-                    }
-                }
+                            new Point3d(12.5, 4, 0),
+                            new Point3d(4.5, 4, 0),
+                            new Point3d(11.25, 0, 0),
+                        },
+                    },
+                },
             };
 
             polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
