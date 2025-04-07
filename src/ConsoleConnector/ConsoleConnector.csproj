@@ -99,12 +99,6 @@
     <Reference Include="Autodesk.Extensions.Http.ForgeRetry, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autodesk.Extensions.Http.ForgeRetry.8.0.0\lib\netstandard2.0\Autodesk.Extensions.Http.ForgeRetry.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Forge, Version=1.9.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.Forge.1.9.8\lib\net48\Autodesk.Forge.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.GeometryPrimitives, Version=0.7.6.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\geometry-primitives-sdk-win-release-x64.0.7.6\lib\net48\Autodesk.GeometryPrimitives.dll</HintPath>
-    </Reference>
     <Reference Include="Autodesk.GeometryPrimitives.Data, Version=0.7.12.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.1.3\lib\net48\Autodesk.GeometryPrimitives.Data.dll</HintPath>
     </Reference>
