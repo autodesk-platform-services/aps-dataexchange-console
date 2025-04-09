@@ -27,7 +27,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         public override async Task<bool> Execute()
         {
             var random = new Random();
-            var exchangeTitle = DateTime.Now.ToString("d")+"-"+ random.Next(1, 10000);
+            var exchangeTitle = System.Text.RegularExpressions.Regex.Replace(DateTime.Now.ToString("d") + "-" + random.Next(1, 10000), @"[<>:""/\\|?.*`]", " ");
             Console.WriteLine("Creating exchange : " + exchangeTitle);
             var createExchangeCommand = new CreateExchangeCommand(ConsoleAppHelper);
             createExchangeCommand.GetOption<ExchangeTitle>().SetValue(exchangeTitle);            
