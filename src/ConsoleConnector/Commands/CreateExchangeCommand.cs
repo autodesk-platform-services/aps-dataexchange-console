@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Autodesk.DataExchange.DataModels;
+using Autodesk.DataExchange.Core.Models;
 
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
@@ -44,25 +45,29 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         {
             if (this.ValidateOptions() == false)
             {
-                Console.WriteLine("Invalid inputs!!!");
+                Console.WriteLine("[ERROR] Invalid inputs provided");
                 return false;
             }
 
             if (ConsoleAppHelper.TryGetFolderDetails(out _,out _,out _,out _))
             {
-                Console.WriteLine("Please set default folder.");
+                Console.WriteLine("[FOLDER] Please set default folder first");
                 Console.WriteLine();
                 return false;
             }
 
             var exchangeTitle = this.GetOption<ExchangeTitle>();
-            ExchangeDetails = await ConsoleAppHelper.CreateExchange(exchangeTitle.Value);
+            ExchangeDetails = (await ConsoleAppHelper.CreateExchange(exchangeTitle.Value)).Value;
             var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient());
-            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel.ExchangeData);
+            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel);
             ConsoleAppHelper.AddExchangeDetails(exchangeTitle.Value, ExchangeDetails);
-            Console.WriteLine(exchangeTitle.Value + " exchange created!!!");
-            Console.WriteLine("ExchangeId: " + ExchangeDetails.ExchangeID);
-            Console.WriteLine("CollectionID: " + ExchangeDetails.CollectionID);
+            CommandOutput["ExchangeId"] = ExchangeDetails.ExchangeID;
+            CommandOutput["CollectionId"] = ExchangeDetails.CollectionID;
+            CommandOutput["HubId"] = ExchangeDetails.HubId;
+            
+            Console.WriteLine($"[SUCCESS] Exchange '{exchangeTitle.Value}' created successfully!");
+            Console.WriteLine($"[INFO] ExchangeId: {ExchangeDetails.ExchangeID}");
+            Console.WriteLine($"[INFO] CollectionID: {ExchangeDetails.CollectionID}");
             Console.WriteLine();
             ExchangeId = ExchangeDetails.ExchangeID;
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, false);
