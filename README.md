@@ -2,6 +2,7 @@
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-v2-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
+![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-6.2.0--beta-orange.svg)
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 [![License](https://img.shields.io/badge/License-Autodesk%20SDK-blue.svg)](LICENSE)
 
@@ -17,6 +18,15 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
 - Headless data processing
 
 ![Console Interface](images/thumbnail.png)
+
+## 🔗 Quick Navigation
+
+- [🚀 Quick Start](#-quick-start) - Get up and running quickly
+- [💻 Usage Examples](#-usage-examples) - See the console connector in action
+- [📚 Command Reference](#-command-reference) - Complete command documentation  
+- [🔄 Migration Guide](#-migration-guide-sdk-620-beta-upgrade) - **SDK 6.2.0-beta Upgrade Guide**
+- [🏗️ Architecture](#️-architecture) - Understand the codebase structure
+- [🔧 Extending the Application](#-extending-the-application) - Add custom functionality
 
 ## 🎯 Key Features
 
@@ -206,6 +216,158 @@ public class MyCustomCommand : Command
 1. Create option class in `Commands/Options/`
 2. Add to command's `Options` list
 3. Use `GetOption<T>()` to access values
+
+## 🔄 Migration Guide: SDK 6.2.0-beta Upgrade
+
+This section documents the migration from previous SDK versions to **Autodesk Data Exchange SDK 6.2.0-beta**.
+
+### 📋 Overview of Changes
+
+This upgrade includes significant improvements and API enhancements:
+- **SDK Version**: Upgraded to `Autodesk.DataExchange 6.2.0-beta`
+- **Enhanced API Methods**: Improved method signatures and functionality
+- **Dependency Updates**: Updated Microsoft.Extensions packages and testing frameworks
+- **New Utilities**: Added MoreLinq utilities for improved data processing
+
+### 🚀 Key Dependency Updates
+
+| Package | Previous Version | New Version | Impact |
+|---------|------------------|-------------|---------|
+| `Autodesk.DataExchange` | < 6.2.0 | `6.2.0-beta` | **Major** - Core SDK upgrade |
+| `MSTest.TestFramework` | < 3.9.3 | `3.9.3` | Testing framework improvements |
+| `Microsoft.Extensions.*` | Various | `6.0.0` | Dependency injection and configuration |
+| `MoreLinq.Source.MoreEnumerable.Batch` | - | `1.0.2` | **New** - Enhanced LINQ operations |
+
+### ⚠️ Breaking Changes
+
+#### 1. GenerateViewableAsync Method Signature
+**Before:**
+```csharp
+await Client.GenerateViewableAsync(displayName, exchangeId, collectionId, fileUrn);
+```
+
+**After:**
+```csharp
+await Client.GenerateViewableAsync(exchangeId, collectionId);
+```
+
+**Migration Action:** Remove `displayName` and `fileUrn` parameters from `GenerateViewableAsync` calls.
+
+#### 2. Enhanced Response Handling
+- All async methods now return improved `IResponse<T>` types
+- Better error handling and status checking
+- Enhanced logging capabilities through updated `ILogger` interface
+
+#### 3. Updated Project Types
+- Enhanced support for **ACC (Autodesk Construction Cloud)** projects
+- Improved project type detection and handling
+- Better regional hosting support
+
+### 🔧 Migration Steps
+
+#### Step 1: Update Package References
+Update your `packages.config` or project file:
+
+```xml
+<package id="Autodesk.DataExchange" version="6.2.0-beta" targetFramework="net48" />
+<package id="MoreLinq.Source.MoreEnumerable.Batch" version="1.0.2" targetFramework="net48" />
+<package id="MSTest.TestFramework" version="3.9.3" targetFramework="net48" />
+```
+
+#### Step 2: Update API Method Calls
+Search and replace the following patterns in your code:
+
+```csharp
+// OLD: GenerateViewableAsync with 4 parameters
+await Client.GenerateViewableAsync(displayName, exchangeId, collectionId, fileUrn);
+
+// NEW: GenerateViewableAsync with 2 parameters
+await Client.GenerateViewableAsync(exchangeId, collectionId);
+```
+
+#### Step 3: Update Test Framework (If Applicable)
+For projects using MSTest, update test attributes and methods to use the latest MSTest 3.9.3 features.
+
+#### Step 4: Leverage New Features
+Take advantage of new utilities:
+
+```csharp
+// Use MoreLinq for enhanced batch processing
+using MoreLinq;
+
+// Batch process elements efficiently
+var batches = elements.Batch(50); // Process in batches of 50
+```
+
+### 🎯 New Features & Improvements
+
+#### Enhanced Exchange Management
+- Improved exchange creation with better project type detection
+- Enhanced synchronization capabilities
+- Better error handling and retry mechanisms
+
+#### Performance Improvements
+- Optimized geometry processing
+- Improved batch operations with MoreLinq
+- Enhanced memory management
+
+#### Better Logging & Diagnostics
+- Enhanced logging capabilities
+- Improved error messages and stack traces
+- Better debugging experience
+
+### 🧪 Testing Your Migration
+
+After migration, run the comprehensive workflow test:
+
+```bash
+>> WorkFlowTest
+```
+
+This command validates:
+- ✅ Exchange creation and management
+- ✅ Geometry processing (BREP, IFC, Mesh, Primitives)
+- ✅ Parameter operations
+- ✅ Synchronization workflows
+- ✅ File download capabilities
+
+### ⚡ Performance Considerations
+
+1. **Batch Processing**: Use the new MoreLinq utilities for processing large datasets
+2. **Async/Await**: Ensure all async methods are properly awaited
+3. **Memory Management**: The new SDK includes improved memory handling
+4. **Connection Pooling**: Enhanced HTTP client configuration for better performance
+
+### 🐛 Troubleshooting Common Issues
+
+#### Issue: GenerateViewableAsync Error
+**Error**: `ArgumentException: Too many parameters`
+**Solution**: Remove `displayName` and `fileUrn` parameters from the method call.
+
+#### Issue: Package Conflicts
+**Error**: Assembly binding conflicts
+**Solution**: Clean and rebuild solution, ensure all packages are updated consistently.
+
+#### Issue: Authentication Problems
+**Error**: Authentication failures after upgrade
+**Solution**: Verify your `App.config` credentials are correct and your app has proper Data Exchange API permissions.
+
+### 📞 Support & Resources
+
+- **Breaking Changes**: See above migration steps
+- **New Features**: Explore the enhanced API documentation
+- **Performance**: Review the optimization guidelines
+- **Issues**: Report SDK-specific issues through official channels
+
+---
+
+**Migration Checklist:**
+- [ ] Updated all package references to 6.2.0-beta
+- [ ] Fixed `GenerateViewableAsync` method calls
+- [ ] Updated test framework (if applicable)
+- [ ] Tested core workflows with `WorkFlowTest`
+- [ ] Verified authentication and permissions
+- [ ] Reviewed and updated error handling
 
 ## 📖 Documentation
 

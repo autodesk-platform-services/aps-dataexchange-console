@@ -7,6 +7,7 @@ using Autodesk.DataExchange.ConsoleApp.Commands.Options;
 using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
 using Autodesk.DataExchange.Core.Enums;
+using Autodesk.DataExchange.DataModels;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
 {
@@ -79,32 +80,32 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 if (command is AddInstanceParamCommand || command is AddTypeParamCommand)
                 {
                     Console.WriteLine("Instance parameter data types");
-                    foreach (ParameterDataType parameter in (ParameterDataType[])Enum.GetValues(typeof(ParameterDataType)))
+                    foreach (ParameterDataTypeEnum parameter in (ParameterDataTypeEnum[])Enum.GetValues(typeof(ParameterDataTypeEnum)))
                     {
                         Console.WriteLine(parameter.ToString());
                     }
                     Console.WriteLine();
 
-                    Console.WriteLine("Instance parameter types");
-                    var lst = new List<string>();
-                    foreach (Autodesk.Parameters.Parameter parameter in (Autodesk.Parameters.Parameter[])Enum.GetValues(typeof(Autodesk.Parameters.Parameter)))
-                    {
-                        lst.Add(parameter.ToString());
-                        //Console.WriteLine(parameter.ToString());
-                    }
-                    var subList = lst.Select((x, i) => new { Index = i, Value = x })
-                        .GroupBy(x => x.Index / 4)
-                        .Select(x => x.Select(v => v.Value).ToList())
-                        .ToList();
-                    var maxLength1 = subList.Max(n => n.ElementAtOrDefault(0)?.Length)??0;
-                    var maxLength2 = subList.Max(n => n.ElementAtOrDefault(1)?.Length) ?? 0;
-                    var maxLength3 = subList.Max(n => n.ElementAtOrDefault(2)?.Length) ?? 0;
-                    var maxLength4 = subList.Max(n => n.ElementAtOrDefault(3)?.Length) ?? 0;
-                    foreach (var row in subList)
-                    {
-                        var str = string.Format("|{0,-" + maxLength1 + "} | {1,-" + maxLength2 + "} | {2,-" + maxLength3 + "} | {3,-" + maxLength4 + "} |", row.ElementAtOrDefault(0), row.ElementAtOrDefault(1), row.ElementAtOrDefault(2), row.ElementAtOrDefault(3));
-                        Console.WriteLine(str);
-                    }
+                    //Console.WriteLine("Instance parameter types");
+                    //var lst = new List<string>();
+                    //foreach (Autodesk.Parameters.Parameter parameter in (Autodesk.Parameters.Parameter[])Enum.GetValues(typeof(Autodesk.Parameters.Parameter)))
+                    //{
+                    //    lst.Add(parameter.ToString());
+                    //    //Console.WriteLine(parameter.ToString());
+                    //}
+                    //var subList = lst.Select((x, i) => new { Index = i, Value = x })
+                    //    .GroupBy(x => x.Index / 4)
+                    //    .Select(x => x.Select(v => v.Value).ToList())
+                    //    .ToList();
+                    //var maxLength1 = subList.Max(n => n.ElementAtOrDefault(0)?.Length)??0;
+                    //var maxLength2 = subList.Max(n => n.ElementAtOrDefault(1)?.Length) ?? 0;
+                    //var maxLength3 = subList.Max(n => n.ElementAtOrDefault(2)?.Length) ?? 0;
+                    //var maxLength4 = subList.Max(n => n.ElementAtOrDefault(3)?.Length) ?? 0;
+                    //foreach (var row in subList)
+                    //{
+                    //    var str = string.Format("|{0,-" + maxLength1 + "} | {1,-" + maxLength2 + "} | {2,-" + maxLength3 + "} | {3,-" + maxLength4 + "} |", row.ElementAtOrDefault(0), row.ElementAtOrDefault(1), row.ElementAtOrDefault(2), row.ElementAtOrDefault(3));
+                    //    Console.WriteLine(str);
+                    //}
                     Console.WriteLine();
                 }
                 else if (command is CreatePrimitiveGeometryCommand)
