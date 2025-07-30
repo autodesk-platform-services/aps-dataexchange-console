@@ -36,7 +36,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         {
             if (this.ValidateOptions() == false)
             {
-                Console.WriteLine("[ERROR] Invalid inputs provided");
+                Console.WriteLine("Invalid inputs!!!");
                 return Task.FromResult(false);
             }
 
@@ -46,11 +46,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             var exchangeData = ConsoleAppHelper.GetExchangeData(exchangeTitle.Value);
             if (exchangeData == null)
             {
-                Console.WriteLine("[ERROR] Exchange data not found\n");
+                Console.WriteLine("Exchange data not found.\n");
                 return Task.FromResult(false);
             }
 
-            var elementDataModel = exchangeData;
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
 
             Element element;
             if (primitiveGeometryOption.Value == PrimitiveGeometryType.Circle)
@@ -74,12 +74,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 element = ConsoleAppHelper.GetGeometryHelper().AddPrimitive(elementDataModel);
             }
 
-                            Console.WriteLine($"[PRIMITIVE] Element Created:");
-                Console.WriteLine($"   ID: {element.Id}");
-                Console.WriteLine($"   Name: {element.Name}");
-                Console.WriteLine($"   Category: {element.Category}");
-                Console.WriteLine($"   Family: {element.Family}");
-                Console.WriteLine($"   Type: {element.Type}");
+            Console.WriteLine("Element Id: " + element.Id);
+            Console.WriteLine("Element Name: " + element.Name);
+            Console.WriteLine("Category: " + element.Category);
+            Console.WriteLine("Family: " + element.Family);
+            Console.WriteLine("Type: " + element.Type);
             Console.WriteLine();
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
             return Task.FromResult(true);

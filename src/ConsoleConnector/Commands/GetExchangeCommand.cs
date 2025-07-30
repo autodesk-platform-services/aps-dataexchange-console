@@ -5,13 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.DataExchange.ConsoleApp.Commands.Options;
 using Autodesk.DataExchange.ConsoleApp.Helper;
-using Autodesk.DataExchange.ConsoleApp.Interfaces;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
 {
     internal class GetExchangeCommand:Command
     {
-        public GetExchangeCommand(IConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
+        public GetExchangeCommand(ConsoleAppHelper consoleAppHelper) : base(consoleAppHelper)
         {
             Name = "GetExchange";
             Description = "Get exchange and download as a [STEP(Default)/OBJ] file.";
@@ -19,7 +18,6 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             {
                 new ExchangeId(),
                 new CollectionId(),
-                new HubId(),
                 new ExchangeFileFormat()
             };
         }
@@ -36,47 +34,40 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
         public override async Task<bool> Execute()
         {
-            if (ConsoleAppHelper.TryGetFolderDetails(out var region, out var existing_hubId, out var projectUrn, out var folderUrn))
+            if (ConsoleAppHelper.TryGetFolderDetails(out var region, out var hubId, out var projectUrn, out var folderUrn))
             {
-                Console.WriteLine("[ERROR] Folder details not found");
+                Console.WriteLine("Folder details not found!!!");
                 return false;
             }
 
             if (this.ValidateOptions() == false)
             {
-                Console.WriteLine("[ERROR] Invalid inputs provided");
+                Console.WriteLine("Invalid inputs!!!");
                 return false;
             }
 
             var exchangeId = GetOption<ExchangeId>().Value;
             var collectionId = GetOption<CollectionId>().Value;
-            var hubId = GetOption<HubId>().Value;
-            if(string.IsNullOrEmpty(hubId))
-            {
-                hubId = existing_hubId;
-            }
             var exchangeDownLoadFileFormat = GetOption<ExchangeFileFormat>().Value?.ToUpper()?.Trim();
             if (string.IsNullOrEmpty(exchangeDownLoadFileFormat))
                 exchangeDownLoadFileFormat = "STEP";
             if (exchangeDownLoadFileFormat!="STEP" &&
                 exchangeDownLoadFileFormat != "OBJ")
             {
-                Console.WriteLine("[ERROR] Invalid file format - please specify STEP/OBJ or leave blank");
+                Console.WriteLine("File format for exchange is not correct. Please specify STEP/OBJ or keep it blank.");
                 return false;
             }
 
-            
-
-            Console.WriteLine("[DOWNLOAD] Downloading exchange...");
+            Console.WriteLine("Downloading exchange...");
             var status = await ConsoleAppHelper.GetExchange(exchangeId, collectionId, hubId, region, exchangeDownLoadFileFormat);
             if (status == null || string.IsNullOrEmpty(status.Item1))
             {
-                Console.WriteLine("[ERROR] Exchange download failed");
+                Console.WriteLine("Downloading exchange is failed.");
                 return false;
             }
 
-            Console.WriteLine("[SUCCESS] Exchange downloaded successfully");
-            Console.WriteLine($"[FILE] Exchange file: {status.Item1}");
+            Console.WriteLine("Exchange downloaded.");
+            Console.WriteLine("Exchange STEP file: "+status.Item1);
             return true;
         }
 
@@ -84,11 +75,6 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         {
             foreach (var option in this.Options)
             {
-                if(option is HubId)
-                {
-                    continue;
-                }
-
                 if (option is ExchangeFileFormat)
                 {
                     continue;

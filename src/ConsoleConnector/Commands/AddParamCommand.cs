@@ -7,7 +7,6 @@ using Autodesk.DataExchange.ConsoleApp.Commands.Options;
 using Autodesk.DataExchange.ConsoleApp.Helper;
 using Autodesk.DataExchange.ConsoleApp.Interfaces;
 using Autodesk.DataExchange.DataModels;
-using Autodesk.DataExchange.Interface;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands
 {
@@ -21,7 +20,6 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
                 new ExchangeTitle(),
                 new ElementId(),
                 new ParameterName(),
-                new ParameterSchema(),
                 new ParameterValue(),
                 new ParameterValueDataType()
             };
@@ -35,78 +33,59 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         {
             if (this.ValidateOptions() == false)
             {
-                Console.WriteLine("[ERROR] Invalid inputs provided");
+                Console.WriteLine("Invalid inputs!!!");
                 return false;
             }
 
             var exchangeTitle = this.GetOption<ExchangeTitle>();
             var elementId = this.GetOption<ElementId>();
             var parameterName = this.GetOption<ParameterName>();
-            var parameterSchema = this.GetOption<ParameterSchema>();
             var parameterValue = this.GetOption<ParameterValue>();
             var parameterValueType = this.GetOption<ParameterValueDataType>();
             if (parameterValueType.IsValidDataType == false)
             {
-                Console.WriteLine("[ERROR] Invalid data type - use Help command for details");
+                Console.WriteLine("Invalid data type. Please try Help command to get more details.");
                 return false;
             }
             var exchangeData = ConsoleAppHelper.GetExchangeData(exchangeTitle.Value);
             if (exchangeData == null)
             {
-                Console.WriteLine("[ERROR] Exchange data not found\n");
+                Console.WriteLine("Exchange data not found.\n");
                 return false;
             }
 
             var exchangeDetails = ConsoleAppHelper.GetExchangeDetails(exchangeTitle.Value);
             if (exchangeDetails == null)
             {
-                Console.WriteLine("[ERROR] Exchange details not found\n");
+                Console.WriteLine("Exchange details not found.\n");
                 return false;
             }
 
-            var elementDataModel = exchangeData;
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
             var element = elementDataModel.Elements.ToList().FirstOrDefault(n => n.Id == elementId.Value);            
             if (element == null)
             {
-                Console.WriteLine("[ERROR] Element not found");
+                Console.WriteLine("Element not found");
                 return false;
             }
 
-            IParameter parameter = null;
-            if (parameterSchema!=null && parameterSchema.IsValid())
-            {
-                parameter = await ConsoleAppHelper.GetParameterHelper().AddBuiltInParameter(elementDataModel, parameterName.Value, parameterSchema.Value, element,parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
-            }
+            DataModels.Parameter parameter = null;
+            if (parameterName.Value != null)
+                parameter = await ConsoleAppHelper.GetParameterHelper().AddBuiltInParameter(elementDataModel, element, parameterName.Value.Value, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
             else
-            {
-                parameter = await ConsoleAppHelper.GetParameterHelper().AddCustomParameter(elementDataModel, parameterName.Value, parameterValue.Value, element, parameterValueType.Value, !IsInstanceParameter);
-            }
+                parameter = await ConsoleAppHelper.GetParameterHelper().AddCustomParameter(elementDataModel, parameterName.SchemaName, exchangeDetails.SchemaNamespace, element, parameterValue.Value, parameterValueType.Value, !IsInstanceParameter);
 
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
             if (parameter == null)
             {
-                Console.WriteLine("[ERROR] Parameter could not be added\n");
+                Console.WriteLine("Parameter is not added.\n");
             }
             else
             {
                 var builtInParameter = parameterName.Value == null ? "Custom" : "Built-In";
-                Console.WriteLine($"[SUCCESS] Parameter added successfully!\n[INFO] Type: {builtInParameter} parameter\n[INFO] Value type: {parameterValueType.Value}");
+                Console.WriteLine("Parameter is added.\nThis is "+builtInParameter+" parameter"+"\nParameter value type is "+ parameterValueType.Value);
             }
 
-            return true;
-        }
-
-        public override bool ValidateOptions()
-        {
-            foreach (var item in this.Options)
-            {
-                if(item is ParameterSchema)
-                {
-                    continue;
-                }
-                if (item.IsValid() == false)
-                    return false;
-            }
             return true;
         }
     }

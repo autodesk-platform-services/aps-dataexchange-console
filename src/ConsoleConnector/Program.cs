@@ -41,22 +41,7 @@ namespace Autodesk.DataExchange.ConsoleApp
                 
                 Console.Clear();
                 Console.WriteLine(
-                    "╔══════════════════════════════════════════════════════════════════╗\n" +
-                    "║                >> Autodesk Data Exchange CLI <<                  ║\n" +
-                    "║                   DataExchange SDK Integration                   ║\n" +
-                    "╚══════════════════════════════════════════════════════════════════╝\n\n" +
-                    
-                    "[OVERVIEW]\n" +
-                    "   This is a sample console connector that demonstrates how to use\n" +
-                    "   the Autodesk Data Exchange SDK. It serves as a reference implementation\n" +
-                    "   for developers building their own Data Exchange integrations.\n\n" +                  
-                    
-                    "[GETTING STARTED]\n" +
-                    "   > Type 'help' to display all available commands\n" +
-                    "   > Type 'help [command]' for detailed usage information\n" +
-                    "   > Type 'WorkFlowTest' to run complete integration demo\n\n" +
-                    
-                    "────────────────────────────────────────────────────────────────────\n");
+                    "The Data Exchange CLI is a sample application that demonstrates usage of the Data Exchange SDK and the various operations like loading exchanges, creating exchanges, updating and exchange with various types of data, etc.\nPlease type help to get a list of all the commands supported. \nType help commandName to get detailed information on a specific command.\n");
                 while (true)
                 {
                     try
@@ -68,30 +53,58 @@ namespace Autodesk.DataExchange.ConsoleApp
 
                         var command = _consoleAppHelper.GetCommand(input);
                         if (command == null)
-                            Console.WriteLine($"[ERROR] Command '{input}' not found");
+                            Console.WriteLine(input + " command is not found.");
                         else
                             await command.Execute();
                     }
                     catch (Exception e)
                     {
-                        _consoleAppHelper.Logger?.Error(e.Message, "An error occurred while executing the command.");
-                        Console.WriteLine($"[ERROR] {e}");
+                        Console.WriteLine(e);
                     }
 
                 }
             }
             catch (AuthenticationMissingException authenticationMissingException)
             {
-                _consoleAppHelper.Logger?.Error(authenticationMissingException.Message, "An error occurred while executing the command.");
-                Console.WriteLine($"[AUTH ERROR] {authenticationMissingException.Message}");
+                Console.WriteLine(authenticationMissingException.Message);
                 Console.ReadKey();
             }
             catch (Exception a)
             {
-                _consoleAppHelper.Logger?.Error(a.Message, "An error occurred while executing the command.");
-                Console.WriteLine($"[APP ERROR] {a}");
+                Console.WriteLine(a);
                 Console.ReadKey();
             }
+            finally
+            {
+
+            }
         }
+
+        private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            try
+            {
+                var dllName = GetAssemblyName(args) + ".dll";
+                var currentAssemblyPath = new System.Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
+                currentAssemblyPath = Path.GetDirectoryName(currentAssemblyPath);
+                if (currentAssemblyPath != null && File.Exists(Path.Combine(currentAssemblyPath, dllName)))
+                {
+                    return Assembly.LoadFile(Path.Combine(currentAssemblyPath, dllName));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return null;
+        }
+
+        private static string GetAssemblyName(ResolveEventArgs args)
+        {
+            var name = args.Name.IndexOf(",", StringComparison.Ordinal) > -1 ? args.Name.Substring(0, args.Name.IndexOf(",", StringComparison.Ordinal)) : args.Name;
+            return name;
+        }
+
     }    
 }

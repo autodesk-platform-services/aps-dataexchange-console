@@ -36,7 +36,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         {
             if (this.ValidateOptions() == false)
             {
-                Console.WriteLine("[ERROR] Invalid inputs provided");
+                Console.WriteLine("Invalid inputs!!!");
                 return Task.FromResult(false);
             }
 
@@ -46,20 +46,19 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             var exchangeData = ConsoleAppHelper.GetExchangeData(exchangeTitle.Value);
             if (exchangeData == null)
             {
-                Console.WriteLine("[ERROR] Exchange data not found\n");
+                Console.WriteLine("Exchange data not found.\n");
                 return Task.FromResult(false);
             }
 
-            var elementDataModel = exchangeData;
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
             var ifc = ConsoleAppHelper.GetGeometryHelper().CreateIfc(elementDataModel);
-            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value,elementDataModel);
+            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value,elementDataModel.ExchangeData);
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
-            Console.WriteLine($"[IFC] Element Created:");
-            Console.WriteLine($"   ID: {ifc.Id}");
-            Console.WriteLine($"   Name: {ifc.Name}");
-            Console.WriteLine($"   Category: {ifc.Category}");
-            Console.WriteLine($"   Family: {ifc.Family}");
-            Console.WriteLine($"   Type: {ifc.Type}");
+            Console.WriteLine("Element Id: " + ifc.Id);
+            Console.WriteLine("Element Name: " + ifc.Name);
+            Console.WriteLine("Category: " + ifc.Category);
+            Console.WriteLine("Family: " + ifc.Family);
+            Console.WriteLine("Type: " + ifc.Type);
             Console.WriteLine();
             return Task.FromResult(true);
         }

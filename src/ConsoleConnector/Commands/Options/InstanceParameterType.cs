@@ -9,7 +9,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands.Options
     /// <seealso cref="CommandOption" />
     internal class InstanceParameterType : CommandOption
     {
-        public new string Value { get; set; }
+        public new Autodesk.Parameters.Parameter Value { get; set; }
 
         public InstanceParameterType()
         {
@@ -18,8 +18,8 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands.Options
 
         public override void SetValue(string value)
         {
-            //Enum.TryParse(value, true, out Autodesk.Parameters.Parameter parameter);
-            Value = value;
+            Enum.TryParse(value, true, out Autodesk.Parameters.Parameter parameter);
+            Value = parameter;
         }
 
         public override string ToString()

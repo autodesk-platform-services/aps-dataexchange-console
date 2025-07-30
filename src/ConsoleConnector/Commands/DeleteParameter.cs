@@ -31,7 +31,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         {
             if (this.ValidateOptions() == false)
             {
-                Console.WriteLine("[ERROR] Invalid inputs provided");
+                Console.WriteLine("Invalid inputs!!!");
                 return Task.FromResult(false);
             }
 
@@ -42,15 +42,15 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             var exchangeData = ConsoleAppHelper.GetExchangeData(exchangeTitle.Value);
             if (exchangeData == null)
             {
-                Console.WriteLine("[ERROR] Exchange data not found\n");
+                Console.WriteLine("Exchange data not found.\n");
                 return Task.FromResult(false);
             }
 
-            var elementDataModel = exchangeData;
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
             var element = elementDataModel.Elements.ToList().FirstOrDefault(n => n.Id == elementId.Value);
             if (element == null)
             {
-                Console.WriteLine("[ERROR] Element not found");
+                Console.WriteLine("Element not found");
                 return Task.FromResult(false);
             }
 
@@ -58,11 +58,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             if (parameterName.Value != null && IsInstanceParameter)
             {
                 parameterIsDeleted = true;
-                element.DeleteInstanceParameter(parameterName.Value);
+                element.DeleteInstanceParameter(parameterName.Value.Value);
             }
             else if (parameterName.Value != null && IsInstanceParameter==false)
             {
-                parameterIsDeleted = elementDataModel.DeleteTypeParameter(element.Type ,parameterName.Value);
+                parameterIsDeleted = elementDataModel.DeleteTypeParameter(element.Type ,parameterName.Value.Value);
             }
             else if (parameterName.Value == null && IsInstanceParameter)
             {
@@ -76,11 +76,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
             if (parameterIsDeleted)
             {
-                Console.WriteLine("[SUCCESS] Parameter deleted successfully");
+                Console.WriteLine("Parameter is deleted.");
                 return Task.FromResult(true);
             }
 
-                            Console.WriteLine("[ERROR] Parameter not found - please check schema");
+            Console.WriteLine("Parameter is not found.Please check schema.");
             return Task.FromResult(false);
         }
     }

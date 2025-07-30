@@ -20,7 +20,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands.Options
 
         public override bool IsValid()
         {
-            return string.IsNullOrEmpty(Value) == false;
+            return true;
         }
     }
 }

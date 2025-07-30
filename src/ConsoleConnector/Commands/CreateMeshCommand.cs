@@ -35,7 +35,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         {
             if (this.ValidateOptions() == false)
             {
-                Console.WriteLine("[ERROR] Invalid inputs provided");
+                Console.WriteLine("Invalid inputs!!!");
                 return Task.FromResult(false);
             }
 
@@ -43,20 +43,19 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             var exchangeData = ConsoleAppHelper.GetExchangeData(exchangeTitle.Value);
             if (exchangeData == null)
             {
-                Console.WriteLine("[ERROR] Exchange data not found\n");
+                Console.WriteLine("Exchange data not found.\n");
                 return Task.FromResult(false);
             }
 
-            var elementDataModel = exchangeData;
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
             var mesh = ConsoleAppHelper.GetGeometryHelper().CreateMesh(elementDataModel);
-            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel);
+            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel.ExchangeData);
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
-            Console.WriteLine($"[MESH] Element Created:");
-            Console.WriteLine($"   ID: {mesh.Id}");
-            Console.WriteLine($"   Name: {mesh.Name}");
-            Console.WriteLine($"   Category: {mesh.Category}");
-            Console.WriteLine($"   Family: {mesh.Family}");
-            Console.WriteLine($"   Type: {mesh.Type}");
+            Console.WriteLine("Element Id: " + mesh.Id);
+            Console.WriteLine("Element Name: " + mesh.Name);
+            Console.WriteLine("Category: " + mesh.Category);
+            Console.WriteLine("Family: " + mesh.Family);
+            Console.WriteLine("Type: " + mesh.Type);
             Console.WriteLine();
             return Task.FromResult(true);
         }

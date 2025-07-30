@@ -36,7 +36,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         {
             if (this.ValidateOptions() == false)
             {
-                Console.WriteLine("[ERROR] Invalid inputs provided");
+                Console.WriteLine("Invalid inputs!!!");
                 return Task.FromResult(false);
             }
 
@@ -44,21 +44,20 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             var exchangeData = ConsoleAppHelper.GetExchangeData(exchangeTitle.Value);
             if (exchangeData == null)
             {
-                Console.WriteLine("[ERROR] Exchange data not found\n");
+                Console.WriteLine("Exchange data not found.\n");
                 return Task.FromResult(false);
             }
 
-            var elementDataModel = exchangeData;
+            var elementDataModel = ElementDataModel.Create(ConsoleAppHelper.GetClient(), exchangeData);
             var brep = ConsoleAppHelper.GetGeometryHelper().CreateBrep(elementDataModel);
-            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel);
+            ConsoleAppHelper.AddExchangeData(exchangeTitle.Value, elementDataModel.ExchangeData);
             CommandOutput["ElementId"] = brep.Id;
 
-            Console.WriteLine($"[BREP] Element Created:");
-            Console.WriteLine($"   ID: {brep.Id}");
-            Console.WriteLine($"   Name: {brep.Name}");
-            Console.WriteLine($"   Category: {brep.Category}");
-            Console.WriteLine($"   Family: {brep.Family}");
-            Console.WriteLine($"   Type: {brep.Type}");
+            Console.WriteLine("Element Id: " + brep.Id);
+            Console.WriteLine("Element Name: " + brep.Name);
+            Console.WriteLine("Category: " + brep.Category);
+            Console.WriteLine("Family: " + brep.Family);
+            Console.WriteLine("Type: " + brep.Type);
             Console.WriteLine();
             ConsoleAppHelper.SetExchangeUpdated(exchangeTitle.Value, true);
             return Task.FromResult(true);

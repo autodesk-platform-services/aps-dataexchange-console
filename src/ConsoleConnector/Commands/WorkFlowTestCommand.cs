@@ -3,7 +3,6 @@ using Autodesk.DataExchange.ConsoleApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,80 +26,68 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
 
         public override async Task<bool> Execute()
         {
-            var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HHmmss");
-            var randomSuffix = new Random().Next(100, 999);
-            var exchangeTitle = $"WorkflowTest_{timestamp}_{randomSuffix}";
-            Console.WriteLine($"[CREATING] Exchange: {exchangeTitle}");
+            var random = new Random();
+            var exchangeTitle = System.Text.RegularExpressions.Regex.Replace(DateTime.Now.ToString("d") + "-" + random.Next(1, 10000), @"[<>:""/\\|?.*`]", " ");
+            Console.WriteLine("Creating exchange : " + exchangeTitle);
             var createExchangeCommand = new CreateExchangeCommand(ConsoleAppHelper);
             createExchangeCommand.GetOption<ExchangeTitle>().SetValue(exchangeTitle);            
             await createExchangeCommand.Execute();        
 
-            Console.WriteLine("[GEOMETRY] Adding BREP geometry #1");
+            Console.WriteLine("Adding Bre 1");
             var addBrep = new CreateBrepCommand(ConsoleAppHelper);
             addBrep.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             await addBrep.Execute();
 
-            Console.WriteLine("[GEOMETRY] Adding BREP geometry #2");
+            Console.WriteLine("Adding Bre 2");
             var addBrep2 = new CreateBrepCommand(ConsoleAppHelper);
             addBrep2.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             await addBrep2.Execute();
 
-            Console.WriteLine("[GEOMETRY] Adding IFC geometry #1");
-            var addIFC = new CreateIfcCommand(ConsoleAppHelper);
-            addIFC.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
-            await addIFC.Execute();
-
-            Console.WriteLine("[GEOMETRY] Adding IFC geometry #2");
-            addIFC = new CreateIfcCommand(ConsoleAppHelper);
-            addIFC.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
-            await addIFC.Execute();
-
-            Console.WriteLine("[GEOMETRY] Adding mesh geometry #1");
+            Console.WriteLine("Adding Mesh 1");
             var addMesh = new CreateMeshCommand(ConsoleAppHelper);
             addMesh.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             await addMesh.Execute();
 
-            Console.WriteLine("[GEOMETRY] Adding mesh geometry #2");
+            Console.WriteLine("Adding Mesh 2");
             var addMesh2 = new CreateMeshCommand(ConsoleAppHelper);
             addMesh2.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             await addMesh2.Execute();
 
-            Console.WriteLine("[PRIMITIVE] Adding primitive geometries (All)");
+            Console.WriteLine("Adding Primitives All");
             var createPrimitive = new CreatePrimitiveGeometryCommand(ConsoleAppHelper);
             createPrimitive.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             createPrimitive.GetOption<PrimitiveGeometry>().SetValue("All");
             await createPrimitive.Execute();
 
-            Console.WriteLine("[PRIMITIVE] Adding primitive geometry (Line)");
+            Console.WriteLine("Adding Primitives Line");
             createPrimitive = new CreatePrimitiveGeometryCommand(ConsoleAppHelper);
             createPrimitive.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             createPrimitive.GetOption<PrimitiveGeometry>().SetValue("Line");
             await createPrimitive.Execute();
 
-            Console.WriteLine("[PRIMITIVE] Adding primitive geometry (Point)");
+            Console.WriteLine("Adding Primitives Point");
             createPrimitive = new CreatePrimitiveGeometryCommand(ConsoleAppHelper);
             createPrimitive.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             createPrimitive.GetOption<PrimitiveGeometry>().SetValue("Point");
             await createPrimitive.Execute();
 
-            Console.WriteLine("[PRIMITIVE] Adding primitive geometry (Circle)");
+            Console.WriteLine("Adding Primitives Circle");
             createPrimitive = new CreatePrimitiveGeometryCommand(ConsoleAppHelper);
             createPrimitive.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             createPrimitive.GetOption<PrimitiveGeometry>().SetValue("Circle");
             await createPrimitive.Execute();
 
-            Console.WriteLine("[PRIMITIVE] Adding primitive geometry (Polyline)");
+            Console.WriteLine("Adding Primitives Polyline");
             createPrimitive = new CreatePrimitiveGeometryCommand(ConsoleAppHelper);
             createPrimitive.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             createPrimitive.GetOption<PrimitiveGeometry>().SetValue("Polyline");
             await createPrimitive.Execute();
 
-            Console.WriteLine("[PARAMETER] Adding instance parameter (AllModelDescription)");
+            Console.WriteLine("Adding Instance Parameter 1");
             var addInstanceParameter = new AddInstanceParamCommand(ConsoleAppHelper);
             addInstanceParameter.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             addInstanceParameter.GetOption<ElementId>().SetValue(addBrep.CommandOutput["ElementId"].ToString());
-            addInstanceParameter.GetOption<ParameterName>().SetValue("allModelDescription");
-            addInstanceParameter.GetOption<ParameterSchema>().SetValue("autodesk.revit.parameter:allModelDescription-1.0.0");
+            addInstanceParameter.GetOption<ParameterName>().SetValue(Autodesk.Parameters.Parameter.AllModelDescription.ToString());
             addInstanceParameter.GetOption<ParameterValue>().SetValue("Testing AllModelDescription");
             addInstanceParameter.GetOption<ParameterValueDataType>().SetValue("String");
             await addInstanceParameter.Execute();
@@ -114,12 +101,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             addInstanceParameter2.GetOption<ParameterValueDataType>().SetValue("String");
             await addInstanceParameter2.Execute();
 
-            Console.WriteLine("[PARAMETER] Adding type parameter (AllModelModel)");
+            Console.WriteLine("Adding Type Parameter 1");
             var addTypeParamCommand = new AddTypeParamCommand(ConsoleAppHelper);
             addTypeParamCommand.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             addTypeParamCommand.GetOption<ElementId>().SetValue(addBrep.CommandOutput["ElementId"].ToString());
-            addTypeParamCommand.GetOption<ParameterName>().SetValue("allModelModel");
-            addTypeParamCommand.GetOption<ParameterSchema>().SetValue("autodesk.revit.parameter:allModelModel-1.0.0");
+            addTypeParamCommand.GetOption<ParameterName>().SetValue(Autodesk.Parameters.Parameter.AllModelModel.ToString());
             addTypeParamCommand.GetOption<ParameterValue>().SetValue("Testing AllModelModel");
             addTypeParamCommand.GetOption<ParameterValueDataType>().SetValue("String");
             await addTypeParamCommand.Execute();
@@ -134,78 +120,63 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             await addTypeParamCommand2.Execute();
 
 
-            Console.WriteLine("[SYNC] Synchronizing exchange data to Version 1");
+            Console.WriteLine("Syncing to V1");
             var syncExchangeData = new SyncExchangeData(ConsoleAppHelper);
             syncExchangeData.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             await syncExchangeData.Execute();
 
-            Console.WriteLine("[DELETE] Deleting instance parameter (AllModelDescription)");
-            var deleteInstanceParameter = new DeleteInstanceParameter(ConsoleAppHelper);
-            deleteInstanceParameter.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
-            deleteInstanceParameter.GetOption<ElementId>().SetValue(addBrep.CommandOutput["ElementId"].ToString());
-            deleteInstanceParameter.GetOption<ParameterName>().SetValue("allModelDescription");
-            await deleteInstanceParameter.Execute();
-
-            Console.WriteLine("Delete Type Parameter 1");
-            var deleteTypeParameter = new DeleteTypeParameter(ConsoleAppHelper);
-            deleteTypeParameter.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
-            deleteTypeParameter.GetOption<ElementId>().SetValue(addBrep2.CommandOutput["ElementId"].ToString());
-            deleteTypeParameter.GetOption<ParameterName>().SetValue("CustomParameter2");
-            await deleteTypeParameter.Execute();
-
-            Console.WriteLine("[VERSION 2] Preparing Version 2 updates");
+            Console.WriteLine("Syncing to V2");
 
 
-            Console.WriteLine("[GEOMETRY] Adding BREP geometry #3 (V2)");
+            Console.WriteLine("Adding Bre 1");
             addBrep = new CreateBrepCommand(ConsoleAppHelper);
             addBrep.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             await addBrep.Execute();
 
-            Console.WriteLine("[GEOMETRY] Adding BREP geometry #4 (V2)");
+            Console.WriteLine("Adding Bre 2");
             addBrep2 = new CreateBrepCommand(ConsoleAppHelper);
             addBrep2.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             await addBrep2.Execute();
 
-            Console.WriteLine("[GEOMETRY] Adding mesh geometry #3 (V2)");
+            Console.WriteLine("Adding Mesh 1");
             addMesh = new CreateMeshCommand(ConsoleAppHelper);
             addMesh.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             await addMesh.Execute();
 
-            Console.WriteLine("[GEOMETRY] Adding mesh geometry #4 (V2)");
+            Console.WriteLine("Adding Mesh 2");
             addMesh2 = new CreateMeshCommand(ConsoleAppHelper);
             addMesh2.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             await addMesh2.Execute();
 
-            Console.WriteLine("[PRIMITIVE] Adding primitive geometries (All) - V2");
+            Console.WriteLine("Adding Primitives All");
             createPrimitive = new CreatePrimitiveGeometryCommand(ConsoleAppHelper);
             createPrimitive.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             createPrimitive.GetOption<PrimitiveGeometry>().SetValue("All");
             await createPrimitive.Execute();
 
-            Console.WriteLine("[PRIMITIVE] Adding primitive geometry (Line) - V2");
+            Console.WriteLine("Adding Primitives Line");
             createPrimitive = new CreatePrimitiveGeometryCommand(ConsoleAppHelper);
             createPrimitive.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             createPrimitive.GetOption<PrimitiveGeometry>().SetValue("Line");
             await createPrimitive.Execute();
 
-            Console.WriteLine("[PRIMITIVE] Adding primitive geometry (Point) - V2");
+            Console.WriteLine("Adding Primitives Point");
             createPrimitive = new CreatePrimitiveGeometryCommand(ConsoleAppHelper);
             createPrimitive.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             createPrimitive.GetOption<PrimitiveGeometry>().SetValue("Point");
             await createPrimitive.Execute();
 
-            Console.WriteLine("[PRIMITIVE] Adding primitive geometry (Circle) - V2");
+            Console.WriteLine("Adding Primitives Circle");
             createPrimitive = new CreatePrimitiveGeometryCommand(ConsoleAppHelper);
             createPrimitive.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             createPrimitive.GetOption<PrimitiveGeometry>().SetValue("Circle");
             await createPrimitive.Execute();
 
-            Console.WriteLine("[PARAMETER] Adding instance parameter (AllModelDescription) - V2");
+            Console.WriteLine("Adding Instance Parameter 1");
             addInstanceParameter = new AddInstanceParamCommand(ConsoleAppHelper);
             addInstanceParameter.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             addInstanceParameter.GetOption<ElementId>().SetValue(addBrep.CommandOutput["ElementId"].ToString());
-            addInstanceParameter.GetOption<ParameterName>().SetValue("allModelDescription");
-            addInstanceParameter.GetOption<ParameterSchema>().SetValue("autodesk.revit.parameter:allModelDescription-1.0.0");
+            addInstanceParameter.GetOption<ParameterName>().SetValue(Autodesk.Parameters.Parameter.AllModelDescription.ToString());
             addInstanceParameter.GetOption<ParameterValue>().SetValue("Testing AllModelDescription");
             addInstanceParameter.GetOption<ParameterValueDataType>().SetValue("String");
             await addInstanceParameter.Execute();
@@ -219,12 +190,11 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             addInstanceParameter2.GetOption<ParameterValueDataType>().SetValue("String");
             await addInstanceParameter2.Execute();
 
-            Console.WriteLine("[PARAMETER] Adding type parameter (AllModelTypeComments) - V2");
+            Console.WriteLine("Adding Type Parameter 1");
             addTypeParamCommand = new AddTypeParamCommand(ConsoleAppHelper);
             addTypeParamCommand.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             addTypeParamCommand.GetOption<ElementId>().SetValue(addBrep.CommandOutput["ElementId"].ToString());
-            addTypeParamCommand.GetOption<ParameterName>().SetValue("allModelTypeComments");
-            addTypeParamCommand.GetOption<ParameterSchema>().SetValue("autodesk.revit.parameter:allModelTypeComments-1.0.0");
+            addTypeParamCommand.GetOption<ParameterName>().SetValue(Autodesk.Parameters.Parameter.AllModelModel.ToString());
             addTypeParamCommand.GetOption<ParameterValue>().SetValue("Testing AllModelModel");
             addTypeParamCommand.GetOption<ParameterValueDataType>().SetValue("String");
             await addTypeParamCommand.Execute();
@@ -238,21 +208,12 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
             addTypeParamCommand2.GetOption<ParameterValueDataType>().SetValue("String");
             await addTypeParamCommand2.Execute();
 
-            Console.WriteLine("[SYNC] Synchronizing final exchange data to Version 2");
             var syncExchangeData2 = new SyncExchangeData(ConsoleAppHelper);
             syncExchangeData2.GetOption<ExchangeTitle>().SetValue(exchangeTitle);
             await syncExchangeData2.Execute();
-
-            Console.WriteLine("[DOWNLOAD] Retrieving final exchange data as STEP file");
-            var getExchangeCommand = new GetExchangeCommand(ConsoleAppHelper);
-            getExchangeCommand.GetOption<ExchangeId>().SetValue(createExchangeCommand.CommandOutput["ExchangeId"].ToString());
-            getExchangeCommand.GetOption<CollectionId>().SetValue(createExchangeCommand.CommandOutput["CollectionId"].ToString());
-                        await getExchangeCommand.Execute();
-            
-            Console.WriteLine("[SUCCESS] Complete workflow test finished successfully!");
             
             return true;
-        }       
+        }
 
         public override Command Clone()
         {

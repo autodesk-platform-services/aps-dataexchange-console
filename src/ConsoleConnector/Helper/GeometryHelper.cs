@@ -66,10 +66,10 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         private Element CreateGeometry(ElementDataModel elementDataModel, Tuple<string, string, string, string> geometryDetails)
         {
             var path = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\Assets\\" + geometryDetails.Item1;
-            var geometry = ElementDataModel.CreateFileGeometry(new GeometryProperties(path, commonRenderStyle));
+            var geometry = ElementDataModel.CreateGeometry(new GeometryProperties(path, commonRenderStyle));
             var element = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(),"SampleGeometry", geometryDetails.Item2, geometryDetails.Item3, geometryDetails.Item4));
             var elementGeometry = new List<ElementGeometry> { geometry };
-            elementDataModel.SetElementGeometry(element, elementGeometry);
+            elementDataModel.SetElementGeometryByElement(element, elementGeometry);
             return element;
         }
 
@@ -94,7 +94,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             setOfLines.Add(lineone);
 
             newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(setOfLines, commonRenderStyle)));
-            elementDataModel.SetElementGeometry(newElement, newBRepElementGeometry);
+            elementDataModel.SetElementGeometryByElement(newElement, newBRepElementGeometry);
             return newElement;
         }
 
@@ -105,7 +105,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             var newPointElementGeometry = new List<ElementGeometry>();
             DesignPoint point = new DesignPoint(random.Next(999), random.Next(999), random.Next(999));
             newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(point, commonRenderStyle)));
-            elementDataModel.SetElementGeometry(newPointElement, newPointElementGeometry);
+            elementDataModel.SetElementGeometryByElement(newPointElement, newPointElementGeometry);
             return newPointElement;
         }
 
@@ -120,7 +120,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             var circle = new Circle(center, normal, radius);
             geomContainer.Curves.Add(circle);
             newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
-            elementDataModel.SetElementGeometry(circleElement, newPointElementGeometry);
+            elementDataModel.SetElementGeometryByElement(circleElement, newPointElementGeometry);
             return circleElement;
         }
 
@@ -225,7 +225,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             };
 
             circleElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
-            elementDataModel.SetElementGeometry(primitive, circleElementGeometry);
+            elementDataModel.SetElementGeometryByElement(primitive, circleElementGeometry);
             return primitive;
         }
 
@@ -252,7 +252,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             };
 
             polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
-            dataModel.SetElementGeometry(polyLineElement, polyLineElementGeometry);
+            dataModel.SetElementGeometryByElement(polyLineElement, polyLineElementGeometry);
             return polyLineElement;
         }
     }

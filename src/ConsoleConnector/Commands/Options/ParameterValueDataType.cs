@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autodesk.DataExchange.Core.Enums;
-using Autodesk.DataExchange.DataModels;
 
 namespace Autodesk.DataExchange.ConsoleApp.Commands.Options
 {
-    internal class ParameterValueDataType : CommandOption
+    internal class ParameterValueDataType:CommandOption
     {
         public bool IsValidDataType { get; private set; } = false;
-        public new ParameterDataTypeEnum Value { get; private set; } = ParameterDataTypeEnum.String;
+        public new ParameterDataType Value { get; private set; } = ParameterDataType.String;
         public ParameterValueDataType()
         {
             this.Description = "Specify value type of parameter such as int,long,etc.";
@@ -20,29 +19,29 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands.Options
         public override void SetValue(string value)
         {
             IsValidDataType = false;
-            if (Enum.TryParse(value, true, out ParameterDataTypeEnum parameterDataType))
+            if (Enum.TryParse(value, true, out ParameterDataType parameterDataType))
             {
                 switch (parameterDataType)
                 {
-                    case ParameterDataTypeEnum.Float64:
+                    case ParameterDataType.Float64:
                         IsValidDataType = true;
-                        Value = ParameterDataTypeEnum.Float64;
+                        Value = ParameterDataType.Float64;
                         break;
-                    case ParameterDataTypeEnum.Bool:
+                    case ParameterDataType.Bool:
                         IsValidDataType = true;
-                        Value = ParameterDataTypeEnum.Bool;
+                        Value = ParameterDataType.Bool;
                         break;
-                    case ParameterDataTypeEnum.Int64:
+                    case ParameterDataType.Int64:
                         IsValidDataType = true;
-                        Value = ParameterDataTypeEnum.Float64;
+                        Value = ParameterDataType.Float64;
                         break;
-                    case ParameterDataTypeEnum.Int32:
+                    case ParameterDataType.Int32:
                         IsValidDataType = true;
-                        Value = ParameterDataTypeEnum.Int32;
+                        Value = ParameterDataType.Int32;
                         break;
-                    case ParameterDataTypeEnum.String:
+                    case ParameterDataType.String:
                         IsValidDataType = true;
-                        Value = ParameterDataTypeEnum.String;
+                        Value = ParameterDataType.String;
                         break;
                 }
             }
@@ -57,14 +56,5 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands.Options
         {
             return true;
         }
-    }
-
-    internal enum ParameterDataTypeEnum
-    {
-        Float64,
-        Bool,
-        Int64,
-        Int32,
-        String
     }
 }

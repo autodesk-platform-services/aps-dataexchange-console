@@ -39,7 +39,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Commands
         public override Task<bool> Execute()
         {
             var check = this.GetOption<HubId>().Value;
-            if (check!=null && check.Contains("http"))
+            if (check.Contains("http"))
             {
                 return Execute(check);
             }
