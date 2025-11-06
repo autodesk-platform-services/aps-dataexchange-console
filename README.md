@@ -2,7 +2,7 @@
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-v2-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
-![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-6.2.0--beta-orange.svg)
+![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-6.3.0-orange.svg)
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 [![License](https://img.shields.io/badge/License-Autodesk%20SDK-blue.svg)](LICENSE)
 
@@ -24,7 +24,7 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
 - [🚀 Quick Start](#-quick-start) - Get up and running quickly
 - [💻 Usage Examples](#-usage-examples) - See the console connector in action
 - [📚 Command Reference](#-command-reference) - Complete command documentation  
-- [🔄 Migration Guide](#-migration-guide-sdk-620-beta-upgrade) - **SDK 6.2.0-beta Upgrade Guide**
+- [🔄 Migration Guide](#-migration-guide-sdk-630-upgrade) - **SDK 6.3.0 Upgrade Guide**
 - [🏗️ Architecture](#️-architecture) - Understand the codebase structure
 - [🔧 Extending the Application](#-extending-the-application) - Add custom functionality
 
@@ -217,51 +217,56 @@ public class MyCustomCommand : Command
 2. Add to command's `Options` list
 3. Use `GetOption<T>()` to access values
 
-## 🔄 Migration Guide: SDK 6.2.0-beta Upgrade
+## 🔄 Migration Guide: SDK 6.3.0 Upgrade
 
-This section documents the migration from previous SDK versions to **Autodesk Data Exchange SDK 6.2.0-beta**.
+This section documents the migration from SDK 6.2.0 to **Autodesk Data Exchange SDK 6.3.0**.
 
 ### 📋 Overview of Changes
 
-This upgrade includes significant improvements and API enhancements:
-- **SDK Version**: Upgraded to `Autodesk.DataExchange 6.2.0-beta`
-- **Enhanced API Methods**: Improved method signatures and functionality
-- **Dependency Updates**: Updated Microsoft.Extensions packages and testing frameworks
-- **New Utilities**: Added MoreLinq utilities for improved data processing
+This upgrade includes important API improvements and refinements:
+- **SDK Version**: Upgraded to `Autodesk.DataExchange 6.3.0`
+- **Enhanced API Methods**: Refined method signatures for better type safety
+- **API Cleanup**: Removed deprecated classes and streamlined geometry handling
 
 ### 🚀 Key Dependency Updates
 
 | Package | Previous Version | New Version | Impact |
 |---------|------------------|-------------|---------|
-| `Autodesk.DataExchange` | < 6.2.0 | `6.2.0-beta` | **Major** - Core SDK upgrade |
-| `MSTest.TestFramework` | < 3.9.3 | `3.9.3` | Testing framework improvements |
-| `Microsoft.Extensions.*` | Various | `6.0.0` | Dependency injection and configuration |
-| `MoreLinq.Source.MoreEnumerable.Batch` | - | `1.0.2` | **New** - Enhanced LINQ operations |
+| `Autodesk.DataExchange` | `6.2.0` | `6.3.0` | **Major** - Core SDK upgrade with API refinements |
 
 ### ⚠️ Breaking Changes
 
-#### 1. GenerateViewableAsync Method Signature
-**Before:**
+#### 1. MeshAPI.Color() Parameter Type Change
+**Before (SDK 6.2.0):**
 ```csharp
-await Client.GenerateViewableAsync(displayName, exchangeId, collectionId, fileUrn);
+// Color values were float from 0.0 to 1.0
+MeshAPI.Color(0.5f, 0.75f, 1.0f, 1.0f); // RGBA as floats
 ```
 
-**After:**
+**After (SDK 6.3.0):**
 ```csharp
-await Client.GenerateViewableAsync(exchangeId, collectionId);
+// Color values are now int from 0 to 255
+MeshAPI.Color(127, 191, 255, 255); // RGBA as integers
 ```
 
-**Migration Action:** Remove `displayName` and `fileUrn` parameters from `GenerateViewableAsync` calls.
+**Migration Action:** Convert all `MeshAPI.Color()` calls from float values (0.0-1.0) to integer values (0-255). Multiply your float values by 255 and cast to int.
 
-#### 2. Enhanced Response Handling
-- All async methods now return improved `IResponse<T>` types
-- Better error handling and status checking
-- Enhanced logging capabilities through updated `ILogger` interface
+#### 2. CurveSet Removal
+**Before (SDK 6.2.0):**
+```csharp
+// CurveSet class was available for curve operations
+CurveSet curveSet = new CurveSet();
+// ... curve operations
+```
 
-#### 3. Updated Project Types
-- Enhanced support for **ACC (Autodesk Construction Cloud)** projects
-- Improved project type detection and handling
-- Better regional hosting support
+**After (SDK 6.3.0):**
+```csharp
+// CurveSet has been removed - use GeometryContainer instead
+GeometryContainer geometryContainer = new GeometryContainer();
+// ... geometry operations
+```
+
+**Migration Action:** Replace all `CurveSet` usage with `GeometryContainer`. Update your curve handling logic to use the `GeometryContainer` API.
 
 ### 🔧 Migration Steps
 
@@ -269,52 +274,54 @@ await Client.GenerateViewableAsync(exchangeId, collectionId);
 Update your `packages.config` or project file:
 
 ```xml
-<package id="Autodesk.DataExchange" version="6.2.0-beta" targetFramework="net48" />
-<package id="MoreLinq.Source.MoreEnumerable.Batch" version="1.0.2" targetFramework="net48" />
-<package id="MSTest.TestFramework" version="3.9.3" targetFramework="net48" />
+<package id="Autodesk.DataExchange" version="6.3.0" targetFramework="net48" />
 ```
 
-#### Step 2: Update API Method Calls
-Search and replace the following patterns in your code:
+#### Step 2: Update MeshAPI.Color() Calls
+Search and replace all `MeshAPI.Color()` calls to use integer values:
 
 ```csharp
-// OLD: GenerateViewableAsync with 4 parameters
-await Client.GenerateViewableAsync(displayName, exchangeId, collectionId, fileUrn);
+// OLD: Float values (0.0 - 1.0)
+MeshAPI.Color(0.5f, 0.75f, 1.0f, 1.0f);
 
-// NEW: GenerateViewableAsync with 2 parameters
-await Client.GenerateViewableAsync(exchangeId, collectionId);
+// NEW: Integer values (0 - 255)
+MeshAPI.Color(127, 191, 255, 255);
+
+// Conversion formula: intValue = (int)(floatValue * 255)
 ```
 
-#### Step 3: Update Test Framework (If Applicable)
-For projects using MSTest, update test attributes and methods to use the latest MSTest 3.9.3 features.
-
-#### Step 4: Leverage New Features
-Take advantage of new utilities:
+#### Step 3: Replace CurveSet with GeometryContainer
+Search for all `CurveSet` usage and replace with `GeometryContainer`:
 
 ```csharp
-// Use MoreLinq for enhanced batch processing
-using MoreLinq;
+// OLD: Using CurveSet
+CurveSet curveSet = new CurveSet();
+// curve operations...
 
-// Batch process elements efficiently
-var batches = elements.Batch(50); // Process in batches of 50
+// NEW: Using GeometryContainer
+GeometryContainer geometryContainer = new GeometryContainer();
+// geometry operations...
 ```
+
+#### Step 4: Test Your Changes
+Run your application and verify that all geometry rendering and curve operations work correctly with the new APIs.
 
 ### 🎯 New Features & Improvements
 
-#### Enhanced Exchange Management
-- Improved exchange creation with better project type detection
-- Enhanced synchronization capabilities
-- Better error handling and retry mechanisms
+#### Enhanced Type Safety
+- Integer-based color values provide more intuitive and precise color control
+- Clearer API contracts with strongly-typed parameters
+- Reduced ambiguity in color value ranges
 
-#### Performance Improvements
-- Optimized geometry processing
-- Improved batch operations with MoreLinq
-- Enhanced memory management
+#### Streamlined Geometry API
+- Unified geometry handling through `GeometryContainer`
+- Simplified API surface with removal of deprecated classes
+- More consistent geometry operation patterns
 
-#### Better Logging & Diagnostics
-- Enhanced logging capabilities
-- Improved error messages and stack traces
-- Better debugging experience
+#### Performance & Reliability
+- Optimized color processing with integer operations
+- Improved memory efficiency in geometry operations
+- Better API consistency across the SDK
 
 ### 🧪 Testing Your Migration
 
@@ -333,24 +340,28 @@ This command validates:
 
 ### ⚡ Performance Considerations
 
-1. **Batch Processing**: Use the new MoreLinq utilities for processing large datasets
-2. **Async/Await**: Ensure all async methods are properly awaited
-3. **Memory Management**: The new SDK includes improved memory handling
-4. **Connection Pooling**: Enhanced HTTP client configuration for better performance
+1. **Color Operations**: Integer-based colors are more efficient than float-based calculations
+2. **Geometry Container**: The unified `GeometryContainer` provides better memory management
+3. **Async/Await**: Ensure all async methods are properly awaited
+4. **API Simplification**: Streamlined API reduces overhead and improves performance
 
 ### 🐛 Troubleshooting Common Issues
 
-#### Issue: GenerateViewableAsync Error
-**Error**: `ArgumentException: Too many parameters`
-**Solution**: Remove `displayName` and `fileUrn` parameters from the method call.
+#### Issue: MeshAPI.Color() Type Mismatch
+**Error**: `ArgumentException: Cannot convert float to int`
+**Solution**: Update all `MeshAPI.Color()` calls to use integer values (0-255) instead of float values (0.0-1.0). Use the conversion formula: `(int)(floatValue * 255)`.
+
+#### Issue: CurveSet Not Found
+**Error**: `Type or namespace 'CurveSet' could not be found`
+**Solution**: Replace all `CurveSet` references with `GeometryContainer`. Update your curve handling logic to use the new API.
+
+#### Issue: Color Rendering Differences
+**Error**: Colors appear different after migration
+**Solution**: Verify your color conversion is correct. Ensure you're multiplying float values by 255 and not accidentally dividing or using incorrect conversions.
 
 #### Issue: Package Conflicts
 **Error**: Assembly binding conflicts
-**Solution**: Clean and rebuild solution, ensure all packages are updated consistently.
-
-#### Issue: Authentication Problems
-**Error**: Authentication failures after upgrade
-**Solution**: Verify your `App.config` credentials are correct and your app has proper Data Exchange API permissions.
+**Solution**: Clean and rebuild solution, ensure all packages are updated to 6.3.0 consistently.
 
 ### 📞 Support & Resources
 
@@ -362,11 +373,12 @@ This command validates:
 ---
 
 **Migration Checklist:**
-- [ ] Updated all package references to 6.2.0-beta
-- [ ] Fixed `GenerateViewableAsync` method calls
-- [ ] Updated test framework (if applicable)
+- [ ] Updated all package references to 6.3.0
+- [ ] Converted all `MeshAPI.Color()` calls to use integer values (0-255)
+- [ ] Replaced all `CurveSet` usage with `GeometryContainer`
+- [ ] Tested mesh rendering with new color values
+- [ ] Verified geometry operations with `GeometryContainer`
 - [ ] Tested core workflows with `WorkFlowTest`
-- [ ] Verified authentication and permissions
 - [ ] Reviewed and updated error handling
 
 ## 📖 Documentation
@@ -387,9 +399,10 @@ This is a sample project for reference purposes. While direct contributions may 
 
 This sample code is part of the Autodesk Data Exchange .NET SDK (Software Development Kit) beta. It is subject to the license covering the Autodesk Data Exchange .NET SDK (Software Development Kit) beta.
 
-## ✍️ Author
+## ✍️ Authors
 
-**Dhiraj Lotake** - *Autodesk*
+**Dhiraj Lotake** - *Autodesk*  
+**Hariom Sharma** - *Autodesk*
 
 ---
 

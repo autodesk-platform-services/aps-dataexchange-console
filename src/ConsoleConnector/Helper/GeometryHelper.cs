@@ -79,7 +79,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
             var newBRepElementGeometry = new List<ElementGeometry>();
 
-            CurveSet setOfLines = new CurveSet();
+            var geomContainer = new GeometryContainer();
 
             Line lineone = new Line(new 
                 Point3d { X = random.Next(999), Y = random.Next(999), Z = random.Next(999) }, 
@@ -91,9 +91,9 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                 Type = ParamRange.RangeType.Finite
             };
 
-            setOfLines.Add(lineone);
+            geomContainer.Curves.Add(lineone);
 
-            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(setOfLines, commonRenderStyle)));
+            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
             elementDataModel.SetElementGeometry(newElement, newBRepElementGeometry);
             return newElement;
         }
