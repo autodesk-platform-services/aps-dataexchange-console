@@ -63,47 +63,8 @@
     <Reference Include="AngleSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AngleSharp.1.2.0\lib\net472\AngleSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.Authentication, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.Authentication.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.ContractProvider, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.ContractProvider.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.Core, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.Exceptions, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.Exceptions.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.HostingProvider, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.Extensions.HostingProvider.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Loader, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.Extensions.Loader.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Logging.File, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.Extensions.Logging.File.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Storage.File, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.Extensions.Storage.File.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.Metrics, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.Metrics.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.OpenAPI, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.OpenAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.Resiliency, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.Resiliency.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.Schemas, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.Schemas.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.DataExchange.SourceProvider, Version=6.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.6.3.0-beta\lib\net48\Autodesk.DataExchange.SourceProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.7.0.0-alpha20260130122402296323\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.GeometryPrimitives.Data, Version=0.7.22.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.1.9\lib\net48\Autodesk.GeometryPrimitives.Data.dll</HintPath>
@@ -246,6 +207,7 @@
     <Reference Include="Polly.Extensions.Http, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c8a3ffc3f8f825cc, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Polly.Extensions.Http.3.0.0\lib\netstandard2.0\Polly.Extensions.Http.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="protobuf-net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <HintPath>..\..\packages\protobuf-net.3.0.101\lib\net461\protobuf-net.dll</HintPath>
     </Reference>
@@ -282,14 +244,17 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Configuration.ConfigurationManager.8.0.0\lib\net462\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
     <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.6.0.0\lib\net461\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.8.0.0\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Tracing, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Diagnostics.Tracing.4.3.0\lib\net462\System.Diagnostics.Tracing.dll</HintPath>
@@ -492,12 +457,12 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.7.3\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.7.3\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props'))" />
     <Error Condition="!Exists('..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.props'))" />
     <Error Condition="!Exists('..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Autodesk.DataExchange.6.3.0-beta\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Autodesk.DataExchange.6.3.0-beta\build\Autodesk.DataExchange.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Autodesk.DataExchange.7.0.0-alpha20260130122402296323\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Autodesk.DataExchange.7.0.0-alpha20260130122402296323\build\Autodesk.DataExchange.targets'))" />
   </Target>
   <Import Project="..\..\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets" Condition="Exists('..\..\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets')" />
   <Import Project="..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
   <Import Project="..\..\packages\Microsoft.Testing.Platform.1.7.3\build\netstandard2.0\Microsoft.Testing.Platform.targets" Condition="Exists('..\..\packages\Microsoft.Testing.Platform.1.7.3\build\netstandard2.0\Microsoft.Testing.Platform.targets')" />
   <Import Project="..\..\packages\Microsoft.Testing.Platform.MSBuild.1.7.3\build\Microsoft.Testing.Platform.MSBuild.targets" Condition="Exists('..\..\packages\Microsoft.Testing.Platform.MSBuild.1.7.3\build\Microsoft.Testing.Platform.MSBuild.targets')" />
   <Import Project="..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.targets" Condition="Exists('..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.targets')" />
-  <Import Project="..\..\packages\Autodesk.DataExchange.6.3.0-beta\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\packages\Autodesk.DataExchange.6.3.0-beta\build\Autodesk.DataExchange.targets')" />
+  <Import Project="..\..\packages\Autodesk.DataExchange.7.0.0-alpha20260130122402296323\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\packages\Autodesk.DataExchange.7.0.0-alpha20260130122402296323\build\Autodesk.DataExchange.targets')" />
 </Project>

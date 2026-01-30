@@ -2,7 +2,7 @@
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-v2-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
-![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-6.3.0-orange.svg)
+![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-7.1.0-orange.svg)
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 [![License](https://img.shields.io/badge/License-Autodesk%20SDK-blue.svg)](LICENSE)
 
@@ -24,7 +24,7 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
 - [🚀 Quick Start](#-quick-start) - Get up and running quickly
 - [💻 Usage Examples](#-usage-examples) - See the console connector in action
 - [📚 Command Reference](#-command-reference) - Complete command documentation  
-- [🔄 Migration Guide](#-migration-guide-sdk-630-upgrade) - **SDK 6.3.0 Upgrade Guide**
+- [🔄 Migration Guide](#-migration-guide-sdk-710-upgrade) - **SDK 7.1.0 Upgrade Guide**
 - [🏗️ Architecture](#️-architecture) - Understand the codebase structure
 - [🔧 Extending the Application](#-extending-the-application) - Add custom functionality
 
@@ -217,56 +217,85 @@ public class MyCustomCommand : Command
 2. Add to command's `Options` list
 3. Use `GetOption<T>()` to access values
 
-## 🔄 Migration Guide: SDK 6.3.0 Upgrade
+## 🔄 Migration Guide: SDK 7.1.0 Upgrade
 
-This section documents the migration from SDK 6.2.0 to **Autodesk Data Exchange SDK 6.3.0**.
+This section documents the migration from SDK 6.3.0 to **Autodesk Data Exchange SDK 7.1.0**.
 
 ### 📋 Overview of Changes
 
-This upgrade includes important API improvements and refinements:
-- **SDK Version**: Upgraded to `Autodesk.DataExchange 6.3.0`
-- **Enhanced API Methods**: Refined method signatures for better type safety
-- **API Cleanup**: Removed deprecated classes and streamlined geometry handling
+This upgrade includes significant API changes:
+- **SDK Version**: Upgraded to `Autodesk.DataExchange 7.1.0`
+- **API Simplification**: Removed `GeometryProperties` wrapper class
+- **Explicit Format Specification**: Geometry format now required as explicit parameter
 
 ### 🚀 Key Dependency Updates
 
 | Package | Previous Version | New Version | Impact |
 |---------|------------------|-------------|---------|
-| `Autodesk.DataExchange` | `6.2.0` | `6.3.0` | **Major** - Core SDK upgrade with API refinements |
+| `Autodesk.DataExchange` | `6.3.0` | `7.1.0` | **Major** - Breaking changes to geometry creation APIs |
 
 ### ⚠️ Breaking Changes
 
-#### 1. MeshAPI.Color() Parameter Type Change
-**Before (SDK 6.2.0):**
+#### 1. `GeometryProperties` Class Removed
+
+The `GeometryProperties` class that was previously used to wrap geometry parameters has been **removed entirely**. All methods that accepted `GeometryProperties` now take individual parameters directly.
+
+#### 2. `CreateFileGeometry` API Change
+
+**Before (SDK 6.3.0):**
 ```csharp
-// Color values were float from 0.0 to 1.0
-MeshAPI.Color(0.5f, 0.75f, 1.0f, 1.0f); // RGBA as floats
+// Required wrapping path and render style in GeometryProperties
+var geometry = ElementDataModel.CreateFileGeometry(
+    new GeometryProperties(filePath, renderStyle));
 ```
 
-**After (SDK 6.3.0):**
+**After (SDK 7.1.0):**
 ```csharp
-// Color values are now int from 0 to 255
-MeshAPI.Color(127, 191, 255, 255); // RGBA as integers
+// Pass parameters directly with explicit GeometryFormat
+var geometry = ElementDataModel.CreateFileGeometry(
+    filePath, 
+    GeometryFormat.Step,  // Explicit format required
+    renderStyle,          // Optional: RenderStyle
+    units);               // Optional: Units
 ```
 
-**Migration Action:** Convert all `MeshAPI.Color()` calls from float values (0.0-1.0) to integer values (0-255). Multiply your float values by 255 and cast to int.
+**Key differences:**
+- No `GeometryProperties` wrapper
+- `GeometryFormat` enum is now **required** as the second parameter
+- `RenderStyle` and `Units` are optional parameters
 
-#### 2. CurveSet Removal
-**Before (SDK 6.2.0):**
+#### 3. `CreatePrimitiveGeometry` API Change
+
+**Before (SDK 6.3.0):**
 ```csharp
-// CurveSet class was available for curve operations
-CurveSet curveSet = new CurveSet();
-// ... curve operations
+// For GeometryContainer
+var geometry = ElementDataModel.CreatePrimitiveGeometry(
+    new GeometryProperties(geomContainer, renderStyle));
+
+// For DesignPoint
+var geometry = ElementDataModel.CreatePrimitiveGeometry(
+    new GeometryProperties(designPoint, renderStyle));
 ```
 
-**After (SDK 6.3.0):**
+**After (SDK 7.1.0):**
 ```csharp
-// CurveSet has been removed - use GeometryContainer instead
-GeometryContainer geometryContainer = new GeometryContainer();
-// ... geometry operations
+// For GeometryContainer - pass directly
+var geometry = ElementDataModel.CreatePrimitiveGeometry(
+    geomContainer,  // Autodesk.GeometryPrimitives.Data.Geometry
+    renderStyle,    // Optional: RenderStyle
+    units);         // Optional: Units
+
+// For DesignPoint - pass directly
+var geometry = ElementDataModel.CreatePrimitiveGeometry(
+    designPoint,    // Autodesk.GeometryPrimitives.Data.Geometry
+    renderStyle,    // Optional: RenderStyle
+    units);         // Optional: Units
 ```
 
-**Migration Action:** Replace all `CurveSet` usage with `GeometryContainer`. Update your curve handling logic to use the `GeometryContainer` API.
+**Key differences:**
+- No `GeometryProperties` wrapper
+- Pass the geometry object (`GeometryContainer`, `DesignPoint`, etc.) directly
+- `RenderStyle` and `Units` are optional parameters
 
 ### 🔧 Migration Steps
 
@@ -274,54 +303,146 @@ GeometryContainer geometryContainer = new GeometryContainer();
 Update your `packages.config` or project file:
 
 ```xml
-<package id="Autodesk.DataExchange" version="6.3.0" targetFramework="net48" />
+<package id="Autodesk.DataExchange" version="7.1.0" targetFramework="net48" />
 ```
 
-#### Step 2: Update MeshAPI.Color() Calls
-Search and replace all `MeshAPI.Color()` calls to use integer values:
+#### Step 2: Add New Using Statement
+Add the following using statement to access the `GeometryFormat` enum:
 
 ```csharp
-// OLD: Float values (0.0 - 1.0)
-MeshAPI.Color(0.5f, 0.75f, 1.0f, 1.0f);
-
-// NEW: Integer values (0 - 255)
-MeshAPI.Color(127, 191, 255, 255);
-
-// Conversion formula: intValue = (int)(floatValue * 255)
+using Autodesk.DataExchange.Core.Enums;
 ```
 
-#### Step 3: Replace CurveSet with GeometryContainer
-Search for all `CurveSet` usage and replace with `GeometryContainer`:
+#### Step 3: Update `CreateFileGeometry` Calls
+
+**Before:**
+```csharp
+var path = "path/to/geometry.stp";
+var geometry = ElementDataModel.CreateFileGeometry(
+    new GeometryProperties(path, renderStyle));
+```
+
+**After:**
+```csharp
+var path = "path/to/geometry.stp";
+var geometry = ElementDataModel.CreateFileGeometry(
+    path, 
+    GeometryFormat.Step, 
+    renderStyle);
+```
+
+#### Step 4: Update `CreatePrimitiveGeometry` Calls
+
+**Before (GeometryContainer):**
+```csharp
+var geomContainer = new GeometryContainer();
+geomContainer.Curves.Add(new Line(...));
+var geometry = ElementDataModel.CreatePrimitiveGeometry(
+    new GeometryProperties(geomContainer, renderStyle));
+```
+
+**After (GeometryContainer):**
+```csharp
+var geomContainer = new GeometryContainer();
+geomContainer.Curves.Add(new Line(...));
+var geometry = ElementDataModel.CreatePrimitiveGeometry(
+    geomContainer, 
+    renderStyle);
+```
+
+**Before (DesignPoint):**
+```csharp
+var point = new DesignPoint(x, y, z);
+var geometry = ElementDataModel.CreatePrimitiveGeometry(
+    new GeometryProperties(point, renderStyle));
+```
+
+**After (DesignPoint):**
+```csharp
+var point = new DesignPoint(x, y, z);
+var geometry = ElementDataModel.CreatePrimitiveGeometry(
+    point, 
+    renderStyle);
+```
+
+#### Step 5: Helper Method for File Format Detection (Optional)
+
+If you need to determine the geometry format from file extensions dynamically:
 
 ```csharp
-// OLD: Using CurveSet
-CurveSet curveSet = new CurveSet();
-// curve operations...
-
-// NEW: Using GeometryContainer
-GeometryContainer geometryContainer = new GeometryContainer();
-// geometry operations...
+private GeometryFormat GetGeometryFormat(string fileName)
+{
+    var extension = Path.GetExtension(fileName).ToLowerInvariant();
+    switch (extension)
+    {
+        case ".stp":
+        case ".step":
+            return GeometryFormat.Step;
+        case ".ifc":
+            return GeometryFormat.Ifc;
+        case ".obj":
+            return GeometryFormat.Obj;
+        default:
+            return GeometryFormat.Unknown;
+    }
+}
 ```
 
-#### Step 4: Test Your Changes
-Run your application and verify that all geometry rendering and curve operations work correctly with the new APIs.
+### 📚 GeometryFormat Enum Values
 
-### 🎯 New Features & Improvements
+| Value | Description | File Extensions |
+|-------|-------------|-----------------|
+| `GeometryFormat.Unknown` | Unknown format | - |
+| `GeometryFormat.Step` | STEP file format | `.stp`, `.step` |
+| `GeometryFormat.Obj` | OBJ mesh format | `.obj` |
+| `GeometryFormat.Ifc` | IFC file format | `.ifc` |
+| `GeometryFormat.Bimdex` | Bimdex geometry format | - |
+| `GeometryFormat.LargePrimitive` | Large primitive format | - |
 
-#### Enhanced Type Safety
-- Integer-based color values provide more intuitive and precise color control
-- Clearer API contracts with strongly-typed parameters
-- Reduced ambiguity in color value ranges
+### 📖 Method Signatures Reference
 
-#### Streamlined Geometry API
-- Unified geometry handling through `GeometryContainer`
-- Simplified API surface with removal of deprecated classes
-- More consistent geometry operation patterns
+#### CreateFileGeometry
+```csharp
+public static FileGeometry CreateFileGeometry(
+    string filePath, 
+    GeometryFormat format, 
+    RenderStyle renderStyle = null, 
+    Units units = null)
+```
 
-#### Performance & Reliability
-- Optimized color processing with integer operations
-- Improved memory efficiency in geometry operations
-- Better API consistency across the SDK
+There is also an overload that accepts a `MemoryStream`:
+```csharp
+public static FileGeometry CreateFileGeometry(
+    MemoryStream geometryStream, 
+    GeometryFormat format, 
+    RenderStyle renderStyle = null, 
+    Units units = null)
+```
+
+#### CreatePrimitiveGeometry
+```csharp
+public static PrimitiveGeometry CreatePrimitiveGeometry(
+    Autodesk.GeometryPrimitives.Data.Geometry geometry, 
+    RenderStyle renderStyle = null, 
+    Units units = null)
+```
+
+#### CreateMeshGeometry
+```csharp
+public static MeshGeometry CreateMeshGeometry(
+    Autodesk.GeometryUtilities.MeshAPI.Mesh mesh, 
+    string meshName, 
+    Units units = null)
+```
+
+### 🎯 Summary of Changes
+
+| Aspect | SDK 6.3.0 | SDK 7.1.0 |
+|--------|-----------|-----------|
+| Geometry wrapper | `GeometryProperties` class | Direct parameters |
+| File format | Inferred from file | Explicit `GeometryFormat` enum |
+| API style | Wrapper object pattern | Direct parameter pattern |
+| Required namespace | - | `Autodesk.DataExchange.Core.Enums` |
 
 ### 🧪 Testing Your Migration
 
@@ -338,48 +459,40 @@ This command validates:
 - ✅ Synchronization workflows
 - ✅ File download capabilities
 
-### ⚡ Performance Considerations
-
-1. **Color Operations**: Integer-based colors are more efficient than float-based calculations
-2. **Geometry Container**: The unified `GeometryContainer` provides better memory management
-3. **Async/Await**: Ensure all async methods are properly awaited
-4. **API Simplification**: Streamlined API reduces overhead and improves performance
-
 ### 🐛 Troubleshooting Common Issues
 
-#### Issue: MeshAPI.Color() Type Mismatch
-**Error**: `ArgumentException: Cannot convert float to int`
-**Solution**: Update all `MeshAPI.Color()` calls to use integer values (0-255) instead of float values (0.0-1.0). Use the conversion formula: `(int)(floatValue * 255)`.
+#### Issue: `GeometryProperties` could not be found
+**Error**: `The type or namespace name 'GeometryProperties' could not be found`
+**Solution**: Update all `CreateFileGeometry` and `CreatePrimitiveGeometry` calls to use the new direct parameter syntax as shown in this guide.
 
-#### Issue: CurveSet Not Found
-**Error**: `Type or namespace 'CurveSet' could not be found`
-**Solution**: Replace all `CurveSet` references with `GeometryContainer`. Update your curve handling logic to use the new API.
+#### Issue: Cannot convert from `DesignPoint` to `Point`
+**Error**: `Argument 1: cannot convert from 'Autodesk.GeometryPrimitives.Data.DX.DesignPoint' to 'Autodesk.GeometryPrimitives.Data.Point'`
+**Solution**: Pass `DesignPoint` directly to `CreatePrimitiveGeometry` instead of wrapping it in a `GeometryContainer`:
 
-#### Issue: Color Rendering Differences
-**Error**: Colors appear different after migration
-**Solution**: Verify your color conversion is correct. Ensure you're multiplying float values by 255 and not accidentally dividing or using incorrect conversions.
+```csharp
+// Correct
+var point = new DesignPoint(x, y, z);
+ElementDataModel.CreatePrimitiveGeometry(point, renderStyle);
 
-#### Issue: Package Conflicts
-**Error**: Assembly binding conflicts
-**Solution**: Clean and rebuild solution, ensure all packages are updated to 6.3.0 consistently.
+// Incorrect - don't add DesignPoint to GeometryContainer.Points
+var container = new GeometryContainer();
+container.Points.Add(point); // This will cause a type error
+```
 
-### 📞 Support & Resources
-
-- **Breaking Changes**: See above migration steps
-- **New Features**: Explore the enhanced API documentation
-- **Performance**: Review the optimization guidelines
-- **Issues**: Report SDK-specific issues through official channels
+#### Issue: Missing GeometryFormat namespace
+**Error**: `The name 'GeometryFormat' does not exist in the current context`
+**Solution**: Add the using statement: `using Autodesk.DataExchange.Core.Enums;`
 
 ---
 
 **Migration Checklist:**
-- [ ] Updated all package references to 6.3.0
-- [ ] Converted all `MeshAPI.Color()` calls to use integer values (0-255)
-- [ ] Replaced all `CurveSet` usage with `GeometryContainer`
-- [ ] Tested mesh rendering with new color values
-- [ ] Verified geometry operations with `GeometryContainer`
+- [ ] Updated all package references to 7.1.0
+- [ ] Added `using Autodesk.DataExchange.Core.Enums;` where needed
+- [ ] Updated all `CreateFileGeometry` calls to use direct parameters with `GeometryFormat`
+- [ ] Updated all `CreatePrimitiveGeometry` calls to pass geometry objects directly
+- [ ] Removed all references to `GeometryProperties` class
 - [ ] Tested core workflows with `WorkFlowTest`
-- [ ] Reviewed and updated error handling
+- [ ] Verified all geometry types render correctly
 
 ## 📖 Documentation
 

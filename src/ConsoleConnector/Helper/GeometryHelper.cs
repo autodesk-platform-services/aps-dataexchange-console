@@ -1,4 +1,5 @@
-﻿using Autodesk.DataExchange.DataModels;
+using Autodesk.DataExchange.Core.Enums;
+using Autodesk.DataExchange.DataModels;
 using Autodesk.GeometryPrimitives.Data;
 using Autodesk.GeometryPrimitives.Data.DX;
 using System;
@@ -66,11 +67,29 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         private Element CreateGeometry(ElementDataModel elementDataModel, Tuple<string, string, string, string> geometryDetails)
         {
             var path = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\Assets\\" + geometryDetails.Item1;
-            var geometry = ElementDataModel.CreateFileGeometry(new GeometryProperties(path, commonRenderStyle));
+            var format = GetGeometryFormat(geometryDetails.Item1);
+            var geometry = ElementDataModel.CreateFileGeometry(path, format, commonRenderStyle);
             var element = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(),"SampleGeometry", geometryDetails.Item2, geometryDetails.Item3, geometryDetails.Item4));
             var elementGeometry = new List<ElementGeometry> { geometry };
             elementDataModel.SetElementGeometry(element, elementGeometry);
             return element;
+        }
+
+        private GeometryFormat GetGeometryFormat(string fileName)
+        {
+            var extension = Path.GetExtension(fileName).ToLowerInvariant();
+            switch (extension)
+            {
+                case ".stp":
+                case ".step":
+                    return GeometryFormat.Step;
+                case ".ifc":
+                    return GeometryFormat.Ifc;
+                case ".obj":
+                    return GeometryFormat.Obj;
+                default:
+                    return GeometryFormat.Unknown;
+            }
         }
 
         public Element AddLine(ElementDataModel elementDataModel)
@@ -93,18 +112,17 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
             geomContainer.Curves.Add(lineone);
 
-            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
+            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(geomContainer, commonRenderStyle));
             elementDataModel.SetElementGeometry(newElement, newBRepElementGeometry);
             return newElement;
         }
 
         public Element AddPoint(ElementDataModel elementDataModel)
         {
-            var geomContainer = new GeometryContainer();
             var newPointElement = elementDataModel.AddElement(new ElementProperties(Guid.NewGuid().ToString(),"SamplePoint", "Point", "Point", "Point"));
             var newPointElementGeometry = new List<ElementGeometry>();
             DesignPoint point = new DesignPoint(random.Next(999), random.Next(999), random.Next(999));
-            newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(point, commonRenderStyle)));
+            newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(point, commonRenderStyle));
             elementDataModel.SetElementGeometry(newPointElement, newPointElementGeometry);
             return newPointElement;
         }
@@ -119,7 +137,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
             var radius = new Vector3d(random.Next(50), 0, 0);
             var circle = new Circle(center, normal, radius);
             geomContainer.Curves.Add(circle);
-            newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
+            newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(geomContainer, commonRenderStyle));
             elementDataModel.SetElementGeometry(circleElement, newPointElementGeometry);
             return circleElement;
         }
@@ -224,7 +242,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                         },
             };
 
-            circleElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
+            circleElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(geomContainer, commonRenderStyle));
             elementDataModel.SetElementGeometry(primitive, circleElementGeometry);
             return primitive;
         }
@@ -251,7 +269,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                 }
             };
 
-            polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
+            polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(geomContainer, commonRenderStyle));
             dataModel.SetElementGeometry(polyLineElement, polyLineElementGeometry);
             return polyLineElement;
         }
