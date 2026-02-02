@@ -60,7 +60,7 @@
     <Reference Include="AngleSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AngleSharp.1.2.0\lib\net472\AngleSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="Autodesk.DataExchange, Version=7.1.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\..\packages\Autodesk.DataExchange.7.1.0-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.GeometryPrimitives.Data, Version=0.7.22.0, Culture=neutral, processorArchitecture=AMD64">
