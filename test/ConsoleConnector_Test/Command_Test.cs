@@ -111,7 +111,7 @@ namespace ConsoleConnector_Test
                 n.ValidateHubAccessAsync(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync((false, "[ERROR] Unable to resolve HubId for ProjectUrn 'b.wrong-id'. " +
                     "This usually means your app's ClientId has not been added to the Forma/ACC hub " +
-                    "as a custom integration (Step 1c in setup), or the ProjectUrn does not exist."));
+                    "as a custom integration (via Hub Admin > Custom Integrations), or the ProjectUrn does not exist."));
 
             var setFolder = new SetFolderCommand(consoleAppHelper.Object);
             setFolder.GetOption<HubId>().SetValue("b.wrong-hub-id");

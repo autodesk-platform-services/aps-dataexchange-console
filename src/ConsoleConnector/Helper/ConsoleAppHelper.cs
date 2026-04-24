@@ -145,7 +145,7 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
                     return (false,
                         $"[ERROR] Unable to resolve HubId for ProjectUrn '{projectUrn}'. " +
                         "This usually means your app's ClientId has not been added to the Forma/ACC hub " +
-                        "as a custom integration (Step 1c in setup), or the ProjectUrn does not exist.");
+                        "as a custom integration (via Hub Admin > Custom Integrations), or the ProjectUrn does not exist.");
                 }
 
                 var resolvedHubId = hubIdResponse.Value;
