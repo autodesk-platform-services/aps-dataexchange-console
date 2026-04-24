@@ -92,12 +92,88 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
 
         public void GetHubId(string projectUrn, out string hubId)
         {
-            hubId = GetHubIdAsync(projectUrn).Result.Value;
+            hubId = null;
+            try
+            {
+                var response = GetHubIdAsync(projectUrn).Result;
+                if (response == null)
+                {
+                    Console.WriteLine($"[ERROR] GetHubId returned no response for ProjectUrn '{projectUrn}'. " +
+                        "Verify your app has Data Management API permissions and the ClientId is registered as a custom integration in Forma/ACC.");
+                    return;
+                }
+                if (!response.IsSuccess || string.IsNullOrEmpty(response.Value))
+                {
+                    Console.WriteLine($"[ERROR] Failed to resolve HubId for ProjectUrn '{projectUrn}'. " +
+                        "Verify the ProjectUrn is correct and your app's ClientId has been added to the Forma/ACC hub as a custom integration.");
+                    return;
+                }
+                hubId = response.Value;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Exception resolving HubId for ProjectUrn '{projectUrn}': {ex.Message}");
+            }
         }
 
         public void GetRegion(string hubId, out string region)
         {
-            region = GetRegionAsync(hubId).Result;
+            region = null;
+            try
+            {
+                region = GetRegionAsync(hubId).Result;
+                if (string.IsNullOrEmpty(region))
+                {
+                    Console.WriteLine($"[ERROR] Failed to resolve region for HubId '{hubId}'. " +
+                        "Verify the HubId is correct and accessible.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Exception resolving region for HubId '{hubId}': {ex.Message}");
+                region = null;
+            }
+        }
+
+        public async Task<(bool IsValid, string ErrorMessage)> ValidateHubAccessAsync(string hubId, string projectUrn)
+        {
+            try
+            {
+                var hubIdResponse = await Client.GetHubIdAsync(projectUrn);
+                if (hubIdResponse == null || string.IsNullOrEmpty(hubIdResponse.Value))
+                {
+                    return (false,
+                        $"[ERROR] Unable to resolve HubId for ProjectUrn '{projectUrn}'. " +
+                        "This usually means your app's ClientId has not been added to the Forma/ACC hub " +
+                        "as a custom integration (Step 1c in setup), or the ProjectUrn does not exist.");
+                }
+
+                var resolvedHubId = hubIdResponse.Value;
+                if (!string.IsNullOrEmpty(hubId) && !string.Equals(hubId, resolvedHubId, StringComparison.OrdinalIgnoreCase))
+                {
+                    return (false,
+                        $"[ERROR] Provided HubId '{hubId}' does not match the HubId resolved from ProjectUrn ('{resolvedHubId}'). " +
+                        "Please verify your HubId is correct.");
+                }
+
+                var resolvedRegion = await Client.SDKOptions.HostingProvider.GetRegionAsync(
+                    string.IsNullOrEmpty(hubId) ? resolvedHubId : hubId);
+                if (string.IsNullOrEmpty(resolvedRegion))
+                {
+                    return (false,
+                        $"[ERROR] Unable to resolve region for HubId '{hubId}'. " +
+                        "Verify the HubId is correct and your app has the required permissions.");
+                }
+
+                return (true, null);
+            }
+            catch (Exception ex)
+            {
+                return (false,
+                    $"[ERROR] Folder validation failed: {ex.Message}. " +
+                    "Verify that your app's ClientId has been added to the Forma/ACC hub as a custom integration " +
+                    "and that you have the required permissions (Data Exchange API, Data Management API).");
+            }
         }
 
         public ElementDataModel GetExchangeData(string exchangeTitle)
@@ -265,12 +341,29 @@ namespace Autodesk.DataExchange.ConsoleApp.Helper
         public async Task<IResponse<ExchangeDetails>> CreateExchange(string exchangeTitle)
         {
             var name = exchangeTitle;
-            TryGetFolderDetails(out var region, out var hubId, out var projectUrn, out var folderUrn);
+            var folderDetailsMissing = TryGetFolderDetails(out var region, out var hubId, out var projectUrn, out var folderUrn);
+            if (folderDetailsMissing)
+            {
+                var missingFields = new List<string>();
+                if (string.IsNullOrEmpty(region)) missingFields.Add("Region");
+                if (string.IsNullOrEmpty(hubId)) missingFields.Add("HubId");
+                if (string.IsNullOrEmpty(projectUrn)) missingFields.Add("ProjectUrn");
+                if (string.IsNullOrEmpty(folderUrn)) missingFields.Add("FolderUrn");
+                throw new InvalidOperationException(
+                    $"Cannot create exchange: missing folder details ({string.Join(", ", missingFields)}). " +
+                    "Run 'SetFolder' first to configure the target folder.");
+            }
+
             var projectDetails = await Client.SDKOptions.HostingProvider.GetProjectInformationAsync(hubId, projectUrn);
             var projectType = ProjectType.ACC;
             if (projectDetails != null)
             {
                 projectType = projectDetails.ProjectType;
+            }
+            else
+            {
+                Console.WriteLine($"[WARNING] Could not retrieve project information for HubId '{hubId}' and ProjectUrn '{projectUrn}'. " +
+                    "This may indicate incorrect folder details or insufficient permissions.");
             }
 
             var exchangeCreateRequest = new ExchangeCreateRequestACC()

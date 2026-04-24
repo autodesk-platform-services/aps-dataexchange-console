@@ -103,5 +103,166 @@ namespace ConsoleConnector_Test
             task.Wait();
             Assert.AreEqual(task.Result, true);
         }
+
+        [TestMethod]
+        public void SetFolder_IdsPath_ValidationFails_ReturnsFalse()
+        {
+            consoleAppHelper.Setup(n =>
+                n.ValidateHubAccessAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync((false, "[ERROR] Unable to resolve HubId for ProjectUrn 'b.wrong-id'. " +
+                    "This usually means your app's ClientId has not been added to the Forma/ACC hub " +
+                    "as a custom integration (Step 1c in setup), or the ProjectUrn does not exist."));
+
+            var setFolder = new SetFolderCommand(consoleAppHelper.Object);
+            setFolder.GetOption<HubId>().SetValue("b.wrong-hub-id");
+            setFolder.GetOption<Region>().SetValue("US");
+            setFolder.GetOption<ProjectUrn>().SetValue("b.wrong-id");
+            setFolder.GetOption<FolderUrn>().SetValue("urn:adsk.wipprod:fs.folder:co.test");
+
+            var task = setFolder.Execute();
+            task.Wait();
+            Assert.AreEqual(false, task.Result);
+
+            consoleAppHelper.Verify(
+                n => n.SetFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never());
+        }
+
+        [TestMethod]
+        public void SetFolder_IdsPath_ValidationPasses_ReturnsTrue()
+        {
+            consoleAppHelper.Setup(n =>
+                n.ValidateHubAccessAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync((true, (string)null));
+
+            var region = "US";
+            consoleAppHelper.Setup(n => n.GetRegion(It.IsAny<string>(), out region));
+
+            var setFolder = new SetFolderCommand(consoleAppHelper.Object);
+            setFolder.GetOption<HubId>().SetValue("b.valid-hub-id");
+            setFolder.GetOption<Region>().SetValue("US");
+            setFolder.GetOption<ProjectUrn>().SetValue("b.valid-project");
+            setFolder.GetOption<FolderUrn>().SetValue("urn:adsk.wipprod:fs.folder:co.test");
+
+            var task = setFolder.Execute();
+            task.Wait();
+            Assert.AreEqual(true, task.Result);
+
+            consoleAppHelper.Verify(
+                n => n.SetFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
+                Times.Once());
+        }
+
+        [TestMethod]
+        public void SetFolder_IdsPath_MissingFields_ReturnsFalse()
+        {
+            var setFolder = new SetFolderCommand(consoleAppHelper.Object);
+            setFolder.GetOption<HubId>().SetValue("b.hub-id");
+            // Region is not set, ProjectUrn is not set, FolderUrn is not set
+
+            var task = setFolder.Execute();
+            task.Wait();
+            Assert.AreEqual(false, task.Result);
+
+            consoleAppHelper.Verify(
+                n => n.SetFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never());
+        }
+
+        [TestMethod]
+        public void SetFolder_UrlPath_MalformedUrl_ReturnsFalse()
+        {
+            var setFolder = new SetFolderCommand(consoleAppHelper.Object);
+            setFolder.GetOption<HubId>().SetValue("https://not-a-valid-url");
+
+            var task = setFolder.Execute();
+            task.Wait();
+            Assert.AreEqual(false, task.Result);
+
+            consoleAppHelper.Verify(
+                n => n.SetFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never());
+        }
+
+        [TestMethod]
+        public void SetFolder_UrlPath_HubIdResolutionFails_ReturnsFalse()
+        {
+            var emptyHubId = (string)null;
+            consoleAppHelper.Setup(n => n.GetHubId(It.IsAny<string>(), out emptyHubId));
+
+            var setFolder = new SetFolderCommand(consoleAppHelper.Object);
+            setFolder.GetOption<HubId>().SetValue(
+                "https://acc.autodesk.com/docs/files/projects/e3be8c87-1df5-470f-9214-1b6cc85452fa?folderUrn=urn%3Aadsk.wipprod%3Afs.folder%3Aco.NBWiKlvJSqOo1B4iUajHeA&viewModel=detail");
+
+            var task = setFolder.Execute();
+            task.Wait();
+            Assert.AreEqual(false, task.Result);
+
+            consoleAppHelper.Verify(
+                n => n.SetFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never());
+        }
+
+        [TestMethod]
+        public void SetFolder_UrlPath_RegionResolutionFails_ReturnsFalse()
+        {
+            var hubId = "b.valid-hub";
+            consoleAppHelper.Setup(n => n.GetHubId(It.IsAny<string>(), out hubId));
+
+            var emptyRegion = (string)null;
+            consoleAppHelper.Setup(n => n.GetRegion(It.IsAny<string>(), out emptyRegion));
+
+            var setFolder = new SetFolderCommand(consoleAppHelper.Object);
+            setFolder.GetOption<HubId>().SetValue(
+                "https://acc.autodesk.com/docs/files/projects/e3be8c87-1df5-470f-9214-1b6cc85452fa?folderUrn=urn%3Aadsk.wipprod%3Afs.folder%3Aco.NBWiKlvJSqOo1B4iUajHeA&viewModel=detail");
+
+            var task = setFolder.Execute();
+            task.Wait();
+            Assert.AreEqual(false, task.Result);
+
+            consoleAppHelper.Verify(
+                n => n.SetFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never());
+        }
+
+        [TestMethod]
+        public void SetFolder_UrlPath_Success_ReturnsTrue()
+        {
+            var hubId = "b.valid-hub";
+            consoleAppHelper.Setup(n => n.GetHubId(It.IsAny<string>(), out hubId));
+
+            var region = "US";
+            consoleAppHelper.Setup(n => n.GetRegion(It.IsAny<string>(), out region));
+
+            var setFolder = new SetFolderCommand(consoleAppHelper.Object);
+            setFolder.GetOption<HubId>().SetValue(
+                "https://acc.autodesk.com/docs/files/projects/e3be8c87-1df5-470f-9214-1b6cc85452fa?folderUrn=urn%3Aadsk.wipprod%3Afs.folder%3Aco.NBWiKlvJSqOo1B4iUajHeA&viewModel=detail");
+
+            var task = setFolder.Execute();
+            task.Wait();
+            Assert.AreEqual(true, task.Result);
+
+            consoleAppHelper.Verify(
+                n => n.SetFolder("US", "b.valid-hub",
+                    "b.e3be8c87-1df5-470f-9214-1b6cc85452fa",
+                    "urn:adsk.wipprod:fs.folder:co.NBWiKlvJSqOo1B4iUajHeA"),
+                Times.Once());
+        }
+
+        [TestMethod]
+        public void CreateExchange_MissingFolderDetails_ReturnsFalse()
+        {
+            consoleAppHelper.Setup(n =>
+                n.TryGetFolderDetails(out It.Ref<string>.IsAny, out It.Ref<string>.IsAny, out It.Ref<string>.IsAny, out It.Ref<string>.IsAny))
+                .Returns(true);
+
+            var createExchange = new CreateExchangeCommand(consoleAppHelper.Object);
+            createExchange.GetOption<ExchangeTitle>().SetValue("TestExchange");
+            var task = createExchange.Execute();
+            task.Wait();
+
+            Assert.AreEqual(false, task.Result);
+        }
+
     }
 }
