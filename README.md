@@ -22,9 +22,10 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
 ## 🔗 Quick Navigation
 
 - [🚀 Quick Start](#-quick-start) - Get up and running quickly
+- [🔐 Credential Setup](#-credential-setup) - Env vars, App.config, and safe defaults
 - [💻 Usage Examples](#-usage-examples) - See the console connector in action
-- [📚 Command Reference](#-command-reference) - Complete command documentation
-- [🔄 Migration Guide](#-migration-guide-sdk-760-upgrade) - **SDK 7.6.0 Upgrade Guide**
+- [📚 Sample Catalog](#-sample-catalog) - Complete list of categories and samples
+- [🔄 Migration Guide](#-migration-guide-console-connector-architecture-revamp) - **Architecture Revamp Guide**
 - [🏗️ Architecture](#️-architecture) - Understand the codebase structure
 - [🔧 Extending the Application](#-extending-the-application) - Add custom functionality
 
@@ -35,15 +36,15 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
 - ✅ **Multi-Format Geometry Processing** - BREP, IFC, Mesh, and Primitive geometries
 - ✅ **Parameter Operations** - Add, modify, and delete instance/type parameters
 - ✅ **Version Control** - Exchange synchronization and versioning
-- ✅ **Data Export** - Download exchanges as STEP or OBJ files
-- ✅ **Folder Management** - Set and manage working directories
+- ✅ **Data Export** - Download exchanges as STEP, IFC, or OBJ files
+- ✅ **Folder Management** - Navigate hubs, projects, and folders
 
 ### Developer Experience
-- 🚀 **Professional Console Interface** - Clean, categorized output messages
-- 📋 **Comprehensive Workflow Testing** - Complete end-to-end validation
-- 💻 **Command-Based Architecture** - Extensible command pattern
+- 🚀 **Interactive Console Menu** - Categorized, navigable sample catalog (11 categories, 100+ samples)
+- 📋 **End-to-End Workflow Scenarios** - Self-contained, runnable demonstrations of complete flows
+- 💻 **Sample-Based Architecture** - Every capability is a standalone `ISample` you can jump to directly (e.g. `4.1`) or run non-interactively via `--run-all`
 - 🔧 **Error Handling** - Robust error management and user feedback
-- 📖 **Built-in Help System** - Detailed command documentation
+- 🔐 **Safe Credential Handling** - Environment variables first; nothing written to disk unless you opt in via `App.config`
 
 ## 🛠️ Prerequisites
 
@@ -70,7 +71,12 @@ cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-Follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure):
+Follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure) to obtain the alpha SDK nupkgs (they aren't on public nuget.org). `BuildSolution.bat` restores everything else from nuget.org automatically, but these packages must be dropped as loose `.nupkg` files in the **parent directory of your repo checkout** first:
+- `Autodesk.DataExchange` (7.6.0-alpha)
+- `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0)
+- `Autodesk.DataExchange.GeometryDefinitions` (0.9.4)
+- `ForgeParameters-csharp_win_release_intel64_v140` (3.0.6)
+- `ForgeUnits-csharp_win_release_intel64_v140` (5.1.4)
 
 **Option A: Visual Studio**
 - Open `ConsoleConnector.sln`
@@ -82,146 +88,269 @@ Follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/
 BuildSolution.bat
 ```
 
-### 3. Configuration
-Update `src/ConsoleConnector/App.config` with your app credentials:
-```xml
-<appSettings>
-    <add key="AuthClientId" value="your_client_id" />
-    <add key="AuthClientSecret" value="your_client_secret" />
-    <add key="AuthCallback" value="your_callback_url" />
-    <add key="ApplicationDataPath" value="" />
-    <add key="ConnectorName" value="your_connector_name" />
-    <add key="ConnectorVersion" value="1.0.0" />
-    <add key="HostApplicationName" value="your_host_application_name" />
-    <add key="HostApplicationVersion" value="2.0.0" />
-    <add key="LogLevel" value="" />
-</appSettings>
-```
-
-### 4. Run the Application
-- Build and run the console application
+### 3. Run the Application
+- Build and run the console application (`ConsoleConnector.exe`)
 - Complete OAuth authentication in the browser
-- Start using commands in the console interface
+- Navigate the interactive menu, or jump straight to a sample by its key (e.g. `4.1`)
+
+See [🔐 Credential Setup](#-credential-setup) below before your first run.
+
+## 🔐 Credential Setup
+
+Credentials are resolved in this order, and **nothing is written to disk unless you explicitly opt into `App.config`**:
+
+1. **Environment variables (recommended)** — `DXSDK_CLIENT_ID` / `DXSDK_CLIENT_SECRET`. Safe for CI and shared machines; never touches the filesystem.
+
+   PowerShell:
+   ```powershell
+   $env:DXSDK_CLIENT_ID = "your_client_id"
+   $env:DXSDK_CLIENT_SECRET = "your_client_secret"
+   ```
+
+   POSIX shells:
+   ```bash
+   export DXSDK_CLIENT_ID=your_client_id
+   export DXSDK_CLIENT_SECRET=your_client_secret
+   ```
+
+2. **`App.config` (local-dev fallback)** — if the environment variables aren't set, the app reads `AuthClientId` / `AuthClientSecret` from `src/ConsoleConnector/App.config`:
+   ```xml
+   <appSettings>
+       <add key="AuthClientId" value="" />
+       <add key="AuthClientSecret" value="" />
+       <add key="AuthCallback" value="http://localhost:8080/" />
+       <add key="ConnectorName" value="Sample Connector" />
+       <add key="ConnectorVersion" value="1.0.0" />
+       <add key="HostApplicationName" value="Sample Host App" />
+       <add key="HostApplicationVersion" value="2.0.0" />
+   </appSettings>
+   ```
+   **Never commit real values here** — this file is tracked in git. Run `git diff`/`git status` before pushing if you edit it locally.
+
+3. **One-off interactive prompt** — if neither of the above is set, the app prompts for credentials for that run only. Nothing is saved; you'll see a reminder of how to persist them via env vars or `App.config`.
+
+Register your app and callback URL at [aps.autodesk.com/myapps](https://aps.autodesk.com/myapps/) with **Data Management** and **Data Exchange** APIs selected. The default callback is `http://localhost:8080/`, with `http://127.0.0.1:63212/`, `http://localhost:9090/`, and `http://localhost:3000/` as fallbacks if that port is in use.
 
 ## 💻 Usage Examples
 
-### Basic Commands
+### Interactive Menu
+
+Launch `ConsoleConnector.exe` and navigate the category menu (Navigation, Exchange Lifecycle, Elements, Attach Geometry, Parameters, Design References, Download Exchange, Revisions, SDK Events, Debug & Telemetry, E2E Workflow Scenarios). From any menu:
+- **`?` Show all samples** — prints the full catalog with keys (e.g. `4.1`, `5.2.1`)
+- **`›` Jump to sample key** — type a key directly to run that sample without navigating menus
+
+### Run Everything Non-Interactively
+
 ```bash
-# Get help
->> help
-
-# Set working folder (using folder URL)
->> SetFolder [FolderUrl]
-# OR set working folder (using individual parameters)
->> SetFolder [HubId] [Region] [ProjectUrn] [FolderUrn]
-
-# Create a new exchange
->> CreateExchange [ExchangeTitle]
-
-# Add BREP geometry
->> AddBrep [ExchangeTitle]
-
-# Add instance parameters
->> AddInstanceParameter [ExchangeTitle] [ElementId] [ParameterName] [ParameterSchema] [ParameterValue] [ParameterValueDataType]
-
-# Sync changes
->> SyncExchange [ExchangeTitle]
-
-# Download exchange
->> GetExchange [ExchangeId] [CollectionId] [HubId] [ExchangeFileFormat]
+ConsoleConnector.exe --run-all
 ```
 
-### Complete Workflow Test
-```bash
-# Run comprehensive end-to-end test
->> WorkFlowTest
+Runs every registered sample once, using defaults for any prompts, and prints a pass/fail summary — useful for smoke-testing after a change or in CI.
+
+### End-to-End Workflow Scenarios (category 11)
+
+Each scenario is a self-contained, runnable demonstration of a complete flow (e.g. "create exchange → add geometry → add parameters → sync"). Jump to any of them directly:
+
+```text
+11.1  Simple Exchange              - create + sync (empty)
+11.2  Single Element With Geometry - create, root element, BREP, sync
+11.4  Multi Geometry Multi Parameter - BREP + mesh + primitive + custom params
+11.7  Two Version Round Trip       - create v1, modify v2, reload v1, diff
+11.10 End To End Create Sync Download - full create + geometry + param + sync + download
 ```
 
-This command executes a complete workflow that:
-1. Creates a new exchange
-2. Adds multiple geometry types (BREP, IFC, Mesh, Primitives)
-3. Adds instance and type parameters
-4. Syncs to Version 1
-5. Deletes some parameters
-6. Adds more geometries and parameters
-7. Syncs to Version 2
-8. Downloads the final exchange
+## 📚 Sample Catalog
 
-## 📚 Command Reference
+| # | Category | Samples |
+|---|----------|---------|
+| 1 | Navigation | Hubs, Projects, Folders, Exchanges |
+| 2 | Exchange Lifecycle | Create, Load, Sync, Refresh, Revisions, Delete |
+| 3 | Elements | Add root/child, list, get by id, delete, attributes, modifications |
+| 4 | Attach Geometry | BREP/STEP, IFC, Mesh, Primitives, Advanced (render style, transforms, units, streams) |
+| 5 | Parameters | Instance (built-in/custom/batch/update), Type, Misc (model/geometry-level, references) |
+| 6 | Design References | Create, instantiate, query by id/name |
+| 7 | Download Exchange | STEP, IFC, OBJ |
+| 8 | Revisions | Created/modified/deleted/all-changed elements |
+| 9 | SDK Events | Subscribe/unsubscribe to exchange updates, viewable generation progress |
+| 10 | Debug & Telemetry | HTTP debug logging, feature flags, progress steps, telemetry sessions |
+| 11 | E2E Workflow Scenarios | 10 self-contained end-to-end demonstrations |
 
-| Command | Description | Example |
-|---------|-------------|---------|
-| `help` | Display all commands | `help` |
-| `help [command]` | Get command details | `help CreateExchange` |
-| `CreateExchange` | Create new exchange | `CreateExchange [ExchangeTitle]` |
-| `AddBrep` | Add BREP geometry | `AddBrep [ExchangeTitle]` |
-| `AddIFC` | Add IFC geometry | `AddIFC [ExchangeTitle]` |
-| `AddMesh` | Add mesh geometry | `AddMesh [ExchangeTitle]` |
-| `AddPrimitive` | Add primitives | `AddPrimitive [ExchangeTitle] [PrimitiveGeometry]` |
-| `AddInstanceParameter` | Add instance parameter | `AddInstanceParameter [ExchangeTitle] [ElementId] [ParameterName] [ParameterSchema] [ParameterValue] [ParameterValueDataType]` |
-| `AddTypeParameter` | Add type parameter | `AddTypeParameter [ExchangeTitle] [ElementId] [ParameterName] [ParameterSchema] [ParameterValue] [ParameterValueDataType]` |
-| `DeleteInstanceParam` | Remove instance parameter | `DeleteInstanceParam [ExchangeTitle] [ElementId] [ParameterName]` |
-| `DeleteTypeParam` | Remove type parameter | `DeleteTypeParam [ExchangeTitle] [ElementId] [ParameterName]` |
-| `SyncExchange` | Sync exchange | `SyncExchange [ExchangeTitle]` |
-| `GetExchange` | Download exchange | `GetExchange [ExchangeId] [CollectionId] [HubId] [ExchangeFileFormat]` |
-| `SetFolder` | Set working folder | `SetFolder [FolderUrl]` or `SetFolder [HubId] [Region] [ProjectUrn] [FolderUrn]` |
-| `WorkFlowTest` | Run complete test | `WorkFlowTest` |
-| `Exit` | Close application | `Exit` |
+Every sample implements `ISample` and is discovered automatically via reflection (`SampleAddressAttribute`) — see [Extending the Application](#-extending-the-application).
 
 ## 🏗️ Architecture
 
 ```
 ConsoleConnector/
-├── Commands/           # Command implementations
-│   ├── CreateExchangeCommand.cs
-│   ├── CreateBrepCommand.cs
-│   ├── WorkFlowTestCommand.cs
+├── Driver/              # App plumbing: menu, bootstrap, credentials, terminal UI
+│   ├── Menu.cs
+│   ├── CredentialsBootstrap.cs
+│   ├── SdkBootstrap.cs
+│   ├── SampleDiscovery.cs
+│   ├── SampleRunner.cs
 │   └── ...
-├── Helper/            # Utility classes
-│   ├── ConsoleAppHelper.cs
-│   ├── GeometryHelper.cs
-│   └── ParameterHelper.cs
-├── Interfaces/        # Abstractions
-└── Assets/           # Sample geometry files
+├── Common/              # Shared helpers reused across samples
+│   ├── ExchangeSessionHelper.cs
+│   ├── ElementSampleHelper.cs
+│   ├── GeometrySampleHelper.cs
+│   ├── ParameterSampleHelper.cs
+│   └── ...
+├── Samples/             # One ISample per capability, organized by category
+│   ├── Navigation/
+│   ├── ExchangeLifecycle/
+│   ├── Elements/
+│   ├── AttachGeometry/
+│   ├── Parameters/
+│   ├── DesignReferences/
+│   ├── DownloadExchange/
+│   ├── Revisions/
+│   ├── SdkEvents/
+│   ├── DebugTelemetry/
+│   └── E2EWorkflowScenarios/
+└── Assets/              # Sample geometry files
 ```
 
 ### Key Components
 
-- **Command Pattern**: Each operation is implemented as a separate command class
-- **Helper Classes**: Reusable utilities for geometry, parameters, and console operations
-- **Interface Abstractions**: Clean separation of concerns
-- **Asset Management**: Sample files for testing and demonstration
+- **`ISample`**: every capability implements this interface (`Name`, `Description`, `RunAsync(ctx)`); discovered automatically via the `[SampleAddress(category, sample, subSample)]` attribute
+- **`Common/*Helper` classes**: the only thing samples are allowed to compose — no sample ever instantiates another sample directly, keeping every example runnable and readable on its own
+- **`SampleContext`**: carries the SDK client, session folder, and defaults between samples in a single run
+- **`Driver/`**: everything that isn't part of the SDK story — menu navigation, credential resolution, session persistence, terminal rendering
 
 ## 🔧 Extending the Application
 
-### Adding New Commands
+### Adding a New Sample
 
-1. Create a new command class inheriting from `Command`
-2. Implement required methods (`Execute`, `Clone`, `ValidateOptions`)
-3. Register the command in `ConsoleAppHelper`
+1. Create a class implementing `ISample` under the appropriate `Samples/<Category>/` folder
+2. Tag it with `[SampleAddress(categoryId, sampleId, subSampleId = 0)]`
+3. Implement the SDK call using existing `Common/*Helper` methods where possible
 
 ```csharp
-public class MyCustomCommand : Command
+[SampleAddress(3, 10)]
+public sealed class MyCustomSample : ISample
 {
-    public override async Task<bool> Execute()
-    {
-        Console.WriteLine("[CUSTOM] Executing my command");
-        // Implementation here
-        return true;
-    }
+    public string Name => "My Custom Sample";
+    public string Description => "Demonstrates my custom SDK capability";
 
-    public override Command Clone()
+    public async Task RunAsync(SampleContext ctx)
     {
-        return new MyCustomCommand(this);
+        var session = await ElementSampleHelper.BeginAsync(ctx);
+        if (session == null)
+            return;
+
+        // Your SDK call here.
+
+        await ElementSampleHelper.SyncAsync(ctx, session);
     }
 }
 ```
 
-### Adding Command Options
+Add the file to `ConsoleConnector.csproj`'s `<Compile Include="..." />` list (the project uses an old-style `.csproj` without globbing) — the sample is then automatically discovered and appears in the menu under its category.
 
-1. Create option class in `Commands/Options/`
-2. Add to command's `Options` list
-3. Use `GetOption<T>()` to access values
+### Adding Shared Logic
+
+If a piece of logic is needed by more than one sample, add it to the relevant `Common/*Helper` class instead of duplicating it — samples should stay thin wrappers over `Common` helpers.
+
+## 🔄 Migration Guide: Console Connector Architecture Revamp
+
+This section documents replacing the Command-pattern console app with a menu-driven, sample-based architecture, landed as a sequence of category-wise PRs.
+
+### 📋 Overview of Changes
+
+- **Architecture**: `Commands/`/`Helper/`/`Interfaces/` replaced by `Driver/` (menu, bootstrap, terminal UI) + `Common/` (shared helpers) + `Samples/` (one `ISample` per capability, organized by category)
+- **Credentials**: no longer persisted to a plaintext session file. Resolved from `DXSDK_CLIENT_ID`/`DXSDK_CLIENT_SECRET` env vars → `App.config` → a one-off prompt that is never saved (see [🔐 Credential Setup](#-credential-setup))
+- **Tests**: added an MSTest+Moq scaffold covering the `Driver`/`Common` surface (credential resolution, session state mapping, sample discovery/runner, and the pure helper logic)
+- **Breaking Changes**: Yes — the CLI-args command interface (`>> CreateExchange [Title]`, `>> WorkFlowTest`, etc.) is replaced entirely by the interactive menu / `--run-all` / jump-to-key interface described in [Usage Examples](#-usage-examples)
+- **Build result**: 0 errors after fixes applied
+
+### 🚀 Key Dependency Updates
+
+| Package | Reason |
+|---------|--------|
+| `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0) | `Client.Initialize()` requires this companion assembly at runtime against 7.6.0-alpha; not previously declared |
+| `Autodesk.DataExchange.GeometryDefinitions` (bumped to 0.9.4) | Exact version pinned by the SDK's own nuspec for 7.6.0-alpha |
+| `Spectre.Console` / `Spectre.Console.Ansi` (0.57.2) | Powers the interactive menu, tables, and prompts |
+| `Microsoft.Bcl.TimeProvider`, `System.Memory`/`System.Buffers`/`System.Numerics.Vectors`/`System.Runtime.CompilerServices.Unsafe` (bumped) | Transitive requirements of `Spectre.Console` on net48 |
+| `IndexRange` | Polyfills `System.Index`/`System.Range` (`^1`, `a..b` syntax) on net48 |
+
+### ⚠️ Breaking Changes
+
+#### 1. The CLI-args command interface is gone
+
+**Before:**
+```bash
+>> CreateExchange [ExchangeTitle]
+>> AddBrep [ExchangeTitle]
+>> SyncExchange [ExchangeTitle]
+```
+
+**After:** navigate the interactive menu, or jump directly to a sample key:
+```text
+4.1   (jump to "Add BREP from STEP file")
+```
+or run everything non-interactively:
+```bash
+ConsoleConnector.exe --run-all
+```
+
+**Migration Action:** if you had scripts driving the old CLI syntax, replace them with `--run-all` for full-catalog runs, or automate via the `ISample` API directly (each sample is a public class with a `RunAsync(SampleContext)` method).
+
+#### 2. Credential storage changed
+
+**Before:** `App.config` was the only credential source, and real values were checked into git history.
+
+**After:** environment variables are checked first and are never written to disk; `App.config` is a documented fallback that ships with empty values by default.
+
+**Migration Action:** set `DXSDK_CLIENT_ID`/`DXSDK_CLIENT_SECRET`, or fill in your own local (never committed) `App.config` values.
+
+### 🔧 Migration Steps
+
+#### Step 1: Set credentials
+
+See [🔐 Credential Setup](#-credential-setup).
+
+#### Step 2: Restore and Rebuild
+
+```bash
+BuildSolution.bat
+```
+
+#### Step 3: Verify
+
+```bash
+ConsoleConnector.exe --run-all
+```
+
+Confirms every registered sample runs without an unhandled exception and prints a pass/fail summary.
+
+### 🎯 Summary of Changes
+
+| Aspect | Before | After |
+|--------|--------|-------|
+| Entry point | CLI-args commands (`>> CreateExchange ...`) | Interactive menu, jump-to-key, or `--run-all` |
+| Credential storage | `App.config` only (real values in git history) | Env vars → `App.config` (empty by default) → one-off prompt |
+| Extensibility | New `Command` subclass + `Options/` + registration in `ConsoleAppHelper` | New `ISample` + `[SampleAddress]`, auto-discovered |
+| Test coverage | 11 MSTest cases against the Command pattern | 32 MSTest cases against `Driver`/`Common` |
+| Upgrade effort | - | 14 stacked PRs — foundation, tests, E2E scenarios, then one PR per sample category |
+
+### 🧪 Testing Your Migration
+
+```bash
+ConsoleConnector.exe --run-all
+```
+
+This validates every registered sample across all 11 categories runs without throwing. For unit-level coverage, run the MSTest suite in `test/ConsoleConnector_Test`.
+
+---
+
+**Migration Checklist:**
+- [x] Replaced `Commands`/`Helper`/`Interfaces` with `Driver`/`Common`/`Samples`
+- [x] Credentials resolved via env vars → `App.config` → one-off prompt, nothing persisted by default
+- [x] Added MSTest+Moq coverage for the new `Driver`/`Common` surface
+- [x] Made all 10 E2E workflow scenarios self-contained (no sample instantiates another sample)
+- [x] Ported all 11 sample categories (104 samples total)
+- [x] Ran `--run-all` to confirm full-catalog coverage
+
+---
 
 ## 🔄 Migration Guide: SDK 7.6.0 Upgrade
 

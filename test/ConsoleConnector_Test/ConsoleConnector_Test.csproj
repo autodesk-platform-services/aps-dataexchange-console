@@ -23,6 +23,7 @@
     <TestProjectType>UnitTest</TestProjectType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,7 +48,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
@@ -56,7 +58,8 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
@@ -66,11 +69,18 @@
     <Reference Include="Autodesk.DataExchange, Version=7.6.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\..\packages\Autodesk.DataExchange.7.6.0-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
+    <Reference Include="Autodesk.DataExchange.ADPAnalytics.Abstractions">
+      <HintPath>..\..\packages\Autodesk.DataExchange.ADPAnalytics.Abstractions.1.0.0\lib\net48\Autodesk.DataExchange.ADPAnalytics.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Autodesk.GeometryUtilities.PrimitivesAPI, Version=0.9.3.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.3\lib\net48\Autodesk.GeometryUtilities.PrimitivesAPI.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.GeometryUtilities.MeshAPI, Version=0.9.3.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.3\lib\net48\Autodesk.GeometryUtilities.MeshAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="IndexRange">
+      <HintPath>..\..\packages\IndexRange.1.0.0\lib\net471\IndexRange.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autodesk.Newtonsoft.Json.13.0.3\lib\net45\Autodesk.Newtonsoft.Json.dll</HintPath>
@@ -226,14 +236,24 @@
     <Reference Include="Serilog.Sinks.Trace, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Serilog.Sinks.Trace.3.0.0\lib\net45\Serilog.Sinks.Trace.dll</HintPath>
     </Reference>
+    <Reference Include="Spectre.Console">
+      <HintPath>..\..\packages\Spectre.Console.0.57.2\lib\netstandard2.0\Spectre.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Spectre.Console.Ansi">
+      <HintPath>..\..\packages\Spectre.Console.Ansi.0.57.2\lib\netstandard2.0\Spectre.Console.Ansi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.TimeProvider">
+      <HintPath>..\..\packages\Microsoft.Bcl.TimeProvider.10.0.8\lib\net462\Microsoft.Bcl.TimeProvider.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.AppContext.4.3.0\lib\net463\System.AppContext.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Collections.Immutable, Version=1.2.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Collections.Immutable.1.7.1\lib\net461\System.Collections.Immutable.dll</HintPath>
@@ -305,8 +325,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    <Reference Include="System.Memory">
+      <HintPath>..\..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
@@ -319,8 +340,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reflection, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
@@ -338,8 +360,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
@@ -420,9 +443,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyResolver.cs" />
-    <Compile Include="Command_Test.cs" />
-    <Compile Include="MoreLinq\MoreEnumerable.Batch.cs" />
+    <Compile Include="CredentialsBootstrapTests.cs" />
+    <Compile Include="ElementSampleHelperTests.cs" />
+    <Compile Include="ExchangeSessionHelperTests.cs" />
+    <Compile Include="GeometrySampleHelperTests.cs" />
+    <Compile Include="NavigationHelperTests.cs" />
+    <Compile Include="SampleDiscoveryTests.cs" />
+    <Compile Include="SampleRunnerTests.cs" />
+    <Compile Include="SessionStoreTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,97 +1,80 @@
-﻿using Autodesk.DataExchange.ConsoleApp.Exceptions;
-using Autodesk.DataExchange.ConsoleApp.Helper;
-using Autodesk.DataExchange.ConsoleApp.Interfaces;
 using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Linq;
 using System.Threading.Tasks;
+using Autodesk.DataExchange.Exceptions;
+using ConsoleConnector.Driver;
+using ConsoleConnector.Samples;
+using ConsoleConnector.Common;
 
-namespace Autodesk.DataExchange.ConsoleApp
+namespace ConsoleConnector
 {
-    class Program
+    internal static class Program
     {
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
-        static extern IntPtr FindWindowByCaption(IntPtr zeroOnly, string lpWindowName);
-
-        static Program()
+        private static async Task Main(string[] args)
         {
+            var runAll = args.Any(a => string.Equals(a, "--run-all", StringComparison.OrdinalIgnoreCase));
+            if (runAll)
+                BatchMode.Enabled = true;
 
-        }
+            TerminalUi.ShowBanner();
 
-        static IConsoleAppHelper _consoleAppHelper;
-        static async Task Main(string[] args)
-        {
             try
-            {                
-                Console.Title = "Console Connector";
-                IntPtr handle = FindWindowByCaption(IntPtr.Zero, Console.Title);
+            {
+                var session = SessionStore.Load();
 
-                //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+                var credentials = CredentialsBootstrap.Resolve();
+                var client = await SdkBootstrap.CreateClientAsync(credentials.ClientId, credentials.ClientSecret);
 
-                _consoleAppHelper = new ConsoleAppHelper();
-                _consoleAppHelper.Start();
+                await SdkBootstrap.SignInAsync(client);
 
-                SetForegroundWindow(handle);
-                
-                Console.Clear();
-                Console.WriteLine(
-                    "╔══════════════════════════════════════════════════════════════════╗\n" +
-                    "║                >> Autodesk Data Exchange CLI <<                  ║\n" +
-                    "║                   DataExchange SDK Integration                   ║\n" +
-                    "╚══════════════════════════════════════════════════════════════════╝\n\n" +
-                    
-                    "[OVERVIEW]\n" +
-                    "   This is a sample console connector that demonstrates how to use\n" +
-                    "   the Autodesk Data Exchange SDK. It serves as a reference implementation\n" +
-                    "   for developers building their own Data Exchange integrations.\n\n" +                  
-                    
-                    "[GETTING STARTED]\n" +
-                    "   > Type 'help' to display all available commands\n" +
-                    "   > Type 'help [command]' for detailed usage information\n" +
-                    "   > Type 'WorkFlowTest' to run complete integration demo\n\n" +
-                    
-                    "────────────────────────────────────────────────────────────────────\n");
-                while (true)
+                var ctx = new SampleContext(client, session.Defaults);
+
+                session = await Bootstrap.EnsureSessionAsync(session, ctx);
+                SessionStore.Apply(session, ctx);
+
+                if (ctx.LastExchange != null)
                 {
-                    try
-                    {
-                        Console.Write(">>");
-                        var input = Console.ReadLine();
-                        if (string.IsNullOrEmpty(input))
-                            continue;
-
-                        var command = _consoleAppHelper.GetCommand(input);
-                        if (command == null)
-                            Console.WriteLine($"[ERROR] Command '{input}' not found");
-                        else
-                            await command.Execute();
-                    }
-                    catch (Exception e)
-                    {
-                        _consoleAppHelper.Logger?.Error(e.Message, "An error occurred while executing the command.");
-                        Console.WriteLine($"[ERROR] {e}");
-                    }
-
+                    var title = ctx.LastExchange.Title;
+                    var restored = false;
+                    await TerminalUi.RunWithStatusAsync(
+                        $"Restoring {title}…",
+                        async () => restored = await ExchangeSessionHelper.TryRestoreAsync(ctx).ConfigureAwait(false));
+                    if (restored)
+                        TerminalUi.Success($"Restored last exchange: {title}");
                 }
+
+                if (runAll)
+                {
+                    var result = await SampleRunner.RunAllAsync(ctx, session);
+                    TerminalUi.Section("Summary");
+                    TerminalUi.Info($"{result.Passed} passed, {result.Failed} failed (of {result.Results.Count})");
+                    foreach (var failure in result.Results.Where(r => r.Error != null))
+                        TerminalUi.Error($"{failure.Key} {failure.Name}: {failure.Error!.Split('\n')[0]}");
+
+                    Environment.ExitCode = result.Failed > 0 ? 1 : 0;
+                    return;
+                }
+
+                TerminalUi.Rule("Ready");
+                await Menu.RunAsync(ctx, session);
             }
-            catch (AuthenticationMissingException authenticationMissingException)
+            catch (AllCallbackPortsInUseException ex)
             {
-                _consoleAppHelper.Logger?.Error(authenticationMissingException.Message, "An error occurred while executing the command.");
-                Console.WriteLine($"[AUTH ERROR] {authenticationMissingException.Message}");
-                Console.ReadKey();
+                TerminalUi.Error("Authentication failed: all callback URLs are in use.");
+                TerminalUi.WritePanel("Attempted URLs", string.Join(Environment.NewLine, ex.AttemptedUrls));
+                TerminalUi.Dim(ex.Message);
             }
-            catch (Exception a)
+            catch (PortInUseException ex)
             {
-                _consoleAppHelper.Logger?.Error(a.Message, "An error occurred while executing the command.");
-                Console.WriteLine($"[APP ERROR] {a}");
-                Console.ReadKey();
+                TerminalUi.Error("Authentication failed: callback port is in use.");
+                TerminalUi.Dim(ex.Message);
+                TerminalUi.Info("Close the app using that port, or add FallbackRedirectUrls in SdkBootstrap.");
+            }
+            catch (Exception ex)
+            {
+                TerminalUi.Error($"Fatal: {ex}");
+                Environment.ExitCode = 1;
             }
         }
-    }    
+    }
 }
