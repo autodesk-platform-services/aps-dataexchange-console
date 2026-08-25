@@ -24,13 +24,20 @@ namespace ConsoleConnector.Samples
             if (session == null)
                 return;
             var client = DiagnosticsSampleHelper.RequireClient(ctx);
-            var listener = new ConsoleProgressListener();
-            client.ProgressStepsManager.RegisterProgressUpdateListener(listener);
-            client.ProgressStepsManager.SetActiveOperation(Operation.Update);
-            TerminalUi.Info("Progress listener registered. Syncing exchange...");
-            TerminalUi.Chat("(FinalizeExchange sub-steps include viewable creation during sync.)");
-            await ElementSampleHelper.SyncAsync(ctx, session);
-            TerminalUi.Chat("Sync finished. Review progress lines above for FinalizeExchange.");
+            var progressManager = client.ProgressStepsManager;
+            DiagnosticsSampleHelper.RegisterConsoleProgressListener(progressManager);
+            try
+            {
+                progressManager.SetActiveOperation(Operation.Update);
+                TerminalUi.Info("Progress listener registered. Syncing exchange...");
+                TerminalUi.Chat("(FinalizeExchange sub-steps include viewable creation during sync.)");
+                await ElementSampleHelper.SyncAsync(ctx, session);
+                TerminalUi.Chat("Sync finished. Review progress lines above for FinalizeExchange.");
+            }
+            finally
+            {
+                DiagnosticsSampleHelper.UnregisterProgressUpdateListener(progressManager);
+            }
         }
     }
 }

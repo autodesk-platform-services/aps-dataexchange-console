@@ -71,8 +71,8 @@ cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-Follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure) to obtain the alpha SDK nupkgs (they aren't on public nuget.org). `BuildSolution.bat` restores everything else from nuget.org automatically, but these packages must be dropped as loose `.nupkg` files in the **parent directory of your repo checkout** first:
-- `Autodesk.DataExchange` (7.6.0-alpha)
+Follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure) to obtain the beta SDK nupkgs (they aren't on public nuget.org). `BuildSolution.bat` restores everything else from nuget.org automatically, but these packages must be dropped as loose `.nupkg` files in the **parent directory of your repo checkout** first:
+- `Autodesk.DataExchange` (7.6.0-beta)
 - `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0)
 - `Autodesk.DataExchange.GeometryDefinitions` (0.9.4)
 - `ForgeParameters-csharp_win_release_intel64_v140` (3.0.6)
@@ -266,8 +266,8 @@ This section documents replacing the Command-pattern console app with a menu-dri
 
 | Package | Reason |
 |---------|--------|
-| `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0) | `Client.Initialize()` requires this companion assembly at runtime against 7.6.0-alpha; not previously declared |
-| `Autodesk.DataExchange.GeometryDefinitions` (bumped to 0.9.4) | Exact version pinned by the SDK's own nuspec for 7.6.0-alpha |
+| `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0) | `Client.Initialize()` requires this companion assembly at runtime against 7.6.0-beta; not previously declared |
+| `Autodesk.DataExchange.GeometryDefinitions` (bumped to 0.9.4) | Exact version pinned by the SDK's own nuspec for 7.6.0-beta |
 | `Spectre.Console` / `Spectre.Console.Ansi` (0.57.2) | Powers the interactive menu, tables, and prompts |
 | `Microsoft.Bcl.TimeProvider`, `System.Memory`/`System.Buffers`/`System.Numerics.Vectors`/`System.Runtime.CompilerServices.Unsafe` (bumped) | Transitive requirements of `Spectre.Console` on net48 |
 | `IndexRange` | Polyfills `System.Index`/`System.Range` (`^1`, `a..b` syntax) on net48 |

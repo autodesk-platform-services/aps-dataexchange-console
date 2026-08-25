@@ -33,11 +33,30 @@ namespace ConsoleConnector.Common
             foreach (var step in steps)
                 TerminalUi.Chat($"    {step.StepId}: {step.Title} -> {step.CompletionTitle}");
         }
+
+        internal static void RegisterConsoleProgressListener(IProgressStepsManager manager) =>
+            manager.RegisterProgressUpdateListener(new ConsoleProgressListener());
+
+        internal static void UnregisterProgressUpdateListener(IProgressStepsManager manager) =>
+            manager.RegisterProgressUpdateListener(NullProgressUpdateListener.Instance);
     }
 
     internal sealed class ConsoleProgressListener : IProgressUpdateListener
     {
         public void OnProgressUpdate(string stepId, double progress) =>
             TerminalUi.Progress($"{stepId}: {progress:F1}%");
+    }
+
+    internal sealed class NullProgressUpdateListener : IProgressUpdateListener
+    {
+        internal static readonly NullProgressUpdateListener Instance = new NullProgressUpdateListener();
+
+        private NullProgressUpdateListener()
+        {
         }
+
+        public void OnProgressUpdate(string stepId, double progress)
+        {
+        }
+    }
 }
