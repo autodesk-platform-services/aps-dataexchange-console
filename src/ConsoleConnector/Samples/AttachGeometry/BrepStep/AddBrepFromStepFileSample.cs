@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach BREP geometry from a STEP file on disk.
     /// SDK: ElementDataModel.CreateFileGeometry (STEP file).
     /// Console plumbing: GeometrySampleHelper.AttachFileGeometryAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 1, 1)]
     public sealed class AddBrepFromStepFileSample : ISample

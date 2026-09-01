@@ -12,7 +12,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Element length/display units affect geometry interpretation.
     /// SDK: IElement.LengthUnit + CreatePrimitiveGeometry.
     /// Console plumbing: GeometrySampleHelper.BeginAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 5, 3)]
     public sealed class SetElementUnitsSample : ISample

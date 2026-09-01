@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to delete a model-level parameter.
     /// SDK: ElementDataModel.DeleteParameter (model level).
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 3, 3)]
     public sealed class DeleteModelLevelParamSample : ISample

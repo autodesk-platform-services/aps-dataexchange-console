@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Exchange-level viewable orientation (UP, Front, North).
     /// SDK: SetViewableWorldCoordinates / GetViewableWorldCoordinates.
     /// Console plumbing: GeometrySampleHelper.BeginAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 5, 4)]
     public sealed class SetViewableWorldCoordinatesSample : ISample

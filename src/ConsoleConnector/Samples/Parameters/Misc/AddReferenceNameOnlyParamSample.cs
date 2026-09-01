@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Reference params can be name-only without an entity id.
     /// SDK: Element.CreateReferenceNameOnlyParameters.
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 3, 8)]
     public sealed class AddReferenceNameOnlyParamSample : ISample

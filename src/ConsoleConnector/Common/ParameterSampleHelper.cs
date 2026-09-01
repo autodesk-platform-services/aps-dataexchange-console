@@ -53,7 +53,7 @@ namespace ConsoleConnector.Common
         }
 
                 TerminalUi.Info("Type params need a type design asset. Run 3.1 Add Root Element or attach geometry (4.x)");
-            TerminalUi.Info("— both call ClassifyGeneric and create type 'ConsoleConnector sample' — then sync (2.3).");
+            TerminalUi.Info("— both call ClassifyGeneric and create type 'ConsoleConnector sample' — then sync (2.2).");
             return null;
             }
 

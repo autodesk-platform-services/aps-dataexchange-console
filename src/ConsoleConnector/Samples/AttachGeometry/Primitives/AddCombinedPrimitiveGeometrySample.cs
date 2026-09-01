@@ -7,7 +7,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach multiple primitives in one container.
     /// SDK: ElementDataModel.CreatePrimitiveGeometry (combined).
     /// Console plumbing: GeometrySampleHelper.AttachPrimitiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 4, 12)]
     public sealed class AddCombinedPrimitiveGeometrySample : ISample

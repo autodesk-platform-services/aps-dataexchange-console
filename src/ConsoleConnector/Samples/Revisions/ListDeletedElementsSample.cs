@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Which elements were deleted across revisions.
     /// SDK: ElementDataModel.GetDeletedElements.
     /// Console plumbing: DeltaSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(8, 3)]
     public sealed class ListDeletedElementsSample : ISample

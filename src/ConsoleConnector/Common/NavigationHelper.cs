@@ -33,12 +33,15 @@ namespace ConsoleConnector.Common
             return false;
         }
 
+        internal static bool IsCompleteFolder(SessionFolderInfo? folder) =>
+            folder != null
+            && !string.IsNullOrWhiteSpace(folder.HubId)
+            && !string.IsNullOrWhiteSpace(folder.ProjectUrn)
+            && !string.IsNullOrWhiteSpace(folder.FolderUrn);
+
         internal static bool EnsureFullFolder(SampleContext ctx)
         {
-            if (ctx.Folder != null
-                && !string.IsNullOrWhiteSpace(ctx.Folder.HubId)
-                && !string.IsNullOrWhiteSpace(ctx.Folder.ProjectUrn)
-                && !string.IsNullOrWhiteSpace(ctx.Folder.FolderUrn))
+            if (IsCompleteFolder(ctx.Folder))
                 return true;
 
             TerminalUi.Warning("No folder in session. Set a folder at startup first.");

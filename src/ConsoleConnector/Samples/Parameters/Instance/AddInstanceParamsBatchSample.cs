@@ -12,7 +12,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Batch create is more efficient than one-by-one.
     /// SDK: Element.CreateInstanceParametersAsync (batch).
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 1, 6)]
     public sealed class AddInstanceParamsBatchSample : ISample

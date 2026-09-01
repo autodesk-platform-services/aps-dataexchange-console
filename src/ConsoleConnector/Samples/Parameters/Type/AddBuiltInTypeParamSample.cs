@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Type-level built-in params attach to a type name, not an element.
     /// SDK: ElementDataModel.CreateTypeParameterAsync (built-in).
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 2, 1)]
     public sealed class AddBuiltInTypeParamSample : ISample

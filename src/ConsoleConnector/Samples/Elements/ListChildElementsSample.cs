@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to traverse one level of the element hierarchy.
     /// SDK: IElement.GetChildElements.
     /// Console plumbing: ElementSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(3, 6)]
     public sealed class ListChildElementsSample : ISample

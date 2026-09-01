@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Flat vs hierarchical STEP assembly import behavior.
     /// SDK: GeometryConfiguration.IsFlatSTEPAssembly.
     /// Console plumbing: GeometrySampleHelper.RequireGeometryConfiguration.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 1, 5)]
     public sealed class ConfigureFlatStepAssemblySample : ISample

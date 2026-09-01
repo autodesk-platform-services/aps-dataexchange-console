@@ -7,7 +7,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach a B-surface (plane surface) primitive.
     /// SDK: ElementDataModel.CreatePrimitiveGeometry (B-surface).
     /// Console plumbing: GeometrySampleHelper.AttachPrimitiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 4, 7)]
     public sealed class AddPrimitivePlaneSurfaceSample : ISample

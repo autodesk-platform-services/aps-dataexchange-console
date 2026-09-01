@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to unsubscribe from exchange update events.
     /// SDK: IEventsController.UnsubscribeToExchangeUpdateEvent.
     /// Console plumbing: ElementSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(9, 2)]
     public sealed class UnsubscribeExchangeUpdatesSample : ISample

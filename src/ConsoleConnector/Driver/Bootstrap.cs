@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Autodesk.DataExchange;
 using Autodesk.DataExchange.Core.Interface;
 using Autodesk.DataExchange.Core.Models;
+using ConsoleConnector.Common;
 using ConsoleConnector.Samples;
 using Spectre.Console;
 using AccFolderInfo = Autodesk.DataExchange.Core.Models.FolderInfo;
@@ -20,7 +21,7 @@ namespace ConsoleConnector.Driver
         {
             SessionStore.Apply(session, ctx);
 
-            if (session.Folder == null)
+            if (!NavigationHelper.IsCompleteFolder(session.Folder))
                 return await FirstRunAsync(session, ctx);
 
             return await SubsequentRunAsync(session, ctx);

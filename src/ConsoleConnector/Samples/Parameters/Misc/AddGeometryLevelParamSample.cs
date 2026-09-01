@@ -11,7 +11,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Parameters can live on geometry, not just elements.
     /// SDK: ElementGeometry.CreateParameter.
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 3, 4)]
     public sealed class AddGeometryLevelParamSample : ISample

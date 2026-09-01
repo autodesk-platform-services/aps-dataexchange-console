@@ -13,7 +13,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Set element transform before attaching geometry.
     /// SDK: IElement.Transformation + SetElementGeometry.
     /// Console plumbing: GeometrySampleHelper.BeginAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 5, 2)]
     public sealed class SetElementTransformSample : ISample

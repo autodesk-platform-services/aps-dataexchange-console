@@ -11,7 +11,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: The difference between all elements (flat) and top-level only.
     /// SDK: ElementDataModel.Elements + TopLevelElements.
     /// Console plumbing: ElementSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(3, 3)]
     public sealed class ListElementsSample : ISample

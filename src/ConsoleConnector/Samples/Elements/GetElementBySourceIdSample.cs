@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to look up one element by its source id.
     /// SDK: ElementDataModel.GetElementsBySourceId.
     /// Console plumbing: ElementSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(3, 4)]
     public sealed class GetElementBySourceIdSample : ISample

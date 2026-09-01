@@ -11,7 +11,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to delete one instance parameter.
     /// SDK: Element.DeleteInstanceParameter.
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 1, 4)]
     public sealed class DeleteInstanceParamSample : ISample

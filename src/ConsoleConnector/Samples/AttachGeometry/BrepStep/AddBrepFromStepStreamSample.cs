@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach STEP BREP from a memory stream.
     /// SDK: ElementDataModel.CreateFileGeometry (STEP stream).
     /// Console plumbing: GeometrySampleHelper.AttachStreamGeometryAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 1, 2)]
     public sealed class AddBrepFromStepStreamSample : ISample

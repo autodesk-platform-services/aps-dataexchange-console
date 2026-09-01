@@ -7,7 +7,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to build and attach in-memory mesh via MeshAPI.
     /// SDK: ElementDataModel.CreateMeshGeometry.
     /// Console plumbing: GeometrySampleHelper.AttachMeshAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 3, 3)]
     public sealed class AddMeshFromTritonSample : ISample

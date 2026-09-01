@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to export the entire exchange to a STEP file.
     /// SDK: IClient.DownloadCompleteExchangeAsSTEP.
     /// Console plumbing: DownloadSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(7, 1)]
     public sealed class DownloadExchangeAsStepSample : ISample

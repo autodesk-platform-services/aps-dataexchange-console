@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Exchange-wide (model/root) params are separate from element params.
     /// SDK: ElementDataModel.AddParameterAsync (model level).
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 3, 1)]
     public sealed class AddModelLevelParamSample : ISample

@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// <summary>
     /// What you learn: Always pair metrics start with stop to get elapsed time.
     /// SDK: Metrics.StopTracking.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(10, 5)]
     public sealed class StopTelemetrySessionSample : ISample

@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// <summary>
     /// What you learn: SDK operations expose named progress steps.
     /// SDK: IProgressStepsManager.GetProgressStepsByOperation.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(10, 3)]
     public sealed class ShowProgressStepsSample : ISample

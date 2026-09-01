@@ -14,7 +14,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to filter geometry on download with GeometryFilters.
     /// SDK: GetGeometriesAsync with GeometryFilters.
     /// Console plumbing: GeometrySampleHelper.BeginAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 5, 10)]
     public sealed class FilterGeometryOutputSample : ISample

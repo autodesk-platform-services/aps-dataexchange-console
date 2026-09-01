@@ -7,7 +7,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Instantiate copies design geometry onto a new instance element.
     /// SDK: InstantiateDesign + InstantiateDesignBySourceId.
     /// Console plumbing: DesignSampleHelper.InstantiateDesignInteractiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(6, 6)]
     public sealed class InstantiateDesignSample : ISample

@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to enable HTTP and SDK debug logging.
     /// SDK: ILogger.SetDebugLogLevel.
     /// Console plumbing: DiagnosticsSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(10, 1)]
     public sealed class ToggleHttpDebugLoggingSample : ISample

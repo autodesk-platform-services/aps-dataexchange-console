@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to delete a type parameter.
     /// SDK: ElementDataModel.DeleteTypeParameter.
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 2, 4)]
     public sealed class DeleteTypeParamSample : ISample

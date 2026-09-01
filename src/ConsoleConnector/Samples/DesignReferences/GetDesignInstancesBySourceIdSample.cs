@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to query design instances by design source id.
     /// SDK: ElementDataModel.GetDesignInstancesBySourceId.
     /// Console plumbing: DesignSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(6, 4)]
     public sealed class GetDesignInstancesBySourceIdSample : ISample

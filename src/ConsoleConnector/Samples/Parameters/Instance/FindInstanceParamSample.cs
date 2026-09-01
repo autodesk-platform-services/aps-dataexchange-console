@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to browse and find instance parameters by name.
     /// SDK: Element.FindInstanceParameter + InstanceParameters.
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 1, 5)]
     public sealed class FindInstanceParamSample : ISample

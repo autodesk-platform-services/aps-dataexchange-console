@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to add custom type params with a parameter group.
     /// SDK: ElementDataModel.CreateTypeParameterAsync (custom).
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 2, 2)]
     public sealed class AddCustomTypeParamSample : ISample

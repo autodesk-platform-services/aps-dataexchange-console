@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Sync progress includes viewable-generation steps.
     /// SDK: IProgressStepsManager during sync.
     /// Console plumbing: ElementSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(9, 3)]
     public sealed class ListenViewableGenerationSample : ISample

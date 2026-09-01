@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach a B-spline curve primitive.
     /// SDK: ElementDataModel.CreatePrimitiveGeometry (B-spline).
     /// Console plumbing: GeometrySampleHelper.AttachPrimitiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 4, 6)]
     public sealed class AddPrimitiveBSplineCurveSample : ISample

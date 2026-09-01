@@ -11,7 +11,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to update a geometry-level parameter.
     /// SDK: ElementGeometry.UpdateParameter.
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 3, 5)]
     public sealed class UpdateGeometryLevelParamSample : ISample

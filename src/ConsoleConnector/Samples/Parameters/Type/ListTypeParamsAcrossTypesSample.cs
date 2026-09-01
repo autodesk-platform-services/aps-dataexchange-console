@@ -11,7 +11,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to list type params for one type or all types.
     /// SDK: ElementDataModel.GetTypeParameters.
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 2, 6)]
     public sealed class ListTypeParamsAcrossTypesSample : ISample

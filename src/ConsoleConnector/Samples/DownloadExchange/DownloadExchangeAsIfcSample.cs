@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to export the entire exchange to IFC.
     /// SDK: IClient.DownloadCompleteExchangeAsIFC.
     /// Console plumbing: DownloadSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(7, 2)]
     public sealed class DownloadExchangeAsIfcSample : ISample

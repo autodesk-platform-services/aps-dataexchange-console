@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Reference params link to another entity by id.
     /// SDK: Element.CreateReferenceParameter.
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 3, 7)]
     public sealed class AddReferenceParamSample : ISample

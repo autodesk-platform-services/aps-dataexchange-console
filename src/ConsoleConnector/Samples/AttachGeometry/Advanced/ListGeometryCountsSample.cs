@@ -11,7 +11,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Per-element geometry asset counts.
     /// SDK: ElementDataModel.GetElementGeometryCounts.
     /// Console plumbing: GeometrySampleHelper.BeginAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 5, 6)]
     public sealed class ListGeometryCountsSample : ISample

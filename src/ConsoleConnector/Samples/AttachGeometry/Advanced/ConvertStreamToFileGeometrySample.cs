@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Explicit MemoryStream to CreateFileGeometry conversion.
     /// SDK: ElementDataModel.CreateFileGeometry (stream).
     /// Console plumbing: GeometrySampleHelper.AttachStreamGeometryAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 5, 5)]
     public sealed class ConvertStreamToFileGeometrySample : ISample

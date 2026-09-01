@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// <summary>
     /// What you learn: How to start an ADP metrics tracking session.
     /// SDK: Metrics.EnableMetrics + Metrics.StartTracking.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(10, 4)]
     public sealed class StartTelemetrySessionSample : ISample

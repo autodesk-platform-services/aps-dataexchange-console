@@ -73,11 +73,11 @@
       <HintPath>..\..\packages\Autodesk.DataExchange.ADPAnalytics.Abstractions.1.0.0\lib\net48\Autodesk.DataExchange.ADPAnalytics.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autodesk.GeometryUtilities.PrimitivesAPI, Version=0.9.3.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.3\lib\net48\Autodesk.GeometryUtilities.PrimitivesAPI.dll</HintPath>
+    <Reference Include="Autodesk.GeometryUtilities.PrimitivesAPI, Version=0.9.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.4\lib\net48\Autodesk.GeometryUtilities.PrimitivesAPI.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.GeometryUtilities.MeshAPI, Version=0.9.3.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.3\lib\net48\Autodesk.GeometryUtilities.MeshAPI.dll</HintPath>
+    <Reference Include="Autodesk.GeometryUtilities.MeshAPI, Version=0.9.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.4\lib\net48\Autodesk.GeometryUtilities.MeshAPI.dll</HintPath>
     </Reference>
     <Reference Include="IndexRange">
       <HintPath>..\..\packages\IndexRange.1.0.0\lib\net471\IndexRange.dll</HintPath>

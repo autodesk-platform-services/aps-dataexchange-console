@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach a box outline (composite curve) primitive.
     /// SDK: ElementDataModel.CreatePrimitiveGeometry (box).
     /// Console plumbing: GeometrySampleHelper.AttachPrimitiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 4, 8)]
     public sealed class AddPrimitiveBoxSample : ISample

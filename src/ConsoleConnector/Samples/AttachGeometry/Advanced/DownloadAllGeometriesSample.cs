@@ -13,7 +13,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to download all geometry in the exchange.
     /// SDK: GetGeometriesAsync.
     /// Console plumbing: GeometrySampleHelper.BeginAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 5, 9)]
     public sealed class DownloadAllGeometriesSample : ISample

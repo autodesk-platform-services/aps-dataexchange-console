@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to list instance elements that reference a design.
     /// SDK: ElementDataModel.GetDesignInstances.
     /// Console plumbing: DesignSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(6, 3)]
     public sealed class GetDesignInstancesSample : ISample

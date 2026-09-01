@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to subscribe to real-time exchange-modified events.
     /// SDK: IEventsController.SubscribeToExchangeUpdateEvent.
     /// Console plumbing: ElementSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(9, 1)]
     public sealed class SubscribeExchangeUpdatesSample : ISample

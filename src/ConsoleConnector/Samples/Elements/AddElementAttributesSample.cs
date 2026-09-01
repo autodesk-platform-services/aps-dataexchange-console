@@ -11,7 +11,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: System-level key/value metadata on elements (not Revit parameters).
     /// SDK: IElement.AddAttributes + SyncExchangeDataAsync.
     /// Console plumbing: ElementSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(3, 8)]
     public sealed class AddElementAttributesSample : ISample

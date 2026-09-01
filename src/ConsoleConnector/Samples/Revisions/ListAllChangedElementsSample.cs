@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Full delta: created, modified, and deleted together.
     /// SDK: GetCreated/Modified/DeletedElements combined.
     /// Console plumbing: DeltaSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(8, 4)]
     public sealed class ListAllChangedElementsSample : ISample
@@ -25,7 +25,7 @@ namespace ConsoleConnector.Samples
             var revisionIds = await DeltaSampleHelper.GetRevisionIdsAsync(ctx, session);
             if (revisionIds.Count < 2)
             {
-                TerminalUi.Chat("Need 2+ revisions for meaningful delta. Sync changes with 2.3 first.");
+                TerminalUi.Chat("Need 2+ revisions for meaningful delta. Sync changes with 2.2 first.");
             if (revisionIds.Count == 0)
                     return;
             }

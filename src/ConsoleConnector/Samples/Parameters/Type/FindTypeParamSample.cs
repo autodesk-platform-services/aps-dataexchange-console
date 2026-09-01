@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to find a type parameter by name.
     /// SDK: ElementDataModel.FindTypeParameter.
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 2, 5)]
     public sealed class FindTypeParamSample : ISample

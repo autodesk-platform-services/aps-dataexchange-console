@@ -13,7 +13,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to download geometry assets for specific elements.
     /// SDK: GetElementGeometriesAsync.
     /// Console plumbing: GeometrySampleHelper.BeginAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 5, 8)]
     public sealed class DownloadElementGeometriesSample : ISample

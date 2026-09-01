@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach a cone profile primitive.
     /// SDK: ElementDataModel.CreatePrimitiveGeometry (cone).
     /// Console plumbing: GeometrySampleHelper.AttachPrimitiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 4, 11)]
     public sealed class AddPrimitiveConeSample : ISample

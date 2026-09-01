@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Which elements were added since older revisions.
     /// SDK: ElementDataModel.GetCreatedElements.
     /// Console plumbing: DeltaSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(8, 1)]
     public sealed class ListCreatedElementsSample : ISample

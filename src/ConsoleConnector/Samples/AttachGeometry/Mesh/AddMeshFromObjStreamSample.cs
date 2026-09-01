@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach OBJ mesh geometry from a stream.
     /// SDK: ElementDataModel.CreateFileGeometry (OBJ stream).
     /// Console plumbing: GeometrySampleHelper.AttachStreamGeometryAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 3, 2)]
     public sealed class AddMeshFromObjStreamSample : ISample

@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How parent/child hierarchy works when adding nested elements.
     /// SDK: ElementDataModel.AddElement (child) + SyncExchangeDataAsync.
     /// Console plumbing: ElementSampleHelper.AddChildElement.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(3, 2)]
     public sealed class AddChildElementSample : ISample

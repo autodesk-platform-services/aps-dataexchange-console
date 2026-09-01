@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Global STEP import protocol (203/214/225) affects translation.
     /// SDK: GeometryConfiguration.STEPProtocol.
     /// Console plumbing: GeometrySampleHelper.RequireGeometryConfiguration.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 1, 3)]
     public sealed class ConfigureStepProtocolSample : ISample

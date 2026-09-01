@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Deleting an element removes its subtree; sync to persist the change.
     /// SDK: ElementDataModel.DeleteElementByUniqueId + SyncExchangeDataAsync.
     /// Console plumbing: ElementSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(3, 5)]
     public sealed class DeleteElementSample : ISample

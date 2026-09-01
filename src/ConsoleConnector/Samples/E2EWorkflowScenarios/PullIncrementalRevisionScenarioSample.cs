@@ -30,7 +30,7 @@ namespace ConsoleConnector.Samples
             var revisionIds = await DeltaSampleHelper.GetRevisionIdsAsync(ctx, session);
             if (revisionIds.Count < 2)
             {
-                TerminalUi.Chat("Need 2+ revisions for meaningful delta. Sync changes with 2.3 first.");
+                TerminalUi.Chat("Need 2+ revisions for meaningful delta. Sync changes with 2.2 first.");
                 if (revisionIds.Count == 0)
                     return;
             }

@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: STEP tolerance is a global geometry configuration setting.
     /// SDK: GeometryConfiguration.STEPTolerance.
     /// Console plumbing: GeometrySampleHelper.RequireGeometryConfiguration.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 1, 4)]
     public sealed class ConfigureStepToleranceSample : ISample

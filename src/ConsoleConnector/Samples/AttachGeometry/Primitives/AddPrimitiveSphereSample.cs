@@ -7,7 +7,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach a sphere marker (design point) primitive.
     /// SDK: ElementDataModel.CreatePrimitiveGeometry (sphere marker).
     /// Console plumbing: GeometrySampleHelper.AttachPrimitiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 4, 10)]
     public sealed class AddPrimitiveSphereSample : ISample

@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Built-in Revit schema params use a known schema id.
     /// SDK: Element.CreateInstanceParameterAsync (built-in schema).
     /// Console plumbing: ParameterSampleHelper.AddBuiltInInstanceParamInteractiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 1, 1)]
     public sealed class AddBuiltInInstanceParamSample : ISample

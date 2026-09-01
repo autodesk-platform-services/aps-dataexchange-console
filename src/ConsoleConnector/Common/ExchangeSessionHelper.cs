@@ -132,7 +132,7 @@ namespace ConsoleConnector.Common
             return true;
         }
 
-        /// <summary>Picks a file from the session folder, resolves its details, and loads it. Used by 2.2 Load Exchange and scenarios that need a loaded exchange.</summary>
+        /// <summary>Picks a file from the session folder, resolves its details, and loads it. Used by 2.3 Load Exchange and scenarios that need a loaded exchange.</summary>
         internal static async Task<bool> LoadPickedExchangeAsync(SampleContext ctx)
         {
             var fileUrn = await NavigationHelper.PickExchangeFileUrnAsync(ctx);
@@ -164,38 +164,54 @@ namespace ConsoleConnector.Common
             return await LoadFromDetailsAsync(ctx, details);
         }
 
-        /// <summary>Adds a demo line element to a loaded exchange and syncs. Used by 2.3 Sync Exchange and scenarios that need a quick sync.</summary>
+        /// <summary>Adds a demo line element to an exchange and syncs. Used by 2.2 Sync Exchange and scenarios that need a quick sync.</summary>
         internal static async Task<bool> SyncDemoLineAsync(SampleContext ctx, string? preferredTitle)
         {
             if (!NavigationHelper.EnsureFullFolder(ctx))
                 return false;
 
             var active = LoadedExchangePicker.Pick(ctx, preferredTitle ?? ctx.ScenarioExchangeTitle);
-            if (active == null)
+            ExchangeDetails details;
+            ElementDataModel model;
+
+            if (active != null)
             {
-                if (ctx.Exchanges.Count == 0)
-                    TerminalUi.Warning("No loaded exchange. Run 2.2 Load Exchange first.");
-                else
+                var detailsResponse = await ctx.Client
+                    .GetExchangeDetailsAsync(active.CollectionId, active.ExchangeFileUrn)
+                    .ConfigureAwait(false);
+                if (detailsResponse.IsFailed)
+                {
+                    var detailsError = detailsResponse.Errors.FirstOrDefault()?.Message ?? "Unknown error";
+                    TerminalUi.Error($"Failed to resolve exchange: {detailsError}");
+                    return false;
+                }
+
+                details = detailsResponse.Value;
+                model = active.DataModel;
+            }
+            else if (ctx.Exchanges.Count == 0)
+            {
+                details = await ResolveDetailsForSyncAsync(ctx, preferredTitle).ConfigureAwait(false);
+                if (details == null)
+                {
                     TerminalUi.Dim("Cancelled.");
-                return false;
-            }
+                    return false;
+                }
 
-            var detailsResponse = await ctx.Client
-                .GetExchangeDetailsAsync(active.CollectionId, active.ExchangeFileUrn)
-                .ConfigureAwait(false);
-            if (detailsResponse.IsFailed)
+                model = await GetModelForSyncAsync(ctx, details).ConfigureAwait(false);
+                if (model == null)
+                    return false;
+            }
+            else
             {
-                var detailsError = detailsResponse.Errors.FirstOrDefault()?.Message ?? "Unknown error";
-                TerminalUi.Error($"Failed to resolve exchange: {detailsError}");
+                TerminalUi.Dim("Cancelled.");
                 return false;
             }
 
-            var details = detailsResponse.Value;
             var identifier = ToIdentifier(details, ctx.Folder!.HubId);
-            var model = active.DataModel;
 
             var beforeCount = model.Elements.Count();
-            TerminalUi.Info($"Syncing to {details.DisplayName ?? active.ExchangeFileUrn}...");
+            TerminalUi.Info($"Syncing to {details.DisplayName ?? details.FileUrn}...");
             TerminalUi.Chat($"Elements before: {beforeCount}");
 
             var element = SampleDataFactory.CreateDemoLine(model);
@@ -209,9 +225,66 @@ namespace ConsoleConnector.Common
                 return false;
             }
 
+            RegisterLoaded(ctx, details, model);
             TerminalUi.Success("Sync complete.");
             TerminalUi.Chat($"Elements after: {model.Elements.Count()}");
             return true;
+        }
+
+        private static async Task<ExchangeDetails?> ResolveDetailsForSyncAsync(
+            SampleContext ctx,
+            string? preferredTitle)
+        {
+            if (ctx.LastCreatedExchange != null)
+            {
+                var createdTitle = ctx.LastExchangeTitle ?? ctx.LastCreatedExchange.DisplayName;
+                if (string.IsNullOrWhiteSpace(preferredTitle)
+                    || string.Equals(createdTitle, preferredTitle, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(createdTitle, ctx.ScenarioExchangeTitle, StringComparison.OrdinalIgnoreCase))
+                {
+                    TerminalUi.Info($"Using recently created exchange: {createdTitle}");
+                    return ctx.LastCreatedExchange;
+                }
+            }
+
+            var fileUrn = await NavigationHelper.PickExchangeFileUrnAsync(ctx).ConfigureAwait(false);
+            if (fileUrn == null)
+                return null;
+
+            try
+            {
+                ExchangeDetails details = default!;
+                await TerminalUi.RunWithStatusAsync(
+                    "Resolving exchange details…",
+                    async () =>
+                    {
+#pragma warning disable CS0618 // Type or member is obsolete
+                        details = await ctx.Client.GetExchangeDetailsAsync(fileUrn).ConfigureAwait(false);
+#pragma warning restore CS0618
+                    }).ConfigureAwait(false);
+                return details;
+            }
+            catch (Exception ex)
+            {
+                TerminalUi.Error($"Failed to resolve exchange: {ex}");
+                return null;
+            }
+        }
+
+        private static async Task<ElementDataModel?> GetModelForSyncAsync(
+            SampleContext ctx,
+            ExchangeDetails details)
+        {
+            var displayName = details.DisplayName ?? details.FileUrn;
+            var identifier = ToIdentifier(details, ctx.Folder?.HubId);
+            var loaded = await TryLoadModelWithStatusAsync(ctx, identifier, displayName).ConfigureAwait(false);
+            if (loaded != null)
+                return loaded;
+
+            TerminalUi.Info(
+                $"Preparing empty in-memory model for {displayName} " +
+                "(new exchanges have no Forma snapshot until after the first sync).");
+            return ElementDataModel.Create(ctx.Client);
         }
 
         internal static void RegisterLoaded(SampleContext ctx, ExchangeDetails details, ElementDataModel model)

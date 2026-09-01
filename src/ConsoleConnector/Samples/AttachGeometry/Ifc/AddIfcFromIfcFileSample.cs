@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach IFC geometry from a file.
     /// SDK: ElementDataModel.CreateFileGeometry (IFC file).
     /// Console plumbing: GeometrySampleHelper.AttachFileGeometryAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 2, 1)]
     public sealed class AddIfcFromIfcFileSample : ISample

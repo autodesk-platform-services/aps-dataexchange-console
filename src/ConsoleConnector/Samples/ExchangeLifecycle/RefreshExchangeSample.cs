@@ -12,7 +12,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to pull the latest cloud state into your in-memory model.
     /// SDK: IClient.GetExchangeRevisionsAsync + RetrieveLatestExchangeAsync.
     /// Console plumbing: ElementSampleHelper.BeginAsync (pick loaded exchange).
-    /// Prerequisites: load an exchange first (2.2).
+    /// Prerequisites: load an exchange first (2.3).
     /// </summary>
     [SampleAddress(2, 4)]
     public sealed class RefreshExchangeSample : ISample

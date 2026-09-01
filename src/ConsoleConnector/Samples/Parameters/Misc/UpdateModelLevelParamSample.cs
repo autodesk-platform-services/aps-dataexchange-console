@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to update a model-level parameter.
     /// SDK: ElementDataModel.UpdateParameter (model level).
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 3, 2)]
     public sealed class UpdateModelLevelParamSample : ISample

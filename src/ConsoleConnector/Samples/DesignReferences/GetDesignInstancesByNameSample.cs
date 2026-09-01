@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to query design instances by design name.
     /// SDK: ElementDataModel.GetDesignInstancesByName.
     /// Console plumbing: DesignSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(6, 5)]
     public sealed class GetDesignInstancesByNameSample : ISample

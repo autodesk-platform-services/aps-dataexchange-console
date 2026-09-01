@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Exchange-wide geometry totals.
     /// SDK: ElementDataModel.AllGeometryCounts.
     /// Console plumbing: GeometrySampleHelper.BeginAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 5, 7)]
     public sealed class ListAllGeometryCountsSample : ISample

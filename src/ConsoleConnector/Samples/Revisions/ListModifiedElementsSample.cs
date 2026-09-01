@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Which elements were modified across revisions.
     /// SDK: ElementDataModel.GetModifiedElements.
     /// Console plumbing: DeltaSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(8, 2)]
     public sealed class ListModifiedElementsSample : ISample

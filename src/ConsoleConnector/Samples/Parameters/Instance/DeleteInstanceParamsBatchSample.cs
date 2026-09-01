@@ -11,7 +11,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to delete multiple instance params by schema id.
     /// SDK: Element.DeleteInstanceParameters (batch).
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 1, 8)]
     public sealed class DeleteInstanceParamsBatchSample : ISample

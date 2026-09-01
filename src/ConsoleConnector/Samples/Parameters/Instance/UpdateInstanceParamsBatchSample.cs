@@ -12,7 +12,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to update multiple instance params in one call.
     /// SDK: Element.UpdateInstanceParameters (batch).
     /// Console plumbing: ParameterSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 1, 7)]
     public sealed class UpdateInstanceParamsBatchSample : ISample

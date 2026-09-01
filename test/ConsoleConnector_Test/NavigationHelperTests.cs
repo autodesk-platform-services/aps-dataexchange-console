@@ -17,6 +17,24 @@ namespace ConsoleConnector_Test
         }
 
         [TestMethod]
+        public void IsCompleteFolder_NoFolder_ReturnsFalse()
+        {
+            Assert.IsFalse(NavigationHelper.IsCompleteFolder(null));
+        }
+
+        [TestMethod]
+        public void IsCompleteFolder_OnlyRegion_ReturnsFalse()
+        {
+            Assert.IsFalse(NavigationHelper.IsCompleteFolder(new FolderInfo("", "", "", "US")));
+        }
+
+        [TestMethod]
+        public void IsCompleteFolder_AllFieldsPresent_ReturnsTrue()
+        {
+            Assert.IsTrue(NavigationHelper.IsCompleteFolder(new FolderInfo("hub-1", "project-1", "folder-1", "US")));
+        }
+
+        [TestMethod]
         public void EnsureFullFolder_NoFolder_ReturnsFalse()
         {
             var ctx = NewContext(null);

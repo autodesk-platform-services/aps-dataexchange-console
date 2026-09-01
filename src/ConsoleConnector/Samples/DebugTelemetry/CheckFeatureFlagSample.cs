@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Feature flags are region-aware and queryable at runtime.
     /// SDK: IFeatureFlagController.GetFlagStatus.
     /// Console plumbing: DiagnosticsSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(10, 2)]
     public sealed class CheckFeatureFlagSample : ISample

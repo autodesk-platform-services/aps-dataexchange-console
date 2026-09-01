@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to add a root element and classify it (Category, Family, Type) before syncing.
     /// SDK: ElementDataModel.AddElement + Classify/DefineType/SetType + SyncExchangeDataAsync.
     /// Console plumbing: ElementSampleHelper.AddRootElement.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(3, 1)]
     public sealed class AddRootElementSample : ISample

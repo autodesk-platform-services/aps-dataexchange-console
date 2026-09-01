@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Geometry can carry custom color and opacity via RenderStyle.
     /// SDK: ElementDataModel.CreatePrimitiveGeometry (custom RenderStyle).
     /// Console plumbing: GeometrySampleHelper.AttachPrimitiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 5, 1)]
     public sealed class AddCustomRenderStyleSample : ISample

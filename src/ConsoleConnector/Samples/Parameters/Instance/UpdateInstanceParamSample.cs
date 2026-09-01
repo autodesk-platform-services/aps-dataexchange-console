@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Find instance param by name, update by schema id.
     /// SDK: Element.FindInstanceParameter + UpdateInstanceParameter.
     /// Console plumbing: ParameterSampleHelper.UpdateInstanceParamInteractive.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 1, 3)]
     public sealed class UpdateInstanceParamSample : ISample

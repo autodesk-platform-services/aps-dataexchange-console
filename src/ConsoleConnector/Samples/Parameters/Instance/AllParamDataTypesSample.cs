@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Params support bool, long, double, and string types.
     /// SDK: Element.CreateInstanceParameterAsync + UpdateInstanceParameter (bool, long, double, string).
     /// Console plumbing: ParameterSampleHelper.BeginAsync, ParameterSampleHelper.DemoAllDataTypesAsync.
-    /// Prerequisites: 2.2 Load Exchange; 3.1 Add Root Element.
+    /// Prerequisites: 2.3 Load Exchange; 3.1 Add Root Element.
     /// </summary>
     [SampleAddress(5, 1, 9)]
     public sealed class AllParamDataTypesSample : ISample

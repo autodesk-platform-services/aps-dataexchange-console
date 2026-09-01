@@ -9,7 +9,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to export the entire exchange to OBJ.
     /// SDK: IClient.DownloadCompleteExchangeAsOBJ.
     /// Console plumbing: DownloadSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(7, 3)]
     public sealed class DownloadExchangeAsObjSample : ISample

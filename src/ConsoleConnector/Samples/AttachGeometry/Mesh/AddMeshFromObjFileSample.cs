@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to attach OBJ mesh geometry from a file.
     /// SDK: ElementDataModel.CreateFileGeometry (OBJ file).
     /// Console plumbing: GeometrySampleHelper.AttachFileGeometryAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(4, 3, 1)]
     public sealed class AddMeshFromObjFileSample : ISample

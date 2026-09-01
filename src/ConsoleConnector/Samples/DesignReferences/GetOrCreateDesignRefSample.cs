@@ -7,7 +7,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: A design is a definition element plus GetOrCreateDesignRef.
     /// SDK: ElementDataModel.GetOrCreateDesignRef.
     /// Console plumbing: DesignSampleHelper.CreateOrGetDesignRefInteractiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(6, 1)]
     public sealed class GetOrCreateDesignRefSample : ISample

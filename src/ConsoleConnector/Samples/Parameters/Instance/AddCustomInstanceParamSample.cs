@@ -8,7 +8,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: Custom instance params: you choose name and value.
     /// SDK: Element.CreateInstanceParameterAsync (custom).
     /// Console plumbing: ParameterSampleHelper.AddCustomInstanceParamInteractiveAsync.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 1, 2)]
     public sealed class AddCustomInstanceParamSample : ISample

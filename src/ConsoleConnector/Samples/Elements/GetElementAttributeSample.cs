@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to read element attributes by name.
     /// SDK: IElement.Attributes + GetAttribute.
     /// Console plumbing: ElementSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(3, 9)]
     public sealed class GetElementAttributeSample : ISample

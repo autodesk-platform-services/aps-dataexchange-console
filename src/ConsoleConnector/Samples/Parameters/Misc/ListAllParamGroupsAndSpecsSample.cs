@@ -11,7 +11,7 @@ namespace ConsoleConnector.Samples
     /// <summary>
     /// What you learn: Built-in schema ids come from Autodesk.Parameters.Group taxonomy.
     /// SDK: Autodesk.Parameters.Group taxonomy.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(5, 3, 9)]
     public sealed class ListAllParamGroupsAndSpecsSample : ISample

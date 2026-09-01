@@ -135,6 +135,15 @@ namespace ConsoleConnector.Common
                     memory.Position = 0;
 
                     var geometry = ElementDataModel.CreateFileGeometry(memory, format, DefaultRenderStyle, DefaultUnits);
+
+                    // CreateFileGeometry(MemoryStream) persists the bytes to an extension-less temp file.
+                    // GUSDK ConvertSources (run during SyncExchangeDataAsync) detects format from the
+                    // file path extension, not GeometryFormat, so sync fails with
+                    // "File conversion from Unknown to SMB are not supported".
+                    // The stream bytes are unchanged; point FilePath at the source file so GUSDK sees .stp/.ifc/.obj.
+                    if (geometry is FileGeometry fileGeometry)
+                        fileGeometry.FilePath = path;
+
                     session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
                 });
             TerminalUi.Success($"Attached {format} geometry from stream to {element.Name} ({element.SourceId}).");

@@ -35,7 +35,7 @@ namespace ConsoleConnector.Common
             if (active == null)
             {
                 if (ctx.Exchanges.Count == 0)
-                    TerminalUi.Warning("No loaded exchange. Run 2.2 Load Exchange first.");
+                    TerminalUi.Warning("No loaded exchange. Run 2.3 Load Exchange first.");
                 else
                     TerminalUi.Dim("Cancelled.");
                 return null;

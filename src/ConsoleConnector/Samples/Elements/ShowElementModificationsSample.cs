@@ -12,7 +12,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to detect instance vs design changes across revisions.
     /// SDK: Element.GetElementModifications with exchange revision ids.
     /// Console plumbing: ElementSampleHelper.BeginAsync, DeltaSampleHelper.GetRevisionIdsAsync.
-    /// Prerequisites: 2.2 Load Exchange; multiple revisions.
+    /// Prerequisites: 2.3 Load Exchange; multiple revisions.
     /// </summary>
     [SampleAddress(3, 7)]
     public sealed class ShowElementModificationsSample : ISample

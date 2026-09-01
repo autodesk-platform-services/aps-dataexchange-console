@@ -10,7 +10,7 @@ namespace ConsoleConnector.Samples
     /// What you learn: How to list designs and get one by definition element id.
     /// SDK: ElementDataModel.GetDesigns + GetDesign.
     /// Console plumbing: DesignSampleHelper.
-    /// Prerequisites: 2.2 Load Exchange.
+    /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
     [SampleAddress(6, 2)]
     public sealed class GetDesignSample : ISample
