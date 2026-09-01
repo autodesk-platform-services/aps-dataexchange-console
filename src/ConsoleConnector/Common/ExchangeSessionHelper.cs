@@ -18,6 +18,34 @@ namespace ConsoleConnector.Common
     /// </summary>
     internal static class ExchangeSessionHelper
     {
+        internal static int? TryParseFileVersion(string? fileVersionUrn)
+        {
+            if (string.IsNullOrWhiteSpace(fileVersionUrn))
+                return null;
+
+            var queryIndex = fileVersionUrn.IndexOf('?');
+            if (queryIndex < 0 || queryIndex >= fileVersionUrn.Length - 1)
+                return null;
+
+            foreach (var part in fileVersionUrn[(queryIndex + 1)..].Split('&'))
+            {
+                var pair = part.Split('=');
+                if (pair.Length == 2
+                    && string.Equals(pair[0], "version", StringComparison.OrdinalIgnoreCase)
+                    && int.TryParse(pair[1], out var version))
+                {
+                    return version;
+                }
+            }
+
+            return null;
+        }
+
+        internal static string FormatFileVersion(string? fileVersionUrn)
+        {
+            var version = TryParseFileVersion(fileVersionUrn);
+            return version?.ToString() ?? "unknown";
+        }
         internal static DataExchangeIdentifier ToIdentifier(ExchangeDetails details, string? hubId) =>
             new()
             {
@@ -135,8 +163,8 @@ namespace ConsoleConnector.Common
         /// <summary>Picks a file from the session folder, resolves its details, and loads it. Used by 2.3 Load Exchange and scenarios that need a loaded exchange.</summary>
         internal static async Task<bool> LoadPickedExchangeAsync(SampleContext ctx)
         {
-            var fileUrn = await NavigationHelper.PickExchangeFileUrnAsync(ctx);
-            if (fileUrn == null)
+            var picked = await NavigationHelper.PickExchangeAsync(ctx);
+            if (picked == null)
                 return false;
 
             ExchangeDetails details;
@@ -147,12 +175,16 @@ namespace ConsoleConnector.Common
                     "Resolving exchange details…",
                     async () =>
                     {
-                        // A freshly picked exchange is known only by its file URN; the collection id is
-                        // discoverable only from the details themselves, so the single-arg (obsolete)
-                        // lookup is the only resolver available for this bootstrap path.
-#pragma warning disable CS0618 // Type or member is obsolete
-                        details = await ctx.Client.GetExchangeDetailsAsync(fileUrn).ConfigureAwait(false);
-#pragma warning restore CS0618
+                        var collectionId = await ResolveCollectionIdAsync(ctx, picked.Project).ConfigureAwait(false);
+                        var response = await ctx.Client
+                            .GetExchangeDetailsAsync(collectionId, picked.FileUrn)
+                            .ConfigureAwait(false);
+                        if (response.IsFailed)
+                            throw new InvalidOperationException(
+                                response.Errors.FirstOrDefault()?.Message ?? "Failed to resolve exchange details.");
+                        details = response.Value
+                            ?? throw new InvalidOperationException(
+                                $"Unable to resolve exchange details for {picked.FileUrn}.");
                     });
             }
             catch (Exception ex)
@@ -225,9 +257,9 @@ namespace ConsoleConnector.Common
                 return false;
             }
 
-            RegisterLoaded(ctx, details, model);
             TerminalUi.Success("Sync complete.");
             TerminalUi.Chat($"Elements after: {model.Elements.Count()}");
+            await RefreshExchangeVersionAfterSyncAsync(ctx, details, model).ConfigureAwait(false);
             return true;
         }
 
@@ -247,8 +279,8 @@ namespace ConsoleConnector.Common
                 }
             }
 
-            var fileUrn = await NavigationHelper.PickExchangeFileUrnAsync(ctx).ConfigureAwait(false);
-            if (fileUrn == null)
+            var picked = await NavigationHelper.PickExchangeAsync(ctx).ConfigureAwait(false);
+            if (picked == null)
                 return null;
 
             try
@@ -258,9 +290,16 @@ namespace ConsoleConnector.Common
                     "Resolving exchange details…",
                     async () =>
                     {
-#pragma warning disable CS0618 // Type or member is obsolete
-                        details = await ctx.Client.GetExchangeDetailsAsync(fileUrn).ConfigureAwait(false);
-#pragma warning restore CS0618
+                        var collectionId = await ResolveCollectionIdAsync(ctx, picked.Project).ConfigureAwait(false);
+                        var response = await ctx.Client
+                            .GetExchangeDetailsAsync(collectionId, picked.FileUrn)
+                            .ConfigureAwait(false);
+                        if (response.IsFailed)
+                            throw new InvalidOperationException(
+                                response.Errors.FirstOrDefault()?.Message ?? "Failed to resolve exchange details.");
+                        details = response.Value
+                            ?? throw new InvalidOperationException(
+                                $"Unable to resolve exchange details for {picked.FileUrn}.");
                     }).ConfigureAwait(false);
                 return details;
             }
@@ -290,7 +329,8 @@ namespace ConsoleConnector.Common
         internal static void RegisterLoaded(SampleContext ctx, ExchangeDetails details, ElementDataModel model)
         {
             var title = details.DisplayName ?? details.FileUrn;
-            ctx.Exchanges[title] = new ActiveExchange(details.FileUrn, details.CollectionID, model);
+            var versionNumber = TryParseFileVersion(details.FileVersionUrn);
+            ctx.Exchanges[title] = new ActiveExchange(details.FileUrn, details.CollectionID, model, versionNumber);
             RememberLoaded(
                 ctx,
                 title,
@@ -305,6 +345,7 @@ namespace ConsoleConnector.Common
                 ("Name", title),
                 ("Exchange", details.ExchangeID),
                 ("File URN", details.FileUrn),
+                ("Version", FormatFileVersion(details.FileVersionUrn)),
                 ("Elements", elementCount.ToString()));
         }
 
@@ -314,6 +355,18 @@ namespace ConsoleConnector.Common
             ctx.LastExchangeTitle = details.DisplayName ?? fallbackName;
         }
 
+        internal static async Task<string> ResolveCollectionIdAsync(SampleContext ctx, ProjectInfo project)
+        {
+            var response = await ctx.Client
+                .GetCollectionIdAsync(project.ProjectId, ctx.Folder!.HubId)
+                .ConfigureAwait(false);
+            if (response.IsFailed)
+                throw new InvalidOperationException(
+                    response.Errors.FirstOrDefault()?.Message ?? "Failed to resolve collection id.");
+            return response.Value
+                ?? throw new InvalidOperationException("Collection id was not returned.");
+        }
+
         internal static void PrintCreated(ExchangeDetails details)
         {
             TerminalUi.Chat("Created:");
@@ -321,7 +374,52 @@ namespace ConsoleConnector.Common
             TerminalUi.Chat($"  Exchange:   {details.ExchangeID}");
             TerminalUi.Chat($"  Collection: {details.CollectionID}");
             TerminalUi.Chat($"  File URN:   {details.FileUrn}");
-            TerminalUi.Chat($"  Version:    {details.FileVersionUrn}");
+            TerminalUi.Chat($"  Version:    {FormatFileVersion(details.FileVersionUrn)}");
+        }
+
+        internal static async Task RefreshExchangeVersionAfterSyncAsync(
+            SampleContext ctx,
+            ElementSampleSession session)
+        {
+            await RefreshExchangeVersionAfterSyncAsync(ctx, session.Details, session.Model).ConfigureAwait(false);
+        }
+
+        internal static async Task RefreshExchangeVersionAfterSyncAsync(
+            SampleContext ctx,
+            ExchangeDetails details,
+            ElementDataModel model)
+        {
+            ExchangeDetails refreshed = details;
+            try
+            {
+                await TerminalUi.RunWithStatusAsync(
+                    "Refreshing exchange version…",
+                    async () =>
+                    {
+                        var response = await ctx.Client
+                            .GetExchangeDetailsAsync(details.CollectionID, details.FileUrn)
+                            .ConfigureAwait(false);
+                        if (response.IsFailed)
+                            throw new InvalidOperationException(
+                                response.Errors.FirstOrDefault()?.Message ?? "Failed to refresh exchange details.");
+                        refreshed = response.Value;
+                    }).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                TerminalUi.Warning($"Could not refresh ACC version: {ex.Message}");
+                return;
+            }
+
+            var version = TryParseFileVersion(refreshed.FileVersionUrn);
+            if (version == null)
+            {
+                TerminalUi.Warning("Could not determine ACC file version after sync.");
+                return;
+            }
+
+            TerminalUi.Success($"ACC version: {version}");
+            RegisterLoaded(ctx, refreshed, model);
         }
 
         internal static void RemoveLoadedByFileUrn(SampleContext ctx, string fileUrn)
@@ -424,7 +522,7 @@ namespace ConsoleConnector.Common
                 return false;
             }
 
-            ctx.Exchanges[info.Title] = new ActiveExchange(info.FileUrn, info.CollectionId, model);
+            ctx.Exchanges[info.Title] = new ActiveExchange(info.FileUrn, info.CollectionId, model, null);
             ctx.LastExchangeTitle = info.Title;
             return true;
         }

@@ -19,7 +19,7 @@ namespace ConsoleConnector.Samples
         public Task RunAsync(SampleContext ctx) =>
             GeometrySampleHelper.AttachPrimitiveAsync(
                 ctx,
-                () => GeometrySampleHelper.CreateSingleCurveGeometry(() => new CompositeCurve()),
+                () => GeometrySampleHelper.CreateSingleCurveGeometry(c => c.Curves.Add(new CompositeCurve())),
                 "box outline primitive");
         }
 }

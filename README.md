@@ -2,7 +2,7 @@
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-v2-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
-![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-7.6.0--beta-orange.svg)
+![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-7.7.0--alpha.1-orange.svg)
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 [![License](https://img.shields.io/badge/License-Autodesk%20SDK-blue.svg)](LICENSE)
 
@@ -72,7 +72,7 @@ cd aps-dataexchange-console
 
 ### 2. Install Dependencies
 Follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure) to obtain the beta SDK nupkgs (they aren't on public nuget.org). `BuildSolution.bat` restores everything else from nuget.org automatically, but these packages must be dropped as loose `.nupkg` files in the **parent directory of your repo checkout** first:
-- `Autodesk.DataExchange` (7.6.0-beta)
+- `Autodesk.DataExchange` (7.7.0-alpha.1)
 - `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0)
 - `Autodesk.DataExchange.GeometryDefinitions` (0.9.4)
 - `ForgeParameters-csharp_win_release_intel64_v140` (3.0.6)
@@ -349,6 +349,38 @@ This validates every registered sample across all 11 categories runs without thr
 - [x] Made all 10 E2E workflow scenarios self-contained (no sample instantiates another sample)
 - [x] Ported all 11 sample categories (104 samples total)
 - [x] Ran `--run-all` to confirm full-catalog coverage
+
+---
+
+## 🔄 Migration Guide: SDK 7.7.0 Upgrade
+
+This section documents the migration from SDK 7.6.0-beta to **Autodesk Data Exchange SDK 7.7.0-alpha.1**.
+
+### Overview of Changes
+
+- **SDK Version**: Upgraded to `Autodesk.DataExchange 7.7.0-alpha.1`
+- **Geometry attach**: Use `AddElementGeometry` instead of `SetElementGeometry` when appending geometry to an element (preserves existing geometry)
+- **ACC version display**: Loaded panel and post-sync output show the ACC file version number parsed from `FileVersionUrn`
+
+### Key API Change: AddElementGeometry
+
+`SetElementGeometry` replaces the element's entire geometry set. To append new geometry without deleting what is already attached, use `AddElementGeometry`:
+
+**Before (7.6.0-beta):**
+```csharp
+model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
+```
+
+**After (7.7.0-alpha.1):**
+```csharp
+model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
+```
+
+### Migration Steps
+
+1. Update `packages.config` and `.csproj` HintPaths to `7.7.0-alpha.1`
+2. Replace append-style `SetElementGeometry` calls with `AddElementGeometry`
+3. Restore NuGet packages and rebuild
 
 ---
 

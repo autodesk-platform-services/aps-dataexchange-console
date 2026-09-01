@@ -17,6 +17,6 @@ namespace ConsoleConnector.Samples
         public string Description => "Attach a B-spline curve primitive";
 
         public Task RunAsync(SampleContext ctx) =>
-            GeometrySampleHelper.AttachPrimitiveAsync(ctx, () => GeometrySampleHelper.CreateSingleCurveGeometry(() => new BCurve()), "B-spline primitive");
+            GeometrySampleHelper.AttachPrimitiveAsync(ctx, () => GeometrySampleHelper.CreateSingleCurveGeometry(c => c.Curves.Add(new BCurve())), "B-spline primitive");
         }
 }

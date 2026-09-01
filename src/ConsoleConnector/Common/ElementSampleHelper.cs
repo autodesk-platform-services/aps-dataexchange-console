@@ -98,6 +98,10 @@ namespace ConsoleConnector.Common
                     TerminalUi.Success("Sync complete.");
                     success = true;
                 });
+
+            if (success)
+                await ExchangeSessionHelper.RefreshExchangeVersionAfterSyncAsync(ctx, session).ConfigureAwait(false);
+
             return success;
         }
 

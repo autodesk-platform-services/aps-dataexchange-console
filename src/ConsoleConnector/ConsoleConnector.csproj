@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;DXSDK_LEGACY_OBJ_DOWNLOAD</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -30,14 +30,14 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;DXSDK_LEGACY_OBJ_DOWNLOAD</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;DXSDK_LEGACY_OBJ_DOWNLOAD</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>latest</LangVersion>
@@ -48,7 +48,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;DXSDK_LEGACY_OBJ_DOWNLOAD</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -61,18 +61,12 @@
     <Reference Include="AngleSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AngleSharp.1.2.0\lib\net472\AngleSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange, Version=7.6.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.7.6.0-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange, Version=7.7.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.7.7.0-alpha.1\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.DataExchange.ADPAnalytics.Abstractions">
       <HintPath>..\..\packages\Autodesk.DataExchange.ADPAnalytics.Abstractions.1.0.0\lib\net48\Autodesk.DataExchange.ADPAnalytics.Abstractions.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Autodesk.GeometryUtilities.PrimitivesAPI, Version=0.9.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.4\lib\net48\Autodesk.GeometryUtilities.PrimitivesAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.GeometryUtilities.MeshAPI, Version=0.9.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.4\lib\net48\Autodesk.GeometryUtilities.MeshAPI.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autodesk.Newtonsoft.Json.13.0.3\lib\net45\Autodesk.Newtonsoft.Json.dll</HintPath>
@@ -588,10 +582,10 @@
     <Error Condition="!Exists('..\..\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\build\ForgeUnits-csharp_win_release_intel64_v140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\build\ForgeUnits-csharp_win_release_intel64_v140.targets'))" />
     <Error Condition="!Exists('..\..\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Autodesk.DataExchange.7.6.0-beta\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Autodesk.DataExchange.7.6.0-beta\build\Autodesk.DataExchange.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Autodesk.DataExchange.7.7.0-alpha.1\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Autodesk.DataExchange.7.7.0-alpha.1\build\Autodesk.DataExchange.targets'))" />
   </Target>
   <Import Project="..\..\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\build\ForgeUnits-csharp_win_release_intel64_v140.targets" Condition="Exists('..\..\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\build\ForgeUnits-csharp_win_release_intel64_v140.targets')" />
   <Import Project="..\..\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets" Condition="Exists('..\..\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets')" />
   <Import Project="..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
-  <Import Project="..\..\packages\Autodesk.DataExchange.7.6.0-beta\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\packages\Autodesk.DataExchange.7.6.0-beta\build\Autodesk.DataExchange.targets')" />
+  <Import Project="..\..\packages\Autodesk.DataExchange.7.7.0-alpha.1\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\packages\Autodesk.DataExchange.7.7.0-alpha.1\build\Autodesk.DataExchange.targets')" />
 </Project>

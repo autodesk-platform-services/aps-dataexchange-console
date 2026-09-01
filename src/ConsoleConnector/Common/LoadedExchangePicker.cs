@@ -38,11 +38,15 @@ namespace ConsoleConnector.Common
             var picked = ListPicker.PickOne(
                 "Pick loaded exchange",
                 names,
-                n => ListPicker.FormatNameAndDetail(
-                    n,
-                    n == defaultName
-                        ? $"{ctx.Exchanges[n].ExchangeFileUrn} (last used)"
-                        : ctx.Exchanges[n].ExchangeFileUrn));
+                n =>
+                {
+                    var active = ctx.Exchanges[n];
+                    var versionSuffix = active.VersionNumber.HasValue ? $" (v{active.VersionNumber})" : string.Empty;
+                    var detail = n == defaultName
+                        ? $"{active.ExchangeFileUrn}{versionSuffix} (last used)"
+                        : $"{active.ExchangeFileUrn}{versionSuffix}";
+                    return ListPicker.FormatNameAndDetail(n, detail);
+                });
 
             if (picked == null)
                 return null;

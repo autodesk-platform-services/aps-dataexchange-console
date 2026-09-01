@@ -41,7 +41,7 @@ namespace ConsoleConnector.Samples
 
             var units = new Autodesk.DataExchange.DataModels.Units(UnitFactory.Centimeter, UnitFactory.Centimeter, UnitFactory.Centimeter);
             var geometry = ElementDataModel.CreatePrimitiveGeometry(geometryContainer, DemoLineStyle, units);
-            model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
+            model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
             return element;
         }
     }

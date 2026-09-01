@@ -20,7 +20,7 @@ namespace ConsoleConnector.Common
             ElementSampleHelper.ClassifyGeneric(model, def);
             var mesh = GeometrySampleHelper.CreateSampleMesh();
             var geometry = ElementDataModel.CreateMeshGeometry(mesh, $"{name}_Mesh");
-            model.SetElementGeometry(def, new List<IElementGeometry> { geometry });
+            model.AddElementGeometry(def, new List<IElementGeometry> { geometry });
             return def;
         }
 

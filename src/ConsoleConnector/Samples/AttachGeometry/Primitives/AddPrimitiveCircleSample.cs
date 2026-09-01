@@ -17,6 +17,6 @@ namespace ConsoleConnector.Samples
         public string Description => "Attach a circle primitive";
 
         public Task RunAsync(SampleContext ctx) =>
-            GeometrySampleHelper.AttachPrimitiveAsync(ctx, () => GeometrySampleHelper.CreateSingleCurveGeometry(() => new Circle()), "circle primitive");
+            GeometrySampleHelper.AttachPrimitiveAsync(ctx, () => GeometrySampleHelper.CreateSingleCurveGeometry(c => c.Curves.Add(new Circle())), "circle primitive");
         }
 }

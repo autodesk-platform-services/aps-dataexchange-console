@@ -17,6 +17,6 @@ namespace ConsoleConnector.Samples
         public string Description => "Attach an ellipse primitive";
 
         public Task RunAsync(SampleContext ctx) =>
-            GeometrySampleHelper.AttachPrimitiveAsync(ctx, () => GeometrySampleHelper.CreateSingleCurveGeometry(() => new Ellipse()), "ellipse primitive");
+            GeometrySampleHelper.AttachPrimitiveAsync(ctx, () => GeometrySampleHelper.CreateSingleCurveGeometry(c => c.Curves.Add(new Ellipse())), "ellipse primitive");
         }
 }

@@ -11,7 +11,7 @@ namespace ConsoleConnector.Samples
 {
     /// <summary>
     /// What you learn: Set element transform before attaching geometry.
-    /// SDK: IElement.Transformation + SetElementGeometry.
+    /// SDK: IElement.Transformation + AddElementGeometry.
     /// Console plumbing: GeometrySampleHelper.BeginAsync.
     /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
@@ -41,7 +41,7 @@ namespace ConsoleConnector.Samples
             };
 
             var geometry = GeometrySampleHelper.CreateLineGeometry();
-            session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
+            session.Model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
             TerminalUi.Success($"Set transform and attached geometry on {element.Name} ({element.SourceId}).");
             await ElementSampleHelper.SyncAsync(ctx, session);
         }
