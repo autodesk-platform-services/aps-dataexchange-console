@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Threading.Tasks;
 using Autodesk.DataExchange;
 using Autodesk.DataExchange.Core.Interface;
@@ -30,12 +31,26 @@ namespace ConsoleConnector.Driver
         private static async Task<SessionData> FirstRunAsync(SessionData session, SampleContext ctx)
         {
             TerminalUi.Section("First run", "Set the active Forma folder");
-            TerminalUi.Info("Paste a Forma URL, or press Enter to enter Hub / Project / Folder IDs manually.");
+            TerminalUi.Info(
+                "Paste a Forma or ACC docs URL, or press Enter to enter Hub / Project / Folder IDs manually.");
+            TerminalUi.Info(
+                "ACC URLs do not include a Hub Id — the app looks it up via API. That requires your Forge " +
+                "Client ID to be added under ACC Hub Admin -> Custom Integrations for the target hub.");
 
             var url = Prompt.AskString("Forma URL", null);
-            session.Folder = string.IsNullOrWhiteSpace(url)
-                ? PromptFolderByIds(null)
-                : await ResolveFolderFromUrlAsync(url, null, ctx) ?? PromptFolderByIds(null);
+            SessionFolderInfo? folder;
+            if (string.IsNullOrWhiteSpace(url))
+                folder = PromptFolderByIds(null);
+            else
+                folder = await ResolveFolderFromUrlAsync(url, null, ctx);
+
+            if (folder == null)
+            {
+                TerminalUi.Goodbye();
+                Environment.Exit(0);
+            }
+
+            session.Folder = folder;
 
             session.Folder = await EnrichFolderAsync(session.Folder, ctx);
             PrintFolder(session.Folder, "Session folder");
@@ -139,12 +154,12 @@ namespace ConsoleConnector.Driver
 
         private static async Task<SessionFolderInfo?> PromptFolderFromUrlAsync(SessionFolderInfo? current, SampleContext ctx)
         {
-            TerminalUi.Info("Paste a Forma URL, or press Enter to cancel.");
+            TerminalUi.Info("Paste a Forma or ACC docs URL, or press Enter to cancel.");
             var url = Prompt.AskString("Forma URL", null);
             if (string.IsNullOrWhiteSpace(url))
                 return null;
 
-            return await ResolveFolderFromUrlAsync(url, current, ctx) ?? PromptFolderByIds(current);
+            return await ResolveFolderFromUrlAsync(url, current, ctx);
         }
 
         private static async Task<SessionFolderInfo?> ResolveFolderFromUrlAsync(string url, SessionFolderInfo? defaults, SampleContext ctx)
@@ -156,15 +171,68 @@ namespace ConsoleConnector.Driver
             parsed = await FillMissingHubAsync(parsed, defaults, ctx);
 
             if (string.IsNullOrEmpty(parsed.HubId))
-            {
-                var hubId = Prompt.AskString("Hub Id (lookup failed — enter manually)", defaults?.HubId);
-                if (string.IsNullOrWhiteSpace(hubId))
-                    return PromptFolderByIds(parsed);
-
-                parsed = parsed with { HubId = hubId.Trim() };
-            }
+                return await PromptAfterHubLookupFailedAsync(parsed, defaults, ctx);
 
             return parsed;
+        }
+
+        private static async Task<SessionFolderInfo?> PromptAfterHubLookupFailedAsync(
+            SessionFolderInfo parsed,
+            SessionFolderInfo? defaults,
+            SampleContext ctx)
+        {
+            var folder = parsed;
+            ExplainAccCustomIntegrationRequired(parsed.ProjectUrn);
+
+            while (true)
+            {
+                var choice = TerminalUi.Pick(
+                    "Hub lookup failed",
+                    "Retry (added Custom Integration?)",
+                    "Paste a different URL",
+                    "Enter Hub / Project / Folder manually",
+                    "Exit");
+
+                switch (choice)
+                {
+                    case "Retry (added Custom Integration?)":
+                        folder = await FillMissingHubAsync(folder, defaults, ctx);
+                        if (!string.IsNullOrEmpty(folder.HubId))
+                            return folder;
+
+                        TerminalUi.Warning(
+                            "Hub lookup still failed. Confirm Custom Integration is approved and your account has hub access.");
+                        break;
+                    case "Paste a different URL":
+                        TerminalUi.Info("Paste a Forma or ACC docs URL, or press Enter to go back.");
+                        var url = Prompt.AskString("Forma URL", null);
+                        if (string.IsNullOrWhiteSpace(url))
+                            break;
+
+                        var retried = await ResolveFolderFromUrlAsync(url, defaults, ctx);
+                        if (retried != null)
+                            return retried;
+                        break;
+                    case "Enter Hub / Project / Folder manually":
+                        return PromptFolderByIds(MergeFolderDefaults(parsed, defaults));
+                    case "Exit":
+                        TerminalUi.Goodbye();
+                        Environment.Exit(0);
+                        return null;
+                }
+            }
+        }
+
+        private static SessionFolderInfo MergeFolderDefaults(SessionFolderInfo parsed, SessionFolderInfo? defaults)
+        {
+            if (defaults == null)
+                return parsed;
+
+            return parsed with
+            {
+                HubId = string.IsNullOrEmpty(parsed.HubId) ? defaults.HubId : parsed.HubId,
+                Region = string.IsNullOrEmpty(parsed.Region) ? defaults.Region : parsed.Region,
+            };
         }
 
         private static async Task<SessionFolderInfo> FillMissingHubAsync(SessionFolderInfo parsed, SessionFolderInfo? defaults, SampleContext ctx)
@@ -187,6 +255,39 @@ namespace ConsoleConnector.Driver
                 TerminalUi.Warning($"Hub lookup failed: {ex}");
                 return parsed;
             }
+        }
+
+        private static void ExplainAccCustomIntegrationRequired(string? projectUrn)
+        {
+            var clientId = GetConfiguredClientId();
+            var clientLine = string.IsNullOrWhiteSpace(clientId)
+                ? "[dim]Use the Client ID from your Forge app at aps.autodesk.com/myapps[/]"
+                : $"[bold]Client ID[/]  {Markup.Escape(clientId)}";
+
+            var projectLine = string.IsNullOrWhiteSpace(projectUrn)
+                ? string.Empty
+                : $"\n[dim]Project[/] {Markup.Escape(projectUrn)} — your account does not have access to a hub that contains this project.";
+
+            TerminalUi.WriteMarkupPanel(
+                "ACC Custom Integration required",
+                "[dim]A hub admin must authorize this Forge app before hub/project lookup works:[/]\n"
+                + "1. ACC -> [bold]Hub Admin[/] -> [bold]Custom Integrations[/]\n"
+                + "2. [bold]Add Custom Integration[/] -> paste your Forge Client ID\n"
+                + "3. Approve the integration\n"
+                + "4. Your Autodesk account must have access to the hub\n"
+                + "5. Retry folder setup — pick [bold]Retry (added Custom Integration?)[/], or use menu [bold]1.1 List Hubs[/] / [bold]1.2 List Projects[/] to verify\n\n"
+                + clientLine
+                + projectLine);
+        }
+
+        private static string? GetConfiguredClientId()
+        {
+            var fromEnv = Environment.GetEnvironmentVariable("DXSDK_CLIENT_ID");
+            if (!string.IsNullOrWhiteSpace(fromEnv))
+                return fromEnv.Trim();
+
+            var fromConfig = ConfigurationManager.AppSettings["AuthClientId"];
+            return string.IsNullOrWhiteSpace(fromConfig) ? null : fromConfig.Trim();
         }
 
         private static async Task<SessionFolderInfo> LookupHubAsync(SessionFolderInfo parsed, IHostingProvider hosting)

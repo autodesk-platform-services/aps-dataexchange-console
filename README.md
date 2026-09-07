@@ -60,7 +60,8 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
 
 3. **Access Requirements**
    - [Autodesk Construction Cloud](https://acc.autodesk.com/) (ACC) access
-   - Valid Autodesk account with appropriate permissions
+   - Valid Autodesk account with membership on the target hub/project
+   - **Custom Integration** — your Forge app's **Client ID** must be added and approved under **ACC Hub Admin → Custom Integrations** for each hub you want to use (required for hub lookup from ACC/Forma URLs and for Data Management / Data Exchange API calls). See [ACC Custom Integration](#-acc-custom-integration) below.
 
 ## 🚀 Quick Start
 
@@ -130,6 +131,31 @@ Credentials are resolved in this order, and **nothing is written to disk unless 
 3. **One-off interactive prompt** — if neither of the above is set, the app prompts for credentials for that run only. Nothing is saved; you'll see a reminder of how to persist them via env vars or `App.config`.
 
 Register your app and callback URL at [aps.autodesk.com/myapps](https://aps.autodesk.com/myapps/) with **Data Management** and **Data Exchange** APIs selected. The default callback is `http://localhost:8080/`, with `http://127.0.0.1:63212/`, `http://localhost:9090/`, and `http://localhost:3000/` as fallbacks if that port is in use.
+
+## 🏢 ACC Custom Integration
+
+Hub lookup (when you paste a Forma or ACC docs URL on first run) calls the APS API to find which hub owns a project. That only works when **both** of the following are true:
+
+1. Your **Forge app is authorized** for the hub (Custom Integration).
+2. Your **Autodesk account** must have access to the hub (and project).
+
+### Steps (hub admin)
+
+1. Open [ACC](https://acc.autodesk.com/) and select the **hub** that owns the project you need.
+2. Go to **Hub Admin** → **Custom Integrations**.
+3. Click **Add Custom Integration** (or **Add app**).
+4. Paste your Forge app's **Client ID** from [aps.autodesk.com/myapps](https://aps.autodesk.com/myapps/) — the same value as `DXSDK_CLIENT_ID` / `AuthClientId`.
+5. **Approve** the integration.
+6. Sign in to the console with an account that has access to that hub.
+7. Set the session folder again — choose **Retry (added Custom Integration?)** after pasting the ACC URL, or enter Hub Id / Project URN / Folder URN manually. Use **1.1 List Hubs** and **1.2 List Projects** to confirm access.
+
+### If hub lookup still fails
+
+- Do **not** reuse a Hub Id from a different account — each project belongs to one hub.
+- ACC docs URLs include `projects/{id}` and `folderUrn=…` but **not** `hubId`; lookup depends on Custom Integration + user access.
+- Enter Hub Id manually only after **1.2 List Projects** shows the project under that hub.
+
+The console prints these steps automatically when hub lookup fails.
 
 ## 💻 Usage Examples
 
