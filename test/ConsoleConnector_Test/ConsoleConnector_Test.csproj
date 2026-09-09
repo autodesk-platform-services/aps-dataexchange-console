@@ -69,10 +69,6 @@
     <Reference Include="Autodesk.DataExchange, Version=8.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\..\packages\Autodesk.DataExchange.8.0.0\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.ADPAnalytics.Abstractions">
-      <HintPath>..\..\packages\Autodesk.DataExchange.8.0.0\lib\net48\Autodesk.DataExchange.ADPAnalytics.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="IndexRange">
       <HintPath>..\..\packages\IndexRange.1.0.0\lib\net471\IndexRange.dll</HintPath>
     </Reference>
