@@ -379,7 +379,7 @@ This validates every registered sample across all 11 categories runs without thr
 
 ## 🔄 Migration Guide: SDK 8.0.0 Upgrade
 
-This section documents the migration from SDK 7.6.0-beta to **Autodesk Data Exchange SDK 8.0.0** (first publicly released 8.x). The 7.7.0-alpha.1 prerelease is an intermediate step and is not required — go straight from 7.6.0-beta to 8.0.0.
+This section documents the migration from SDK 7.6.0-beta to **Autodesk Data Exchange SDK 8.0.0** (first publicly released 8.x). 
 
 ### Overview of Changes
 
