@@ -379,18 +379,35 @@ This validates every registered sample across all 11 categories runs without thr
 
 ## 🔄 Migration Guide: SDK 8.0.0 Upgrade
 
-This section documents the migration from SDK 7.7.0-alpha.1 to **Autodesk Data Exchange SDK 8.0.0** (first publicly released 8.x).
+This section documents the migration from SDK 7.6.0-beta to **Autodesk Data Exchange SDK 8.0.0** (first publicly released 8.x). The 7.7.0-alpha.1 prerelease is an intermediate step and is not required — go straight from 7.6.0-beta to 8.0.0.
 
 ### Overview of Changes
 
 - **SDK Version**: Upgraded to `Autodesk.DataExchange 8.0.0` (assembly version `8.0.0.0`)
 - **Public availability**: 8.0.0 ships on public nuget.org — the SDK nupkg no longer has to be side-loaded from the parent directory
-- **Source compatibility**: No connector code changes were required; every 7.7.0-alpha.1 API used by the samples (including `AddElementGeometry` and `FileVersionUrn`) is unchanged in 8.0.0
+- **Geometry attach**: Use `AddElementGeometry` instead of `SetElementGeometry` when appending geometry to an element (preserves existing geometry)
+- **ACC version display**: Loaded panel and post-sync output show the ACC file version number parsed from `FileVersionUrn`
+- **API signature changes**: collection-based `GetExchangeDetailsAsync`, updated OBJ download signature
+- **Reference cleanup**: the `System.Runtime.InteropServices.RuntimeInformation` facade `<Reference>` must be removed on net48
 - **Build result**: 0 errors, 38/38 unit tests passing
+
+### Key API Change: AddElementGeometry
+
+`SetElementGeometry` replaces the element's entire geometry set. To append new geometry without deleting what is already attached, use `AddElementGeometry`:
+
+**Before (7.6.0-beta):**
+```csharp
+model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
+```
+
+**After (8.0.0):**
+```csharp
+model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
+```
 
 ### Reference Cleanup: System.Runtime.InteropServices.RuntimeInformation
 
-The `System.Runtime.InteropServices.RuntimeInformation` 4.3.0 facade assembly is now redundant on net48 and collides with `mscorlib`, producing:
+The `System.Runtime.InteropServices.RuntimeInformation` 4.3.0 facade assembly is redundant on net48 and collides with `mscorlib`, producing:
 
 ```
 error CS0433: The type 'RuntimeInformation' exists in both
@@ -403,40 +420,10 @@ The `<Reference>` was removed from both `.csproj` files; `RuntimeInformation`/`O
 
 1. Update `packages.config` (`version="8.0.0"`) and `.csproj` HintPaths / `Import` / `Error` conditions to `Autodesk.DataExchange.8.0.0`
 2. Bump the assembly reference to `Version=8.0.0.0`
-3. Remove the `System.Runtime.InteropServices.RuntimeInformation` `<Reference>` from both projects
-4. Restore NuGet packages and rebuild
-
----
-
-## 🔄 Migration Guide: SDK 7.7.0 Upgrade
-
-This section documents the migration from SDK 7.6.0-beta to **Autodesk Data Exchange SDK 7.7.0-alpha.1**.
-
-### Overview of Changes
-
-- **SDK Version**: Upgraded to `Autodesk.DataExchange 7.7.0-alpha.1`
-- **Geometry attach**: Use `AddElementGeometry` instead of `SetElementGeometry` when appending geometry to an element (preserves existing geometry)
-- **ACC version display**: Loaded panel and post-sync output show the ACC file version number parsed from `FileVersionUrn`
-
-### Key API Change: AddElementGeometry
-
-`SetElementGeometry` replaces the element's entire geometry set. To append new geometry without deleting what is already attached, use `AddElementGeometry`:
-
-**Before (7.6.0-beta):**
-```csharp
-model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
-```
-
-**After (7.7.0-alpha.1):**
-```csharp
-model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
-```
-
-### Migration Steps
-
-1. Update `packages.config` and `.csproj` HintPaths to `7.7.0-alpha.1`
-2. Replace append-style `SetElementGeometry` calls with `AddElementGeometry`
-3. Restore NuGet packages and rebuild
+3. Replace append-style `SetElementGeometry` calls with `AddElementGeometry`
+4. Adapt to the collection-based `GetExchangeDetailsAsync` and the updated OBJ download signature
+5. Remove the `System.Runtime.InteropServices.RuntimeInformation` `<Reference>` from both projects
+6. Restore NuGet packages and rebuild
 
 ---
 
