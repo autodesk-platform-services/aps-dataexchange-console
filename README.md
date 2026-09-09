@@ -2,7 +2,7 @@
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-v2-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
-![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-7.6.0--beta-orange.svg)
+![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-8.0.0-blue.svg)
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 [![License](https://img.shields.io/badge/License-Autodesk%20SDK-blue.svg)](LICENSE)
 
@@ -54,33 +54,30 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
    - Note your **Client ID**, **Client Secret**, and **Auth Callback**
 
 2. **Development Environment**
-   - Visual Studio 2019 or later
+   - Visual Studio 2022 or later
    - .NET Framework 4.8
    - Basic knowledge of C#
 
 3. **Access Requirements**
    - [Autodesk Construction Cloud](https://acc.autodesk.com/) (ACC) access
-   - Valid Autodesk account with appropriate permissions
+   - Valid Autodesk account with membership on the target hub/project
+   - **Custom Integration** — your Forge app's **Client ID** must be added and approved under **ACC Hub Admin → Custom Integrations** for each hub you want to use (required for hub lookup from ACC/Forma URLs and for Data Management / Data Exchange API calls). See [ACC Custom Integration](#-acc-custom-integration) below.
 
 ## 🚀 Quick Start
 
 ### 1. Clone and Setup
 ```bash
-git clone https://github.com/your-repo/aps-dataexchange-console.git
+git clone https://github.com/autodesk-platform-services/aps-dataexchange-console.git
 cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-Follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure) to obtain the beta SDK nupkgs (they aren't on public nuget.org). `BuildSolution.bat` restores everything else from nuget.org automatically, but these packages must be dropped as loose `.nupkg` files in the **parent directory of your repo checkout** first:
-- `Autodesk.DataExchange` (7.6.0-beta)
-- `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0)
-- `Autodesk.DataExchange.GeometryDefinitions` (0.9.4)
-- `ForgeParameters-csharp_win_release_intel64_v140` (3.0.6)
-- `ForgeUnits-csharp_win_release_intel64_v140` (5.1.4)
+[`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0) is published on public nuget.org as a self-contained package. NuGet restore pulls the SDK and its bundled runtime dependencies automatically — no side-loaded `.nupkg` files or private package feeds are required. See the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/#procedure) for the full prerequisite list (APS app, OAuth scopes, Forma/ACC access).
 
 **Option A: Visual Studio**
 - Open `ConsoleConnector.sln`
-- Build the solution (packages restore automatically)
+- Set the platform target to **x64** (required — the SDK ships 64-bit binaries)
+- Restore NuGet packages and build the solution
 
 **Option B: Command Line**
 ```bash
@@ -130,6 +127,31 @@ Credentials are resolved in this order, and **nothing is written to disk unless 
 3. **One-off interactive prompt** — if neither of the above is set, the app prompts for credentials for that run only. Nothing is saved; you'll see a reminder of how to persist them via env vars or `App.config`.
 
 Register your app and callback URL at [aps.autodesk.com/myapps](https://aps.autodesk.com/myapps/) with **Data Management** and **Data Exchange** APIs selected. The default callback is `http://localhost:8080/`, with `http://127.0.0.1:63212/`, `http://localhost:9090/`, and `http://localhost:3000/` as fallbacks if that port is in use.
+
+## 🏢 ACC Custom Integration
+
+Hub lookup (when you paste a Forma or ACC docs URL on first run) calls the APS API to find which hub owns a project. That only works when **both** of the following are true:
+
+1. Your **Forge app is authorized** for the hub (Custom Integration).
+2. Your **Autodesk account** must have access to the hub (and project).
+
+### Steps (hub admin)
+
+1. Open [ACC](https://acc.autodesk.com/) and select the **hub** that owns the project you need.
+2. Go to **Hub Admin** → **Custom Integrations**.
+3. Click **Add Custom Integration** (or **Add app**).
+4. Paste your Forge app's **Client ID** from [aps.autodesk.com/myapps](https://aps.autodesk.com/myapps/) — the same value as `DXSDK_CLIENT_ID` / `AuthClientId`.
+5. **Approve** the integration.
+6. Sign in to the console with an account that has access to that hub.
+7. Set the session folder again — choose **Retry (added Custom Integration?)** after pasting the ACC URL, or enter Hub Id / Project URN / Folder URN manually. Use **1.1 List Hubs** and **1.2 List Projects** to confirm access.
+
+### If hub lookup still fails
+
+- Do **not** reuse a Hub Id from a different account — each project belongs to one hub.
+- ACC docs URLs include `projects/{id}` and `folderUrn=…` but **not** `hubId`; lookup depends on Custom Integration + user access.
+- Enter Hub Id manually only after **1.2 List Projects** shows the project under that hub.
+
+The console prints these steps automatically when hub lookup fails.
 
 ## 💻 Usage Examples
 
@@ -266,8 +288,7 @@ This section documents replacing the Command-pattern console app with a menu-dri
 
 | Package | Reason |
 |---------|--------|
-| `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0) | `Client.Initialize()` requires this companion assembly at runtime against 7.6.0-beta; not previously declared |
-| `Autodesk.DataExchange.GeometryDefinitions` (bumped to 0.9.4) | Exact version pinned by the SDK's own nuspec for 7.6.0-beta |
+| `Autodesk.DataExchange.ADPAnalytics.Abstractions` (bundled in SDK 8.0.0) | Runtime dependency of `Client.Initialize()`; vendored inside the `Autodesk.DataExchange` NuGet package (no separate install) |
 | `Spectre.Console` / `Spectre.Console.Ansi` (0.57.2) | Powers the interactive menu, tables, and prompts |
 | `Microsoft.Bcl.TimeProvider`, `System.Memory`/`System.Buffers`/`System.Numerics.Vectors`/`System.Runtime.CompilerServices.Unsafe` (bumped) | Transitive requirements of `Spectre.Console` on net48 |
 | `IndexRange` | Polyfills `System.Index`/`System.Range` (`^1`, `a..b` syntax) on net48 |
@@ -349,6 +370,120 @@ This validates every registered sample across all 11 categories runs without thr
 - [x] Made all 10 E2E workflow scenarios self-contained (no sample instantiates another sample)
 - [x] Ported all 11 sample categories (104 samples total)
 - [x] Ran `--run-all` to confirm full-catalog coverage
+
+---
+
+## 🔄 Migration Guide: SDK 8.0.0 Upgrade
+
+This section documents the migration from SDK 7.6.0-beta to **Autodesk Data Exchange SDK 8.0.0** (first publicly released 8.x). 
+
+### Overview of Changes
+
+- **SDK Version**: Upgraded to `Autodesk.DataExchange 8.0.0` (assembly version `8.0.0.0`)
+- **Public availability**: 8.0.0 ships on public nuget.org as a self-contained package — no side-loaded `.nupkg` files or private feeds are required
+- **Geometry attach**: Use `AddElementGeometry` instead of `SetElementGeometry` when appending geometry to an element (preserves existing geometry)
+- **ACC version display**: Loaded panel and post-sync output show the ACC file version number parsed from `FileVersionUrn`
+- **API signature changes**: collection-based `GetExchangeDetailsAsync`, updated OBJ download signature
+- **Reference cleanup**: the `System.Runtime.InteropServices.RuntimeInformation` facade `<Reference>` must be removed on net48
+- **Build result**: 0 errors, 38/38 unit tests passing
+
+### Key API Change: AddElementGeometry
+
+`SetElementGeometry` replaces the element's entire geometry set. To append new geometry without deleting what is already attached, use `AddElementGeometry`:
+
+**Before (7.6.0-beta):**
+```csharp
+model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
+```
+
+**After (8.0.0):**
+```csharp
+model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
+```
+
+### Reference Cleanup: System.Runtime.InteropServices.RuntimeInformation
+
+The `System.Runtime.InteropServices.RuntimeInformation` 4.3.0 facade assembly is redundant on net48 and collides with `mscorlib`, producing:
+
+```
+error CS0433: The type 'RuntimeInformation' exists in both
+'System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0' and 'mscorlib, Version=4.0.0.0'
+```
+
+The `<Reference>` was removed from both `.csproj` files; `RuntimeInformation`/`OSPlatform` resolve from `mscorlib` on net48.
+
+### ⚠️ Breaking Changes in 8.0.0 — and why this connector absorbed so few
+
+8.0.0 is a major release with real breaking changes: `IStorage.Save()` gained a required key, the
+`DownloadCompleteExchangeAs*` family collapsed to a single `DataExchangeIdentifier` shape,
+`ElementProperties` was deleted outright, `Autodesk.DataExchange.BaseModels.dll` stopped shipping as
+a standalone assembly, and everything marked `[Obsolete]` in 7.6.0-beta was removed.
+
+This connector needed **no source changes** for the SDK bump — not because the release is small, but
+because this repo is a console app with no UI SDK dependency and it moved off the obsolete APIs
+during the 7.6.0-beta upgrade and the architecture revamp. The audit below records each 8.0.0
+breaking change and why it does or does not land here, so the absence of code churn is verifiable
+rather than assumed.
+
+| 8.0.0 breaking change | Impact here | Why |
+|-----------------------|-------------|-----|
+| `IStorage.Save()` → `Save(string key, string group = null)` | **None** | This connector never uses the SDK's `IStorage`. Session state lives in `Driver/SessionStore.cs` as its own JSON file |
+| `DownloadCompleteExchangeAs{OBJ,STEP,IFC,USD}` take a `DataExchangeIdentifier` instead of `(exchangeId, collectionId, …)` | **None** | Already on the identifier overload — see `Common/DownloadSampleHelper.cs` and the `Samples/DownloadExchange/*` samples, which all pass `session.Identifier` |
+| `ElementProperties` and `AddElement(ElementProperties)` removed | **None** | Elements are built with `AddElement(id, name)` + `Classify` + `DefineType` + `SetType` (`Common/ElementSampleHelper.cs`). `ElementProperties` no longer appears anywhere in the 8.0.0 assembly |
+| `Autodesk.DataExchange.BaseModels.dll` merged into `Autodesk.DataExchange.UI.Bridge.dll` | **None** | Console app — `Autodesk.DataExchange.UI` is not referenced by either project, so there is no `BaseExchangeModel`/`ExchangeUrl` consumption and no stale-DLL risk |
+| `[Obsolete]` APIs from 7.6.0-beta deleted (`RetrieveLatestExchangeDataAsync`, `IElement.Id`, `DeleteElement(string)`, `DeleteElementsById`, `GetElementById`/`GetElementsById`, `CreateDesignRef`, `GetDesignsById`, `InstantiateDesignById`, `ExchangeCreateRequestACC.ACCProjectURN`, …) | **None** | Migrated in the 7.6.0 step: `Common/DeltaSampleHelper.cs` uses `RetrieveLatestExchangeAsync(model, ct)`, `Samples/Elements/DeleteElementSample.cs` uses `DeleteElementByUniqueId(element.UniqueId)`, and the design samples use `GetOrCreateDesignRef`, which is still present in 8.0.0 |
+| ADP analytics registration entry points (`SDKOptions.RegisterAdpAnalytics`, `AddAdpAnalytics`) removed | **None** | Never called here. `Autodesk.DataExchange.ADPAnalytics.Abstractions` is bundled inside the SDK package and remains a runtime-only dependency of `Client.Initialize()` |
+| `System.Runtime.InteropServices.RuntimeInformation` facade collides with mscorlib | **Build break** | The only change this upgrade actually forced — see [Reference Cleanup](#reference-cleanup-systemruntimeinteropservicesruntimeinformation) above |
+
+**Verified still present in 8.0.0** (checked against `Autodesk.DataExchange.xml` shipped in the
+package), so the corresponding call sites compile unchanged:
+
+- `IClient.GetExchangeDetailsAsync(string collectionId, string fileUrn)` — alongside the newer
+  `GetExchangeDetailsAsync(IDataExchangeIdentifier)` overload
+- `ElementDataModel.CreateFileGeometry(string path, GeometryFormat, RenderStyle, Units, string)` and
+  its `MemoryStream` counterpart
+- `IElementDataModel.GetOrCreateDesignRef(IElement, string, string)`
+
+> If you are upgrading a connector that **did** use the removed APIs — particularly a WPF connector
+> on `Autodesk.DataExchange.UI` — do the 7.6.0-beta step first. 8.0.0 no longer offers an
+> obsolete-but-working path, so anything you deferred there turns into a `CS0117`/`CS1061` compile
+> error. The [Sample UI Connector migration guide](https://github.com/autodesk-platform-services/aps-dataexchange-connector/blob/main/migration-guide.md)
+> documents those code fixes in detail.
+
+### Migration Steps
+
+1. Update `packages.config` (`version="8.0.0"`) and `.csproj` HintPaths / `Import` / `Error` conditions to `Autodesk.DataExchange.8.0.0`
+2. Bump the assembly reference to `Version=8.0.0.0`
+3. Replace append-style `SetElementGeometry` calls with `AddElementGeometry`
+4. Adapt to the collection-based `GetExchangeDetailsAsync` and the updated OBJ download signature
+5. Remove the `System.Runtime.InteropServices.RuntimeInformation` `<Reference>` from both projects
+6. Restore NuGet packages and rebuild
+7. Work the audit table above against your own code — every row that says "None" here is a real
+   break for connectors that use that API
+
+### 🧪 Testing Your Migration
+
+After upgrading, confirm:
+
+- ✅ `msbuild ConsoleConnector.sln -p:Configuration=Debug -p:Platform=x64` builds with 0 errors
+- ✅ The build still succeeds from a clean output directory (`-t:Rebuild`, or delete `bin`/`obj`
+  first) — this rules out a stale 7.x `Autodesk.DataExchange.dll` in `bin/` satisfying the loader
+  and masking the upgrade
+- ✅ The copied output assembly really is 8.0.0.0:
+  `[Reflection.AssemblyName]::GetAssemblyName("src/ConsoleConnector/bin/x64/Debug/Autodesk.DataExchange.dll").Version`
+- ✅ The MSTest suite passes (38/38)
+- ✅ `--run-all` walks the full sample catalogue without throwing
+- ✅ Load an exchange — the ACC file version shows in the Loaded panel
+- ✅ Attach a second geometry to an element — the first one survives (`AddElementGeometry`)
+- ✅ Sync — the ACC version increments and the Loaded panel updates
+
+**Migration Checklist:**
+- [x] Bumped `packages.config` and both `.csproj` files to `Autodesk.DataExchange` 8.0.0 / `Version=8.0.0.0`
+- [x] Removed the `System.Runtime.InteropServices.RuntimeInformation` facade `<Reference>`
+- [x] Audited every 8.0.0 breaking change against this codebase (table above)
+- [x] Rebuilt clean with `-t:Rebuild` (0 errors) and verified the output assembly is 8.0.0.0
+- [x] Ran the MSTest unit test suite (38/38 passed)
+- [ ] Ran the load / attach / sync workflows end to end against ACC
 
 ---
 
@@ -1047,8 +1182,8 @@ public static MeshGeometry CreateMeshGeometry(
 
 ## 📖 Documentation
 
-- [Autodesk Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/overview/)
-- [SDK Without UI Tutorial](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/tutorials/sdk-without-ui/create-an-exchange-container/)
+- [Autodesk Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/overview/)
+- [SDK Without UI Tutorial](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/tutorials/sdk-without-ui/create-an-exchange-container/)
 - [Authentication Guide](https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/overview/)
 
 ## 🤝 Contributing
@@ -1061,14 +1196,7 @@ This is a sample project for reference purposes. While direct contributions may 
 
 ## 📄 License
 
-This sample code is part of the Autodesk Data Exchange .NET SDK (Software Development Kit) beta. It is subject to the license covering the Autodesk Data Exchange .NET SDK (Software Development Kit) beta.
-
-## ✍️ Authors
-
-**Dhiraj Lotake** - *Autodesk*
-**Hariom Sharma** - *Autodesk*
-
----
+This sample code is provided for use with the Autodesk Data Exchange .NET SDK and is subject to the Autodesk Platform Services Terms.
 
 ## 🆘 Support
 

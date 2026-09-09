@@ -38,7 +38,11 @@ namespace ConsoleConnector.Samples
         string? ProjectName = null,
         string? FolderName = null);
 
-    public sealed record ActiveExchange(string ExchangeFileUrn, string CollectionId, ElementDataModel DataModel);
+    public sealed record ActiveExchange(
+        string ExchangeFileUrn,
+        string CollectionId,
+        ElementDataModel DataModel,
+        int? VersionNumber = null);
 
     public sealed record LoadedExchangeInfo(
         string Title,

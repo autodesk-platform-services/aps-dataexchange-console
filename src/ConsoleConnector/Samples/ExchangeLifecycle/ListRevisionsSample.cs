@@ -23,20 +23,21 @@ namespace ConsoleConnector.Samples
         public async Task RunAsync(SampleContext ctx)
         {
             // Console plumbing (not SDK): pick exchange from saved folder
-            var fileUrn = await NavigationHelper.PickExchangeFileUrnAsync(ctx);
-            if (fileUrn == null)
+            var picked = await NavigationHelper.PickExchangeAsync(ctx);
+            if (picked == null)
                 return;
 
-            // SDK: resolve exchange metadata.
-            // A picked exchange is known only by its file URN; the collection id needed by the
-            // GetExchangeDetailsAsync(collectionId, urn) overload is discoverable only from the
-            // details themselves, so the single-arg (obsolete) lookup is unavoidable here.
             ExchangeDetails details;
             try
             {
-#pragma warning disable CS0618 // Type or member is obsolete
-                details = await ctx.Client.GetExchangeDetailsAsync(fileUrn);
-#pragma warning restore CS0618
+                var collectionId = await ExchangeSessionHelper.ResolveCollectionIdAsync(ctx, picked.Project);
+                var detailsResponse = await ctx.Client.GetExchangeDetailsAsync(collectionId, picked.FileUrn);
+                if (detailsResponse.IsFailed)
+                    throw new InvalidOperationException(
+                        detailsResponse.Errors.FirstOrDefault()?.Message ?? "Failed to resolve exchange details.");
+                details = detailsResponse.Value
+                    ?? throw new InvalidOperationException(
+                        $"Unable to resolve exchange details for {picked.FileUrn}.");
             }
             catch (Exception ex)
             {
@@ -66,7 +67,7 @@ namespace ConsoleConnector.Samples
             }
 
             TerminalUi.WriteTable(
-                $"Revisions for {details.DisplayName ?? fileUrn}",
+                $"Revisions for {details.DisplayName ?? picked.FileUrn}",
                 revisions,
                 ("Revision", r => r.Id),
                 ("Modified", r => r.LastModifiedUTC.ToString("u")),

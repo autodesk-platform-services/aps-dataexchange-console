@@ -17,6 +17,6 @@ namespace ConsoleConnector.Samples
         public string Description => "Attach a polyline primitive";
 
         public Task RunAsync(SampleContext ctx) =>
-            GeometrySampleHelper.AttachPrimitiveAsync(ctx, () => GeometrySampleHelper.CreateSingleCurveGeometry(() => new Polyline()), "polyline primitive");
+            GeometrySampleHelper.AttachPrimitiveAsync(ctx, () => GeometrySampleHelper.CreateSingleCurveGeometry(c => c.Curves.Add(new Polyline())), "polyline primitive");
         }
 }

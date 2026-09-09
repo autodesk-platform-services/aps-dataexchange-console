@@ -36,7 +36,7 @@ namespace ConsoleConnector.Samples
                 GeometrySampleHelper.CreateLineGeometry().Geometry,
                 GeometrySampleHelper.DefaultRenderStyle,
                 units);
-            session.Model.SetElementGeometry(element, new System.Collections.Generic.List<IElementGeometry> { geometry });
+            session.Model.AddElementGeometry(element, new System.Collections.Generic.List<IElementGeometry> { geometry });
             TerminalUi.Success($"Set meter units and attached geometry on {element.Name} ({element.SourceId}).");
             await ElementSampleHelper.SyncAsync(ctx, session);
         }

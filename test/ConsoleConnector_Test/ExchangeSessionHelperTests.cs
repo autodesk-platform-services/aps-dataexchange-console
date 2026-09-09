@@ -42,6 +42,22 @@ namespace ConsoleConnector_Test
         }
 
         [TestMethod]
+        public void TryParseFileVersion_ParsesVersionQueryParameter()
+        {
+            var version = ExchangeSessionHelper.TryParseFileVersion(
+                "urn:adsk.test:fs.file:vf.test-file?version=3");
+
+            Assert.AreEqual(3, version);
+        }
+
+        [TestMethod]
+        public void TryParseFileVersion_ReturnsNull_WhenQueryMissing()
+        {
+            Assert.IsNull(ExchangeSessionHelper.TryParseFileVersion("urn:adsk.test:fs.file:vf.test-file"));
+            Assert.IsNull(ExchangeSessionHelper.TryParseFileVersion(null));
+        }
+
+        [TestMethod]
         public void RegisterLoaded_TracksActiveExchangeAndLastExchange()
         {
             var ctx = new SampleContext(new Mock<IClient>().Object, new Defaults());
@@ -54,6 +70,18 @@ namespace ConsoleConnector_Test
             Assert.AreEqual("Test Exchange", ctx.LastExchangeTitle);
             Assert.IsNotNull(ctx.LastExchange);
             Assert.AreEqual("test-exchange-id", ctx.LastExchange!.ExchangeId);
+        }
+
+        [TestMethod]
+        public void RegisterLoaded_StoresVersionNumberOnActiveExchange()
+        {
+            var ctx = new SampleContext(new Mock<IClient>().Object, new Defaults());
+            var model = ElementDataModel.Create(ctx.Client);
+            var details = NewDetails();
+
+            ExchangeSessionHelper.RegisterLoaded(ctx, details, model);
+
+            Assert.AreEqual(1, ctx.Exchanges["Test Exchange"].VersionNumber);
         }
 
         [TestMethod]

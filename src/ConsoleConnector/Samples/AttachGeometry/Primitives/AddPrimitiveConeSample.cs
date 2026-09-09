@@ -19,7 +19,7 @@ namespace ConsoleConnector.Samples
         public Task RunAsync(SampleContext ctx) =>
             GeometrySampleHelper.AttachPrimitiveAsync(
                 ctx,
-                () => GeometrySampleHelper.CreateSingleCurveGeometry(() => new Polyline()),
+                () => GeometrySampleHelper.CreateSingleCurveGeometry(c => c.Curves.Add(new Polyline())),
                 "cone profile primitive");
         }
 }

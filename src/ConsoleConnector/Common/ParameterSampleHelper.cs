@@ -226,7 +226,7 @@ namespace ConsoleConnector.Common
         {
             var mesh = GeometrySampleHelper.CreateSampleMesh();
             var geometry = ElementDataModel.CreateMeshGeometry(mesh, $"{element.Name}_Mesh");
-            model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
+            model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
             return geometry;
         }
 

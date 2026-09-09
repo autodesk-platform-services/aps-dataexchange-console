@@ -4,19 +4,21 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Autodesk.DataExchange;using Autodesk.DataExchange.Core.Enums;
+using Autodesk.DataExchange;
+using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.Core.Models;
 using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Interface;
 using Autodesk.DataExchange.Models;
 using Autodesk.DataExchange.SchemaObjects.Units;
-using Autodesk.GeometryUtilities.MeshAPI;
 using MeshApiMesh = Autodesk.GeometryUtilities.MeshAPI.Mesh;
+using MeshApiVertex = Autodesk.GeometryUtilities.MeshAPI.Vertex;
+using MeshApiFace = Autodesk.GeometryUtilities.MeshAPI.Face;
+using MeshApiNormal = Autodesk.GeometryUtilities.MeshAPI.Normal;
 using Autodesk.GeometryUtilities.PrimitivesAPI;
 using Autodesk.GeometryUtilities.PrimitivesAPI.DX;
 using ConsoleConnector.Driver;
 using ConsoleConnector.Samples;
-
 namespace ConsoleConnector.Common
 {
     internal static class GeometrySampleHelper
@@ -95,7 +97,7 @@ namespace ConsoleConnector.Common
                 $"Reading {format} file…",
                 async () => geometry = await Task.Run(() =>
                     ElementDataModel.CreateFileGeometry(path, format, DefaultRenderStyle, DefaultUnits)).ConfigureAwait(false));
-            session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
+            session.Model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
             TerminalUi.Success($"Attached {format} geometry from file to {element.Name} ({element.SourceId}).");
             if (!syncAfter)
                 return true;
@@ -144,7 +146,7 @@ namespace ConsoleConnector.Common
                     if (geometry is FileGeometry fileGeometry)
                         fileGeometry.FilePath = path;
 
-                    session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
+                    session.Model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
                 });
             TerminalUi.Success($"Attached {format} geometry from stream to {element.Name} ({element.SourceId}).");
             return await ElementSampleHelper.SyncAsync(ctx, session);
@@ -165,7 +167,7 @@ namespace ConsoleConnector.Common
                 return false;
 
             var geometry = geometryFactory();
-            session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
+            session.Model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
             TerminalUi.Success($"Attached {geometryLabel} to {element.Name} ({element.SourceId}).");
             if (!syncAfter)
                 return true;
@@ -184,7 +186,7 @@ namespace ConsoleConnector.Common
                 return false;
 
             var geometry = ElementDataModel.CreateMeshGeometry(mesh, meshName, DefaultUnits);
-            session.Model.SetElementGeometry(element, new List<IElementGeometry> { geometry });
+            session.Model.AddElementGeometry(element, new List<IElementGeometry> { geometry });
             TerminalUi.Success($"Attached mesh '{meshName}' to {element.Name} ({element.SourceId}).");
             return await ElementSampleHelper.SyncAsync(ctx, session);
         }
@@ -256,11 +258,10 @@ namespace ConsoleConnector.Common
             return ElementDataModel.CreatePrimitiveGeometry(point, DefaultRenderStyle, DefaultUnits);
         }
 
-        internal static PrimitiveGeometry CreateSingleCurveGeometry<T>(Func<T> factory)
-            where T : Curve
+        internal static PrimitiveGeometry CreateSingleCurveGeometry(Action<GeometryContainer> addCurve)
         {
             var container = new GeometryContainer();
-            container.Curves.Add(factory());
+            addCurve(container);
             return ElementDataModel.CreatePrimitiveGeometry(container, DefaultRenderStyle, DefaultUnits);
         }
 
@@ -284,13 +285,13 @@ namespace ConsoleConnector.Common
         internal static MeshApiMesh CreateSampleMesh() =>
             new()
             {
-                Vertices = new List<Vertex> { new(0.0, 0.0, 0.0), new(1.0, 0.0, 0.0), new(0.0, 1.0, 0.0) },
-                Faces = new List<Face>
+                Vertices = new List<MeshApiVertex> { new(0.0, 0.0, 0.0), new(1.0, 0.0, 0.0), new(0.0, 1.0, 0.0) },
+                Faces = new List<MeshApiFace>
                 {
                     new()
                     {
                         Corners = new List<int> { 0, 1, 2 },
-                        Normals = new List<Normal> { new(0, 0, 1) },
+                        Normals = new List<MeshApiNormal> { new(0, 0, 1) },
                     },
                 },
             };
