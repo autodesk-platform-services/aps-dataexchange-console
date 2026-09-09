@@ -68,9 +68,6 @@
       <HintPath>..\..\packages\Autodesk.DataExchange.8.0.0\lib\net48\Autodesk.DataExchange.ADPAnalytics.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autodesk.Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.Newtonsoft.Json.13.0.3\lib\net45\Autodesk.Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Google.Protobuf, Version=3.30.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Google.Protobuf.3.30.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
