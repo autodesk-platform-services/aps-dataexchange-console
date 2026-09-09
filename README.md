@@ -2,7 +2,7 @@
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-v2-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
-![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-7.7.0--alpha.1-orange.svg)
+![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-8.0.0-blue.svg)
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 [![License](https://img.shields.io/badge/License-Autodesk%20SDK-blue.svg)](LICENSE)
 
@@ -72,8 +72,7 @@ cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-Follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure) to obtain the beta SDK nupkgs (they aren't on public nuget.org). `BuildSolution.bat` restores everything else from nuget.org automatically, but these packages must be dropped as loose `.nupkg` files in the **parent directory of your repo checkout** first:
-- `Autodesk.DataExchange` (7.7.0-alpha.1)
+[`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0) is published on public nuget.org, so `BuildSolution.bat` restores it automatically. The remaining companion packages are still not on nuget.org — follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure) to obtain them and drop them as loose `.nupkg` files in the **parent directory of your repo checkout**:
 - `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0)
 - `Autodesk.DataExchange.GeometryDefinitions` (0.9.4)
 - `ForgeParameters-csharp_win_release_intel64_v140` (3.0.6)
@@ -375,6 +374,37 @@ This validates every registered sample across all 11 categories runs without thr
 - [x] Made all 10 E2E workflow scenarios self-contained (no sample instantiates another sample)
 - [x] Ported all 11 sample categories (104 samples total)
 - [x] Ran `--run-all` to confirm full-catalog coverage
+
+---
+
+## 🔄 Migration Guide: SDK 8.0.0 Upgrade
+
+This section documents the migration from SDK 7.7.0-alpha.1 to **Autodesk Data Exchange SDK 8.0.0** (first publicly released 8.x).
+
+### Overview of Changes
+
+- **SDK Version**: Upgraded to `Autodesk.DataExchange 8.0.0` (assembly version `8.0.0.0`)
+- **Public availability**: 8.0.0 ships on public nuget.org — the SDK nupkg no longer has to be side-loaded from the parent directory
+- **Source compatibility**: No connector code changes were required; every 7.7.0-alpha.1 API used by the samples (including `AddElementGeometry` and `FileVersionUrn`) is unchanged in 8.0.0
+- **Build result**: 0 errors, 38/38 unit tests passing
+
+### Reference Cleanup: System.Runtime.InteropServices.RuntimeInformation
+
+The `System.Runtime.InteropServices.RuntimeInformation` 4.3.0 facade assembly is now redundant on net48 and collides with `mscorlib`, producing:
+
+```
+error CS0433: The type 'RuntimeInformation' exists in both
+'System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0' and 'mscorlib, Version=4.0.0.0'
+```
+
+The `<Reference>` was removed from both `.csproj` files; `RuntimeInformation`/`OSPlatform` resolve from `mscorlib` on net48.
+
+### Migration Steps
+
+1. Update `packages.config` (`version="8.0.0"`) and `.csproj` HintPaths / `Import` / `Error` conditions to `Autodesk.DataExchange.8.0.0`
+2. Bump the assembly reference to `Version=8.0.0.0`
+3. Remove the `System.Runtime.InteropServices.RuntimeInformation` `<Reference>` from both projects
+4. Restore NuGet packages and rebuild
 
 ---
 

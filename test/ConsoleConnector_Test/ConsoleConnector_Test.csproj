@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.props" Condition="Exists('..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.props')" />
   <Import Project="..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.7.3\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props" Condition="Exists('..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.7.3\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" />
@@ -66,8 +66,8 @@
     <Reference Include="AngleSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AngleSharp.1.2.0\lib\net472\AngleSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange, Version=7.7.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.7.7.0-alpha.1\lib\net48\Autodesk.DataExchange.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange, Version=8.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.8.0.0\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.DataExchange.ADPAnalytics.Abstractions">
       <HintPath>..\..\packages\Autodesk.DataExchange.ADPAnalytics.Abstractions.1.0.0\lib\net48\Autodesk.DataExchange.ADPAnalytics.Abstractions.dll</HintPath>
@@ -368,11 +368,6 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
@@ -479,12 +474,12 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.7.3\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.7.3\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props'))" />
     <Error Condition="!Exists('..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.props'))" />
     <Error Condition="!Exists('..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Autodesk.DataExchange.7.7.0-alpha.1\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Autodesk.DataExchange.7.7.0-alpha.1\build\Autodesk.DataExchange.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Autodesk.DataExchange.8.0.0\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Autodesk.DataExchange.8.0.0\build\Autodesk.DataExchange.targets'))" />
   </Target>
   <Import Project="..\..\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets" Condition="Exists('..\..\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets')" />
   <Import Project="..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
   <Import Project="..\..\packages\Microsoft.Testing.Platform.1.7.3\build\netstandard2.0\Microsoft.Testing.Platform.targets" Condition="Exists('..\..\packages\Microsoft.Testing.Platform.1.7.3\build\netstandard2.0\Microsoft.Testing.Platform.targets')" />
   <Import Project="..\..\packages\Microsoft.Testing.Platform.MSBuild.1.7.3\build\Microsoft.Testing.Platform.MSBuild.targets" Condition="Exists('..\..\packages\Microsoft.Testing.Platform.MSBuild.1.7.3\build\Microsoft.Testing.Platform.MSBuild.targets')" />
   <Import Project="..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.targets" Condition="Exists('..\..\packages\MSTest.TestAdapter.3.9.3\build\net462\MSTest.TestAdapter.targets')" />
-  <Import Project="..\..\packages\Autodesk.DataExchange.7.7.0-alpha.1\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\packages\Autodesk.DataExchange.7.7.0-alpha.1\build\Autodesk.DataExchange.targets')" />
+  <Import Project="..\..\packages\Autodesk.DataExchange.8.0.0\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\packages\Autodesk.DataExchange.8.0.0\build\Autodesk.DataExchange.targets')" />
 </Project>
