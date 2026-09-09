@@ -72,7 +72,7 @@ cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-[`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0) is published on public nuget.org, so `BuildSolution.bat` restores it automatically. The remaining companion packages are still not on nuget.org — follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/installing_the_sdk/#procedure) to obtain them and drop them as loose `.nupkg` files in the **parent directory of your repo checkout**:
+[`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0) is published on public nuget.org, so `BuildSolution.bat` restores it automatically. The remaining companion packages are still not on nuget.org — follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/) to obtain them and drop them as loose `.nupkg` files in the **parent directory of your repo checkout**:
 - `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0)
 - `Autodesk.DataExchange.GeometryDefinitions` (0.9.4)
 - `ForgeParameters-csharp_win_release_intel64_v140` (3.0.6)
@@ -1186,8 +1186,8 @@ public static MeshGeometry CreateMeshGeometry(
 
 ## 📖 Documentation
 
-- [Autodesk Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/overview/)
-- [SDK Without UI Tutorial](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/tutorials/sdk-without-ui/create-an-exchange-container/)
+- [Autodesk Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/overview/)
+- [SDK Without UI Tutorial](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/tutorials/sdk-without-ui/create-an-exchange-container/)
 - [Authentication Guide](https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/overview/)
 
 ## 🤝 Contributing
