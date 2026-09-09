@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;DXSDK_LEGACY_OBJ_DOWNLOAD</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -30,29 +30,30 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DXSDK_LEGACY_OBJ_DOWNLOAD</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;DXSDK_LEGACY_OBJ_DOWNLOAD</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-    <CodeAnalysisRuleSet>..\..\..\..\fdx-connector\FdxConnectorRuleSet.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DXSDK_LEGACY_OBJ_DOWNLOAD</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
@@ -63,11 +64,15 @@
     <Reference Include="Autodesk.DataExchange, Version=7.6.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\..\packages\Autodesk.DataExchange.7.6.0-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.GeometryUtilities.PrimitivesAPI, Version=0.9.3.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.3\lib\net48\Autodesk.GeometryUtilities.PrimitivesAPI.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.ADPAnalytics.Abstractions">
+      <HintPath>..\..\packages\Autodesk.DataExchange.ADPAnalytics.Abstractions.1.0.0\lib\net48\Autodesk.DataExchange.ADPAnalytics.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Autodesk.GeometryUtilities.MeshAPI, Version=0.9.3.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.3\lib\net48\Autodesk.GeometryUtilities.MeshAPI.dll</HintPath>
+    <Reference Include="Autodesk.GeometryUtilities.PrimitivesAPI, Version=0.9.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.4\lib\net48\Autodesk.GeometryUtilities.PrimitivesAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.GeometryUtilities.MeshAPI, Version=0.9.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.GeometryDefinitions.0.9.4\lib\net48\Autodesk.GeometryUtilities.MeshAPI.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autodesk.Newtonsoft.Json.13.0.3\lib\net45\Autodesk.Newtonsoft.Json.dll</HintPath>
@@ -181,14 +186,27 @@
     <Reference Include="Serilog.Sinks.Trace, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Serilog.Sinks.Trace.3.0.0\lib\net45\Serilog.Sinks.Trace.dll</HintPath>
     </Reference>
+    <Reference Include="Spectre.Console">
+      <HintPath>..\..\packages\Spectre.Console.0.57.2\lib\netstandard2.0\Spectre.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Spectre.Console.Ansi">
+      <HintPath>..\..\packages\Spectre.Console.Ansi.0.57.2\lib\netstandard2.0\Spectre.Console.Ansi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.TimeProvider">
+      <HintPath>..\..\packages\Microsoft.Bcl.TimeProvider.10.0.8\lib\net462\Microsoft.Bcl.TimeProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="IndexRange">
+      <HintPath>..\..\packages\IndexRange.1.0.0\lib\net471\IndexRange.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.AppContext.4.3.0\lib\net463\System.AppContext.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Collections.Immutable, Version=1.2.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Collections.Immutable.1.7.1\lib\net461\System.Collections.Immutable.dll</HintPath>
@@ -260,8 +278,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    <Reference Include="System.Memory">
+      <HintPath>..\..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
@@ -274,8 +293,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reflection, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
@@ -290,8 +310,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
@@ -376,49 +397,142 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\AddInstanceParamCommand.cs" />
-    <Compile Include="Commands\AddParamCommand.cs" />
-    <Compile Include="Commands\AddTypeParamCommand.cs" />
-    <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\GetExchangeCommand.cs" />
-    <Compile Include="Commands\Options\ExchangeFileFormat.cs" />
-    <Compile Include="Commands\Options\ExchangeId.cs" />
-    <Compile Include="Commands\Options\CollectionId.cs" />
-    <Compile Include="Commands\Options\CommandOption.cs" />
-    <Compile Include="Commands\CreateBrepCommand.cs" />
-    <Compile Include="Commands\CreateExchangeCommand.cs" />
-    <Compile Include="Commands\CreateIfcCommand.cs" />
-    <Compile Include="Commands\CreateMeshCommand.cs" />
-    <Compile Include="Commands\ExitCommand.cs" />
-    <Compile Include="Commands\HelpCommand.cs" />
-    <Compile Include="Commands\Options\ElementId.cs" />
-    <Compile Include="Commands\Options\ExchangeTitle.cs" />
-    <Compile Include="Commands\Options\FolderUrl.cs" />
-    <Compile Include="Commands\Options\FolderUrn.cs" />
-    <Compile Include="Commands\Options\HelpCommand.cs" />
-    <Compile Include="Commands\Options\HubId.cs" />
-    <Compile Include="Commands\Options\InstanceParameterType.cs" />
-    <Compile Include="Commands\Options\ParameterSchema.cs" />
-    <Compile Include="Commands\Options\ParameterValue.cs" />
-    <Compile Include="Commands\Options\ParameterValueDataType.cs" />
-    <Compile Include="Commands\Options\ParameterName.cs" />
-    <Compile Include="Commands\Options\PrimitiveGeometry.cs" />
-    <Compile Include="Commands\Options\ProjectUrn.cs" />
-    <Compile Include="Commands\Options\Region.cs" />
-    <Compile Include="Commands\CreatePrimitiveGeometryCommand.cs" />
-    <Compile Include="Commands\DeleteInstanceParameter.cs" />
-    <Compile Include="Commands\DeleteParameter.cs" />
-    <Compile Include="Commands\DeleteTypeParameter.cs" />
-    <Compile Include="Commands\SetFolderCommand.cs" />
-    <Compile Include="Commands\SyncExchangeData.cs" />
-    <Compile Include="Commands\WorkFlowTestCommand.cs" />
-    <Compile Include="Exceptions\AuthenticationMissingException.cs" />
-    <Compile Include="Helper\ConsoleAppHelper.cs" />
-    <Compile Include="Helper\GeometryHelper.cs" />
-    <Compile Include="Helper\ParameterHelper.cs" />
-    <Compile Include="Interfaces\IConsoleAppHelper.cs" />
-    <Compile Include="MoreLinq\MoreEnumerable.Batch.cs" />
-    <Compile Include="PrimitiveGeometryType.cs" />
+    <Compile Include="Driver\BatchMode.cs" />
+    <Compile Include="Driver\Bootstrap.cs" />
+    <Compile Include="Driver\CredentialsBootstrap.cs" />
+    <Compile Include="Driver\ListPicker.cs" />
+    <Compile Include="Driver\Menu.cs" />
+    <Compile Include="Driver\Prompt.cs" />
+    <Compile Include="Driver\SampleDiscovery.cs" />
+    <Compile Include="Driver\SampleRunner.cs" />
+    <Compile Include="Driver\SdkBootstrap.cs" />
+    <Compile Include="Driver\SessionStore.cs" />
+    <Compile Include="Driver\TerminalUi.cs" />
+    <Compile Include="Common\DeltaSampleHelper.cs" />
+    <Compile Include="Common\DesignSampleHelper.cs" />
+    <Compile Include="Common\DiagnosticsSampleHelper.cs" />
+    <Compile Include="Common\DownloadSampleHelper.cs" />
+    <Compile Include="Common\ElementPicker.cs" />
+    <Compile Include="Common\ElementSampleHelper.cs" />
+    <Compile Include="Common\ExchangeFolderListing.cs" />
+    <Compile Include="Common\ExchangeFolderPicker.cs" />
+    <Compile Include="Common\ExchangeSessionHelper.cs" />
+    <Compile Include="Common\GeometrySampleHelper.cs" />
+    <Compile Include="Common\HostingSampleHelper.cs" />
+    <Compile Include="Common\IsExternalInit.cs" />
+    <Compile Include="Common\LoadedExchangePicker.cs" />
+    <Compile Include="Common\NavigationHelper.cs" />
+    <Compile Include="Common\ParameterSampleHelper.cs" />
+    <Compile Include="Samples\ISample.cs" />
+    <Compile Include="Samples\SampleAddressAttribute.cs" />
+    <Compile Include="Samples\SampleContext.cs" />
+    <Compile Include="Samples\SampleDataFactory.cs" />
+    <Compile Include="Samples\Navigation\ListHubsSample.cs" />
+    <Compile Include="Samples\Navigation\ListProjectsSample.cs" />
+    <Compile Include="Samples\Navigation\ListFoldersSample.cs" />
+    <Compile Include="Samples\Navigation\ListExchangesSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\CreateExchangeSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\LoadExchangeSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\SyncExchangeSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\RefreshExchangeSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\ListRevisionsSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\DeleteExchangeSample.cs" />
+    <Compile Include="Samples\Elements\AddRootElementSample.cs" />
+    <Compile Include="Samples\Elements\AddChildElementSample.cs" />
+    <Compile Include="Samples\Elements\ListElementsSample.cs" />
+    <Compile Include="Samples\Elements\GetElementBySourceIdSample.cs" />
+    <Compile Include="Samples\Elements\DeleteElementSample.cs" />
+    <Compile Include="Samples\Elements\ListChildElementsSample.cs" />
+    <Compile Include="Samples\Elements\ShowElementModificationsSample.cs" />
+    <Compile Include="Samples\Elements\AddElementAttributesSample.cs" />
+    <Compile Include="Samples\Elements\GetElementAttributeSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\AddCustomRenderStyleSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\ConvertStreamToFileGeometrySample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\DownloadAllGeometriesSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\DownloadElementGeometriesSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\FilterGeometryOutputSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\ListAllGeometryCountsSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\ListGeometryCountsSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\SetElementTransformSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\SetElementUnitsSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\SetViewableWorldCoordinatesSample.cs" />
+    <Compile Include="Samples\AttachGeometry\BrepStep\AddBrepFromStepFileSample.cs" />
+    <Compile Include="Samples\AttachGeometry\BrepStep\AddBrepFromStepStreamSample.cs" />
+    <Compile Include="Samples\AttachGeometry\BrepStep\ConfigureFlatStepAssemblySample.cs" />
+    <Compile Include="Samples\AttachGeometry\BrepStep\ConfigureStepProtocolSample.cs" />
+    <Compile Include="Samples\AttachGeometry\BrepStep\ConfigureStepToleranceSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Ifc\AddIfcFromIfcFileSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Ifc\AddIfcFromIfcStreamSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Mesh\AddMeshFromObjFileSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Mesh\AddMeshFromObjStreamSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Mesh\AddMeshFromTritonSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddCombinedPrimitiveGeometrySample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitiveBoxSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitiveBSplineCurveSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitiveCircleSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitiveConeSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitiveCylinderSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitiveEllipseSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitiveLineSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitivePlaneSurfaceSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitivePointSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitivePolylineSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Primitives\AddPrimitiveSphereSample.cs" />
+    <Compile Include="Samples\Parameters\Instance\AddBuiltInInstanceParamSample.cs" />
+    <Compile Include="Samples\Parameters\Instance\AddCustomInstanceParamSample.cs" />
+    <Compile Include="Samples\Parameters\Instance\AddInstanceParamsBatchSample.cs" />
+    <Compile Include="Samples\Parameters\Instance\AllParamDataTypesSample.cs" />
+    <Compile Include="Samples\Parameters\Instance\DeleteInstanceParamSample.cs" />
+    <Compile Include="Samples\Parameters\Instance\DeleteInstanceParamsBatchSample.cs" />
+    <Compile Include="Samples\Parameters\Instance\FindInstanceParamSample.cs" />
+    <Compile Include="Samples\Parameters\Instance\UpdateInstanceParamSample.cs" />
+    <Compile Include="Samples\Parameters\Instance\UpdateInstanceParamsBatchSample.cs" />
+    <Compile Include="Samples\Parameters\Misc\AddGeometryLevelParamSample.cs" />
+    <Compile Include="Samples\Parameters\Misc\AddModelLevelParamSample.cs" />
+    <Compile Include="Samples\Parameters\Misc\AddReferenceNameOnlyParamSample.cs" />
+    <Compile Include="Samples\Parameters\Misc\AddReferenceParamSample.cs" />
+    <Compile Include="Samples\Parameters\Misc\DeleteGeometryLevelParamSample.cs" />
+    <Compile Include="Samples\Parameters\Misc\DeleteModelLevelParamSample.cs" />
+    <Compile Include="Samples\Parameters\Misc\ListAllParamGroupsAndSpecsSample.cs" />
+    <Compile Include="Samples\Parameters\Misc\UpdateGeometryLevelParamSample.cs" />
+    <Compile Include="Samples\Parameters\Misc\UpdateModelLevelParamSample.cs" />
+    <Compile Include="Samples\Parameters\Type\AddBuiltInTypeParamSample.cs" />
+    <Compile Include="Samples\Parameters\Type\AddCustomTypeParamSample.cs" />
+    <Compile Include="Samples\Parameters\Type\DeleteTypeParamSample.cs" />
+    <Compile Include="Samples\Parameters\Type\FindTypeParamSample.cs" />
+    <Compile Include="Samples\Parameters\Type\ListTypeParamsAcrossTypesSample.cs" />
+    <Compile Include="Samples\Parameters\Type\UpdateTypeParamSample.cs" />
+    <Compile Include="Samples\DesignReferences\GetOrCreateDesignRefSample.cs" />
+    <Compile Include="Samples\DesignReferences\GetDesignSample.cs" />
+    <Compile Include="Samples\DesignReferences\GetDesignInstancesSample.cs" />
+    <Compile Include="Samples\DesignReferences\GetDesignInstancesBySourceIdSample.cs" />
+    <Compile Include="Samples\DesignReferences\GetDesignInstancesByNameSample.cs" />
+    <Compile Include="Samples\DesignReferences\InstantiateDesignSample.cs" />
+    <Compile Include="Samples\DownloadExchange\DownloadExchangeAsStepSample.cs" />
+    <Compile Include="Samples\DownloadExchange\DownloadExchangeAsIfcSample.cs" />
+    <Compile Include="Samples\DownloadExchange\DownloadExchangeAsObjSample.cs" />
+    <Compile Include="Samples\Revisions\ListCreatedElementsSample.cs" />
+    <Compile Include="Samples\Revisions\ListModifiedElementsSample.cs" />
+    <Compile Include="Samples\Revisions\ListDeletedElementsSample.cs" />
+    <Compile Include="Samples\Revisions\ListAllChangedElementsSample.cs" />
+    <Compile Include="Samples\SdkEvents\SubscribeExchangeUpdatesSample.cs" />
+    <Compile Include="Samples\SdkEvents\UnsubscribeExchangeUpdatesSample.cs" />
+    <Compile Include="Samples\SdkEvents\ListenViewableGenerationSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\ToggleHttpDebugLoggingSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\CheckFeatureFlagSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\ShowProgressStepsSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\StartTelemetrySessionSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\StopTelemetrySessionSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\SimpleExchangeScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\SingleElementWithGeometryScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\NestedElementsScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\MultiGeometryMultiParameterScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\ElementWithPropertiesScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\ElementWithDesignRefScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\TwoVersionRoundTripScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\PullIncrementalRevisionScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\DownloadAllFormatsScenarioSample.cs" />
+    <Compile Include="Samples\E2EWorkflowScenarios\EndToEndCreateSyncDownloadScenarioSample.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -449,9 +563,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\fcdc7083-ed51-31d1-9d0e-c608b400ede8.stp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\mesh1.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\mesh2.obj">
