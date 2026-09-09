@@ -54,7 +54,7 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
    - Note your **Client ID**, **Client Secret**, and **Auth Callback**
 
 2. **Development Environment**
-   - Visual Studio 2019 or later
+   - Visual Studio 2022 or later
    - .NET Framework 4.8
    - Basic knowledge of C#
 
@@ -67,12 +67,12 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
 
 ### 1. Clone and Setup
 ```bash
-git clone https://github.com/your-repo/aps-dataexchange-console.git
+git clone https://github.com/autodesk-platform-services/aps-dataexchange-console.git
 cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-[`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0) is published on public nuget.org, so `BuildSolution.bat` restores it automatically. The remaining companion packages are still not on nuget.org — follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/) to obtain them and drop them as loose `.nupkg` files in the **parent directory of your repo checkout**:
+[`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0) is published on public nuget.org, so `BuildSolution.bat` restores it automatically. The remaining companion packages are still not on nuget.org — follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/#procedure) to obtain them and drop them as loose `.nupkg` files in the **parent directory of your repo checkout**:
 - `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0)
 - `Autodesk.DataExchange.GeometryDefinitions` (0.9.4)
 - `ForgeParameters-csharp_win_release_intel64_v140` (3.0.6)
@@ -1200,14 +1200,7 @@ This is a sample project for reference purposes. While direct contributions may 
 
 ## 📄 License
 
-This sample code is part of the Autodesk Data Exchange .NET SDK (Software Development Kit) beta. It is subject to the license covering the Autodesk Data Exchange .NET SDK (Software Development Kit) beta.
-
-## ✍️ Authors
-
-**Dhiraj Lotake** - *Autodesk*
-**Hariom Sharma** - *Autodesk*
-
----
+This sample code is provided for use with the Autodesk Data Exchange .NET SDK and is subject to the Autodesk Platform Services Terms.
 
 ## 🆘 Support
 
