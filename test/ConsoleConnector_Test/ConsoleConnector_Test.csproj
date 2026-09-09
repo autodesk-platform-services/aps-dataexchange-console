@@ -76,9 +76,6 @@
     <Reference Include="IndexRange">
       <HintPath>..\..\packages\IndexRange.1.0.0\lib\net471\IndexRange.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autodesk.Newtonsoft.Json.13.0.3\lib\net45\Autodesk.Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Castle.Core.5.1.1\lib\net462\Castle.Core.dll</HintPath>
     </Reference>
