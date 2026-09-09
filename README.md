@@ -72,15 +72,12 @@ cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-[`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0) is published on public nuget.org, so `BuildSolution.bat` restores it automatically. The remaining companion packages are still not on nuget.org — follow the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/#procedure) to obtain them and drop them as loose `.nupkg` files in the **parent directory of your repo checkout**:
-- `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0)
-- `Autodesk.DataExchange.GeometryDefinitions` (0.9.4)
-- `ForgeParameters-csharp_win_release_intel64_v140` (3.0.6)
-- `ForgeUnits-csharp_win_release_intel64_v140` (5.1.4)
+[`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0) is published on public nuget.org as a self-contained package. NuGet restore pulls the SDK and its bundled runtime dependencies automatically — no side-loaded `.nupkg` files or private package feeds are required. See the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/#procedure) for the full prerequisite list (APS app, OAuth scopes, Forma/ACC access).
 
 **Option A: Visual Studio**
 - Open `ConsoleConnector.sln`
-- Build the solution (packages restore automatically)
+- Set the platform target to **x64** (required — the SDK ships 64-bit binaries)
+- Restore NuGet packages and build the solution
 
 **Option B: Command Line**
 ```bash
@@ -291,8 +288,7 @@ This section documents replacing the Command-pattern console app with a menu-dri
 
 | Package | Reason |
 |---------|--------|
-| `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0) | `Client.Initialize()` requires this companion assembly at runtime against 7.6.0-beta; not previously declared |
-| `Autodesk.DataExchange.GeometryDefinitions` (bumped to 0.9.4) | Exact version pinned by the SDK's own nuspec for 7.6.0-beta |
+| `Autodesk.DataExchange.ADPAnalytics.Abstractions` (bundled in SDK 8.0.0) | Runtime dependency of `Client.Initialize()`; vendored inside the `Autodesk.DataExchange` NuGet package (no separate install) |
 | `Spectre.Console` / `Spectre.Console.Ansi` (0.57.2) | Powers the interactive menu, tables, and prompts |
 | `Microsoft.Bcl.TimeProvider`, `System.Memory`/`System.Buffers`/`System.Numerics.Vectors`/`System.Runtime.CompilerServices.Unsafe` (bumped) | Transitive requirements of `Spectre.Console` on net48 |
 | `IndexRange` | Polyfills `System.Index`/`System.Range` (`^1`, `a..b` syntax) on net48 |
@@ -384,7 +380,7 @@ This section documents the migration from SDK 7.6.0-beta to **Autodesk Data Exch
 ### Overview of Changes
 
 - **SDK Version**: Upgraded to `Autodesk.DataExchange 8.0.0` (assembly version `8.0.0.0`)
-- **Public availability**: 8.0.0 ships on public nuget.org — the SDK nupkg no longer has to be side-loaded from the parent directory
+- **Public availability**: 8.0.0 ships on public nuget.org as a self-contained package — no side-loaded `.nupkg` files or private feeds are required
 - **Geometry attach**: Use `AddElementGeometry` instead of `SetElementGeometry` when appending geometry to an element (preserves existing geometry)
 - **ACC version display**: Loaded panel and post-sync output show the ACC file version number parsed from `FileVersionUrn`
 - **API signature changes**: collection-based `GetExchangeDetailsAsync`, updated OBJ download signature
@@ -436,7 +432,7 @@ rather than assumed.
 | `ElementProperties` and `AddElement(ElementProperties)` removed | **None** | Elements are built with `AddElement(id, name)` + `Classify` + `DefineType` + `SetType` (`Common/ElementSampleHelper.cs`). `ElementProperties` no longer appears anywhere in the 8.0.0 assembly |
 | `Autodesk.DataExchange.BaseModels.dll` merged into `Autodesk.DataExchange.UI.Bridge.dll` | **None** | Console app — `Autodesk.DataExchange.UI` is not referenced by either project, so there is no `BaseExchangeModel`/`ExchangeUrl` consumption and no stale-DLL risk |
 | `[Obsolete]` APIs from 7.6.0-beta deleted (`RetrieveLatestExchangeDataAsync`, `IElement.Id`, `DeleteElement(string)`, `DeleteElementsById`, `GetElementById`/`GetElementsById`, `CreateDesignRef`, `GetDesignsById`, `InstantiateDesignById`, `ExchangeCreateRequestACC.ACCProjectURN`, …) | **None** | Migrated in the 7.6.0 step: `Common/DeltaSampleHelper.cs` uses `RetrieveLatestExchangeAsync(model, ct)`, `Samples/Elements/DeleteElementSample.cs` uses `DeleteElementByUniqueId(element.UniqueId)`, and the design samples use `GetOrCreateDesignRef`, which is still present in 8.0.0 |
-| ADP analytics registration entry points (`SDKOptions.RegisterAdpAnalytics`, `AddAdpAnalytics`) removed | **None** | Never called here. `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0) stays as a runtime-only dependency of `Client.Initialize()` |
+| ADP analytics registration entry points (`SDKOptions.RegisterAdpAnalytics`, `AddAdpAnalytics`) removed | **None** | Never called here. `Autodesk.DataExchange.ADPAnalytics.Abstractions` is bundled inside the SDK package and remains a runtime-only dependency of `Client.Initialize()` |
 | `System.Runtime.InteropServices.RuntimeInformation` facade collides with mscorlib | **Build break** | The only change this upgrade actually forced — see [Reference Cleanup](#reference-cleanup-systemruntimeinteropservicesruntimeinformation) above |
 
 **Verified still present in 8.0.0** (checked against `Autodesk.DataExchange.xml` shipped in the
