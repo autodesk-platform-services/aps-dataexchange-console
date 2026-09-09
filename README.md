@@ -416,6 +416,44 @@ error CS0433: The type 'RuntimeInformation' exists in both
 
 The `<Reference>` was removed from both `.csproj` files; `RuntimeInformation`/`OSPlatform` resolve from `mscorlib` on net48.
 
+### ⚠️ Breaking Changes in 8.0.0 — and why this connector absorbed so few
+
+8.0.0 is a major release with real breaking changes: `IStorage.Save()` gained a required key, the
+`DownloadCompleteExchangeAs*` family collapsed to a single `DataExchangeIdentifier` shape,
+`ElementProperties` was deleted outright, `Autodesk.DataExchange.BaseModels.dll` stopped shipping as
+a standalone assembly, and everything marked `[Obsolete]` in 7.6.0-beta was removed.
+
+This connector needed **no source changes** for the SDK bump — not because the release is small, but
+because this repo is a console app with no UI SDK dependency and it moved off the obsolete APIs
+during the 7.6.0-beta upgrade and the architecture revamp. The audit below records each 8.0.0
+breaking change and why it does or does not land here, so the absence of code churn is verifiable
+rather than assumed.
+
+| 8.0.0 breaking change | Impact here | Why |
+|-----------------------|-------------|-----|
+| `IStorage.Save()` → `Save(string key, string group = null)` | **None** | This connector never uses the SDK's `IStorage`. Session state lives in `Driver/SessionStore.cs` as its own JSON file |
+| `DownloadCompleteExchangeAs{OBJ,STEP,IFC,USD}` take a `DataExchangeIdentifier` instead of `(exchangeId, collectionId, …)` | **None** | Already on the identifier overload — see `Common/DownloadSampleHelper.cs` and the `Samples/DownloadExchange/*` samples, which all pass `session.Identifier` |
+| `ElementProperties` and `AddElement(ElementProperties)` removed | **None** | Elements are built with `AddElement(id, name)` + `Classify` + `DefineType` + `SetType` (`Common/ElementSampleHelper.cs`). `ElementProperties` no longer appears anywhere in the 8.0.0 assembly |
+| `Autodesk.DataExchange.BaseModels.dll` merged into `Autodesk.DataExchange.UI.Bridge.dll` | **None** | Console app — `Autodesk.DataExchange.UI` is not referenced by either project, so there is no `BaseExchangeModel`/`ExchangeUrl` consumption and no stale-DLL risk |
+| `[Obsolete]` APIs from 7.6.0-beta deleted (`RetrieveLatestExchangeDataAsync`, `IElement.Id`, `DeleteElement(string)`, `DeleteElementsById`, `GetElementById`/`GetElementsById`, `CreateDesignRef`, `GetDesignsById`, `InstantiateDesignById`, `ExchangeCreateRequestACC.ACCProjectURN`, …) | **None** | Migrated in the 7.6.0 step: `Common/DeltaSampleHelper.cs` uses `RetrieveLatestExchangeAsync(model, ct)`, `Samples/Elements/DeleteElementSample.cs` uses `DeleteElementByUniqueId(element.UniqueId)`, and the design samples use `GetOrCreateDesignRef`, which is still present in 8.0.0 |
+| ADP analytics registration entry points (`SDKOptions.RegisterAdpAnalytics`, `AddAdpAnalytics`) removed | **None** | Never called here. `Autodesk.DataExchange.ADPAnalytics.Abstractions` (1.0.0) stays as a runtime-only dependency of `Client.Initialize()` |
+| `System.Runtime.InteropServices.RuntimeInformation` facade collides with mscorlib | **Build break** | The only change this upgrade actually forced — see [Reference Cleanup](#reference-cleanup-systemruntimeinteropservicesruntimeinformation) above |
+
+**Verified still present in 8.0.0** (checked against `Autodesk.DataExchange.xml` shipped in the
+package), so the corresponding call sites compile unchanged:
+
+- `IClient.GetExchangeDetailsAsync(string collectionId, string fileUrn)` — alongside the newer
+  `GetExchangeDetailsAsync(IDataExchangeIdentifier)` overload
+- `ElementDataModel.CreateFileGeometry(string path, GeometryFormat, RenderStyle, Units, string)` and
+  its `MemoryStream` counterpart
+- `IElementDataModel.GetOrCreateDesignRef(IElement, string, string)`
+
+> If you are upgrading a connector that **did** use the removed APIs — particularly a WPF connector
+> on `Autodesk.DataExchange.UI` — do the 7.6.0-beta step first. 8.0.0 no longer offers an
+> obsolete-but-working path, so anything you deferred there turns into a `CS0117`/`CS1061` compile
+> error. The [Sample UI Connector migration guide](https://github.com/autodesk-platform-services/aps-dataexchange-connector/blob/main/migration-guide.md)
+> documents those code fixes in detail.
+
 ### Migration Steps
 
 1. Update `packages.config` (`version="8.0.0"`) and `.csproj` HintPaths / `Import` / `Error` conditions to `Autodesk.DataExchange.8.0.0`
@@ -424,6 +462,32 @@ The `<Reference>` was removed from both `.csproj` files; `RuntimeInformation`/`O
 4. Adapt to the collection-based `GetExchangeDetailsAsync` and the updated OBJ download signature
 5. Remove the `System.Runtime.InteropServices.RuntimeInformation` `<Reference>` from both projects
 6. Restore NuGet packages and rebuild
+7. Work the audit table above against your own code — every row that says "None" here is a real
+   break for connectors that use that API
+
+### 🧪 Testing Your Migration
+
+After upgrading, confirm:
+
+- ✅ `msbuild ConsoleConnector.sln -p:Configuration=Debug -p:Platform=x64` builds with 0 errors
+- ✅ The build still succeeds from a clean output directory (`-t:Rebuild`, or delete `bin`/`obj`
+  first) — this rules out a stale 7.x `Autodesk.DataExchange.dll` in `bin/` satisfying the loader
+  and masking the upgrade
+- ✅ The copied output assembly really is 8.0.0.0:
+  `[Reflection.AssemblyName]::GetAssemblyName("src/ConsoleConnector/bin/x64/Debug/Autodesk.DataExchange.dll").Version`
+- ✅ The MSTest suite passes (38/38)
+- ✅ `--run-all` walks the full sample catalogue without throwing
+- ✅ Load an exchange — the ACC file version shows in the Loaded panel
+- ✅ Attach a second geometry to an element — the first one survives (`AddElementGeometry`)
+- ✅ Sync — the ACC version increments and the Loaded panel updates
+
+**Migration Checklist:**
+- [x] Bumped `packages.config` and both `.csproj` files to `Autodesk.DataExchange` 8.0.0 / `Version=8.0.0.0`
+- [x] Removed the `System.Runtime.InteropServices.RuntimeInformation` facade `<Reference>`
+- [x] Audited every 8.0.0 breaking change against this codebase (table above)
+- [x] Rebuilt clean with `-t:Rebuild` (0 errors) and verified the output assembly is 8.0.0.0
+- [x] Ran the MSTest unit test suite (38/38 passed)
+- [ ] Ran the load / attach / sync workflows end to end against ACC
 
 ---
 
