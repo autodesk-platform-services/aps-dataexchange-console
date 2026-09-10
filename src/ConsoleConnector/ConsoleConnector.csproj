@@ -64,10 +64,6 @@
     <Reference Include="Autodesk.DataExchange, Version=8.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\..\packages\Autodesk.DataExchange.8.0.0\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.ADPAnalytics.Abstractions">
-      <HintPath>..\..\packages\Autodesk.DataExchange.8.0.0\lib\net48\Autodesk.DataExchange.ADPAnalytics.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Google.Protobuf, Version=3.30.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Google.Protobuf.3.30.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
