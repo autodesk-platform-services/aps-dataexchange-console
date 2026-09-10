@@ -288,7 +288,6 @@ This section documents replacing the Command-pattern console app with a menu-dri
 
 | Package | Reason |
 |---------|--------|
-| `Autodesk.DataExchange.ADPAnalytics.Abstractions` (bundled in SDK 8.0.0) | Runtime dependency of `Client.Initialize()`; vendored inside the `Autodesk.DataExchange` NuGet package (no separate install) |
 | `Spectre.Console` / `Spectre.Console.Ansi` (0.57.2) | Powers the interactive menu, tables, and prompts |
 | `Microsoft.Bcl.TimeProvider`, `System.Memory`/`System.Buffers`/`System.Numerics.Vectors`/`System.Runtime.CompilerServices.Unsafe` (bumped) | Transitive requirements of `Spectre.Console` on net48 |
 | `IndexRange` | Polyfills `System.Index`/`System.Range` (`^1`, `a..b` syntax) on net48 |
@@ -432,7 +431,6 @@ rather than assumed.
 | `ElementProperties` and `AddElement(ElementProperties)` removed | **None** | Elements are built with `AddElement(id, name)` + `Classify` + `DefineType` + `SetType` (`Common/ElementSampleHelper.cs`). `ElementProperties` no longer appears anywhere in the 8.0.0 assembly |
 | `Autodesk.DataExchange.BaseModels.dll` merged into `Autodesk.DataExchange.UI.Bridge.dll` | **None** | Console app — `Autodesk.DataExchange.UI` is not referenced by either project, so there is no `BaseExchangeModel`/`ExchangeUrl` consumption and no stale-DLL risk |
 | `[Obsolete]` APIs from 7.6.0-beta deleted (`RetrieveLatestExchangeDataAsync`, `IElement.Id`, `DeleteElement(string)`, `DeleteElementsById`, `GetElementById`/`GetElementsById`, `CreateDesignRef`, `GetDesignsById`, `InstantiateDesignById`, `ExchangeCreateRequestACC.ACCProjectURN`, …) | **None** | Migrated in the 7.6.0 step: `Common/DeltaSampleHelper.cs` uses `RetrieveLatestExchangeAsync(model, ct)`, `Samples/Elements/DeleteElementSample.cs` uses `DeleteElementByUniqueId(element.UniqueId)`, and the design samples use `GetOrCreateDesignRef`, which is still present in 8.0.0 |
-| ADP analytics registration entry points (`SDKOptions.RegisterAdpAnalytics`, `AddAdpAnalytics`) removed | **None** | Never called here. `Autodesk.DataExchange.ADPAnalytics.Abstractions` is bundled inside the SDK package and remains a runtime-only dependency of `Client.Initialize()` |
 | `System.Runtime.InteropServices.RuntimeInformation` facade collides with mscorlib | **Build break** | The only change this upgrade actually forced — see [Reference Cleanup](#reference-cleanup-systemruntimeinteropservicesruntimeinformation) above |
 
 **Verified still present in 8.0.0** (checked against `Autodesk.DataExchange.xml` shipped in the
