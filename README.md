@@ -4,7 +4,7 @@
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
 ![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-8.0.0-blue.svg)
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
-[![License](https://img.shields.io/badge/License-Autodesk%20SDK-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-APS%20Terms-blue.svg)](https://www.autodesk.com/company/legal-notices-trademarks/terms-of-service-autodesk360-web-services/forge-platform-web-services-api-terms-of-service)
 
 ## 📋 Overview
 
@@ -1194,7 +1194,7 @@ This is a sample project for reference purposes. While direct contributions may 
 
 ## 📄 License
 
-This sample code is provided for use with the Autodesk Data Exchange .NET SDK and is subject to the Autodesk Platform Services Terms.
+This sample code is provided for use with the Autodesk Data Exchange .NET SDK and is subject to the [Autodesk Platform Services Terms](https://www.autodesk.com/company/legal-notices-trademarks/terms-of-service-autodesk360-web-services/forge-platform-web-services-api-terms-of-service).
 
 ## 🆘 Support
 
