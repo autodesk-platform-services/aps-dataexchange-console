@@ -1,3 +1,6 @@
+<!-- archived-notice -->
+> **This repository is archived.** Archived repositories are not maintained or supported.
+
 # Autodesk Data Exchange Console Connector
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-v2-green.svg)](http://developer.autodesk.com/)
