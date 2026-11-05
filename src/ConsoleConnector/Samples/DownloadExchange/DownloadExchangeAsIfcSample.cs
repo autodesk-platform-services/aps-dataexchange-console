@@ -23,9 +23,10 @@ namespace ConsoleConnector.Samples
             if (session == null)
                 return;
             var path = DownloadSampleHelper.ResolveOutputPath("IFC output path", "exchange.ifc");
+            var schema = DownloadSampleHelper.PickIfcSchema();
             await DownloadSampleHelper.RunExchangeDownloadAsync(
                 "IFC",
-                () => ctx.Client.DownloadCompleteExchangeAsIFC(session.Identifier, path, CancellationToken.None));
+                () => ctx.Client.DownloadCompleteExchangeAsIFC(session.Identifier, path, schema, CancellationToken.None));
         }
     }
 }
