@@ -413,6 +413,7 @@
     <Compile Include="Samples\ExchangeLifecycle\RefreshExchangeSample.cs" />
     <Compile Include="Samples\ExchangeLifecycle\ListRevisionsSample.cs" />
     <Compile Include="Samples\ExchangeLifecycle\DeleteExchangeSample.cs" />
+    <Compile Include="Samples\ExchangeLifecycle\LoadCachedVsLatestSample.cs" />
     <Compile Include="Samples\Elements\AddRootElementSample.cs" />
     <Compile Include="Samples\Elements\AddChildElementSample.cs" />
     <Compile Include="Samples\Elements\ListElementsSample.cs" />
@@ -422,6 +423,7 @@
     <Compile Include="Samples\Elements\ShowElementModificationsSample.cs" />
     <Compile Include="Samples\Elements\AddElementAttributesSample.cs" />
     <Compile Include="Samples\Elements\GetElementAttributeSample.cs" />
+    <Compile Include="Samples\Elements\CompareElementsSample.cs" />
     <Compile Include="Samples\AttachGeometry\Advanced\AddCustomRenderStyleSample.cs" />
     <Compile Include="Samples\AttachGeometry\Advanced\ConvertStreamToFileGeometrySample.cs" />
     <Compile Include="Samples\AttachGeometry\Advanced\DownloadAllGeometriesSample.cs" />
@@ -432,11 +434,15 @@
     <Compile Include="Samples\AttachGeometry\Advanced\SetElementTransformSample.cs" />
     <Compile Include="Samples\AttachGeometry\Advanced\SetElementUnitsSample.cs" />
     <Compile Include="Samples\AttachGeometry\Advanced\SetViewableWorldCoordinatesSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\ManageElementGeometriesSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\FindGeometryBySourceIdSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Advanced\DownloadGeometriesWithOwnProgressSample.cs" />
     <Compile Include="Samples\AttachGeometry\BrepStep\AddBrepFromStepFileSample.cs" />
     <Compile Include="Samples\AttachGeometry\BrepStep\AddBrepFromStepStreamSample.cs" />
     <Compile Include="Samples\AttachGeometry\BrepStep\ConfigureFlatStepAssemblySample.cs" />
     <Compile Include="Samples\AttachGeometry\BrepStep\ConfigureStepProtocolSample.cs" />
     <Compile Include="Samples\AttachGeometry\BrepStep\ConfigureStepToleranceSample.cs" />
+    <Compile Include="Samples\AttachGeometry\BrepStep\OverrideStepRenderStyleSample.cs" />
     <Compile Include="Samples\AttachGeometry\Ifc\AddIfcFromIfcFileSample.cs" />
     <Compile Include="Samples\AttachGeometry\Ifc\AddIfcFromIfcStreamSample.cs" />
     <Compile Include="Samples\AttachGeometry\Mesh\AddMeshFromObjFileSample.cs" />
@@ -499,6 +505,7 @@
     <Compile Include="Samples\DebugTelemetry\ShowProgressStepsSample.cs" />
     <Compile Include="Samples\DebugTelemetry\StartTelemetrySessionSample.cs" />
     <Compile Include="Samples\DebugTelemetry\StopTelemetrySessionSample.cs" />
+    <Compile Include="Samples\DebugTelemetry\HandleSdkErrorsSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SimpleExchangeScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\SingleElementWithGeometryScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\NestedElementsScenarioSample.cs" />
@@ -509,6 +516,7 @@
     <Compile Include="Samples\E2EWorkflowScenarios\PullIncrementalRevisionScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\DownloadAllFormatsScenarioSample.cs" />
     <Compile Include="Samples\E2EWorkflowScenarios\EndToEndCreateSyncDownloadScenarioSample.cs" />
+    <Compile Include="Samples\Utilities\PersistWithStorageSample.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
