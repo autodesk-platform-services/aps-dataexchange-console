@@ -17,6 +17,7 @@ namespace ConsoleConnector_Test
                 StepPath = "C:\\samples\\part.stp",
                 IfcPath = "C:\\samples\\model.ifc",
                 ObjPath = "C:\\samples\\mesh.obj",
+                SatPath = "C:\\samples\\part.sat",
                 BuiltInSchemaId = "schema-1",
             })
             {
@@ -35,6 +36,7 @@ namespace ConsoleConnector_Test
             Assert.AreEqual("C:\\samples\\part.stp", restored.Defaults.StepPath);
             Assert.AreEqual("C:\\samples\\model.ifc", restored.Defaults.IfcPath);
             Assert.AreEqual("C:\\samples\\mesh.obj", restored.Defaults.ObjPath);
+            Assert.AreEqual("C:\\samples\\part.sat", restored.Defaults.SatPath);
             Assert.AreEqual("schema-1", restored.Defaults.BuiltInSchemaId);
         }
 

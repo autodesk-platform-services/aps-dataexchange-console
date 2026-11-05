@@ -23,7 +23,7 @@ namespace ConsoleConnector.Driver
             (4,  "Attach Geometry to Elements"),
             (5,  "Parameters on Elements & Exchanges"),
             (6,  "Create Design References & Instances"),
-            (7,  "Download Whole Exchange (STEP / IFC / OBJ)"),
+            (7,  "Download Whole Exchange (STEP / IFC / OBJ / SAT)"),
             (8,  "Revisions & What Changed in Versions"),
             (9,  "SDK Events & Viewables"),
             (10, "Debug & Telemetry"),
@@ -40,6 +40,7 @@ namespace ConsoleConnector.Driver
                     (3, "Mesh"),
                     (4, "Primitives"),
                     (5, "Advanced"),
+                    (6, "SAT"),
                 },
                 [5] = new[]
                 {

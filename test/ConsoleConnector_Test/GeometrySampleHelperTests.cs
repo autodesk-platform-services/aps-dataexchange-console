@@ -56,6 +56,20 @@ namespace ConsoleConnector_Test
         }
 
         [TestMethod]
+        public void ResolvePath_SatLabel_UpdatesSatPathDefaultOnly()
+        {
+            var ctx = NewContext();
+
+            var path = GeometrySampleHelper.ResolvePath(ctx, "SAT path", "C:\\samples\\part.sat", "part.sat");
+
+            Assert.AreEqual("C:\\samples\\part.sat", path);
+            Assert.AreEqual("C:\\samples\\part.sat", ctx.Defaults.SatPath);
+            Assert.IsNull(ctx.Defaults.StepPath);
+            Assert.IsNull(ctx.Defaults.IfcPath);
+            Assert.IsNull(ctx.Defaults.ObjPath);
+        }
+
+        [TestMethod]
         public void ResolvePath_LabelComparisonIsCaseInsensitive()
         {
             var ctx = NewContext();

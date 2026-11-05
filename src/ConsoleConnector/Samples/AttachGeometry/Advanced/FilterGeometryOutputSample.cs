@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Autodesk.DataExchange;
+using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Interface;
 using ConsoleConnector.Driver;
 using ConsoleConnector.Common;
@@ -11,8 +12,8 @@ using ConsoleConnector.Common;
 namespace ConsoleConnector.Samples
 {
     /// <summary>
-    /// What you learn: How to filter geometry on download with GeometryFilters.
-    /// SDK: GetGeometriesAsync with GeometryFilters.
+    /// What you learn: How to filter geometry on download with GeometryFilters, and read BREP back as STEP or SAT.
+    /// SDK: GetGeometriesAsync with GeometryOutputOptions.GeometryFilters / BrepOutputFormat.
     /// Console plumbing: GeometrySampleHelper.BeginAsync.
     /// Prerequisites: 2.3 Load Exchange.
     /// </summary>
@@ -20,7 +21,7 @@ namespace ConsoleConnector.Samples
     public sealed class FilterGeometryOutputSample : ISample
     {
         public string Name => "Filter Geometry Output";
-        public string Description => "Download geometries filtered by GeometryFilters";
+        public string Description => "Download geometries filtered by GeometryFilters, BREP as STEP or SAT";
 
         public async Task RunAsync(SampleContext ctx)
         {
@@ -40,13 +41,19 @@ namespace ConsoleConnector.Samples
                 _ => GeometryFilters.All,
             };
 
-            var options = new GeometryOutputOptions { GeometryFilters = filter };
+            var brepChoice = ListPicker.PickBinary("BREP output format", "STEP (default)", "SAT");
+            var brepFormat = brepChoice == 2 ? BrepOutputFormat.SAT : BrepOutputFormat.STEP;
+
+            var options = new GeometryOutputOptions { GeometryFilters = filter, BrepOutputFormat = brepFormat };
             IEnumerable<IElementGeometry>? geometries = null;
             await TerminalUi.RunWithStatusAsync(
-                $"Retrieving {filter} geometries…",
+                $"Retrieving {filter} geometries (BREP as {brepFormat})…",
                 async () => geometries = await session.Model.GetGeometriesAsync(options, CancellationToken.None).ConfigureAwait(false));
-            var count = geometries?.Count() ?? 0;
-            TerminalUi.Success($"Retrieved {count} geometry asset(s) with filter {filter}.");
+            var list = geometries?.ToList() ?? new List<IElementGeometry>();
+            TerminalUi.Success($"Retrieved {list.Count} geometry asset(s) with filter {filter}, BREP output {brepFormat}.");
+
+            foreach (var geometry in list.OfType<FileGeometry>())
+                TerminalUi.Chat($"  {geometry.SourceId ?? geometry.UniqueId}: {geometry.Format} -> {geometry.FilePath}");
         }
     }
 }
