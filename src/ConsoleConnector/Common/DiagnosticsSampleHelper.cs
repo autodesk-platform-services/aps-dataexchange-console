@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Autodesk.DataExchange;
+using Autodesk.DataExchange.Exceptions;
 using Autodesk.DataExchange.Core.Interface;
 using Autodesk.DataExchange.ProgressManager.Enums;
 using Autodesk.DataExchange.ProgressManager.Interfaces;
@@ -18,6 +20,35 @@ namespace ConsoleConnector.Common
 
         internal static ILogger GetLogger(Client client) =>
             client.SDKOptions!.Logger;
+
+        /// <summary>
+        /// Walks an exception chain (inner and aggregate exceptions) breadth-first and returns the HTTP status of the
+        /// first exception that implements <see cref="IStatusCodeException"/>, or null if none does. Aggregate inner
+        /// exceptions are visited in their original order.
+        /// </summary>
+        internal static int? FindStatusCode(Exception? exception)
+        {
+            var pending = new Queue<Exception>();
+            if (exception != null)
+                pending.Enqueue(exception);
+            while (pending.Count > 0)
+            {
+                var current = pending.Dequeue();
+                if (current is IStatusCodeException withStatus)
+                    return withStatus.StatusCode;
+                if (current is AggregateException aggregate)
+                {
+                    foreach (var inner in aggregate.InnerExceptions)
+                        pending.Enqueue(inner);
+                }
+                else if (current.InnerException != null)
+                {
+                    pending.Enqueue(current.InnerException);
+                }
+            }
+
+            return null;
+        }
 
         internal static void EnableHttpDebugLogging(ILogger logger)
         {
