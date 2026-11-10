@@ -296,6 +296,38 @@ namespace ConsoleConnector.Common
                 },
             };
 
+        /// <summary>Creates a line primitive tagged with a connector-side <paramref name="sourceId"/>.</summary>
+        internal static PrimitiveGeometry CreateTaggedLineGeometry(string? sourceId, double offset = 0)
+        {
+            var container = new GeometryContainer();
+            var line = new Line(
+                new Point3d { X = offset, Y = 0, Z = 0 },
+                new Vector3d { X = 100, Y = 100, Z = 0 });
+            line.Range = new ParamRange
+            {
+                High = 1,
+                Low = 0,
+                Type = ParamRange.RangeType.Finite,
+            };
+            container.Curves.Add(line);
+            return ElementDataModel.CreatePrimitiveGeometry(container, DefaultRenderStyle, DefaultUnits, sourceId);
+        }
+
+        internal static void PrintGeometryMetaData(string title, IReadOnlyList<GeometryMetaData> items) =>
+            TerminalUi.WriteTable(
+                title,
+                items,
+                ("SourceId", m => m.SourceId ?? string.Empty),
+                ("UniqueId", m => m.UniqueId ?? string.Empty),
+                ("Name", m => m.Name ?? string.Empty),
+                ("Type", m => m.Type.ToString()));
+
+        /// <summary>Formats a batch update/delete result map as "id=true, id=false" in input order.</summary>
+        internal static string FormatBatchResult(IReadOnlyDictionary<string, bool> result) =>
+            result.Count == 0
+                ? "(empty)"
+                : string.Join(", ", result.Select(pair => $"{pair.Key}={(pair.Value ? "true" : "false")}"));
+
         internal static void PrintGeometryCounts(Dictionary<GeometryFilters, long> counts)
         {
             foreach (var pair in counts.OrderBy(p => p.Key.ToString()))

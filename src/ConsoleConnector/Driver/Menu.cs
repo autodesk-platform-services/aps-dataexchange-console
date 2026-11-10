@@ -28,6 +28,7 @@ namespace ConsoleConnector.Driver
             (9,  "SDK Events & Viewables"),
             (10, "Debug & Telemetry"),
             (11, "E2E Workflow Scenarios"),
+            (12, "Connector Utilities (Storage)"),
         };
 
         private static readonly Dictionary<int, (int Id, string Title)[]> CategorySubgroups =
