@@ -414,8 +414,8 @@ Things to know about SAT:
 - [x] Rebuilt clean with `-t:Rebuild` (0 errors) and verified the output assembly is 8.1.0.0
 - [x] Added SAT samples (4.6.1, 4.6.2, 7.4), SAT read-back in 4.5.10, and SAT in the Download All Formats scenario
 - [x] Ran the MSTest unit test suite (39/39 passed)
-- [ ] Ran the IFC download end to end against ACC
-- [ ] Ran the SAT attach and SAT download end to end against ACC
+- [x] Ran the IFC download end to end against ACC
+- [x] Ran the SAT attach and SAT download end to end against ACC
 
 ---
 
