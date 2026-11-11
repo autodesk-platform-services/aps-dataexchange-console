@@ -72,7 +72,7 @@ cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-This branch targets **`Autodesk.DataExchange` 8.1.0**, a pre-release published on Autodesk's internal Artifactory feed (not nuget.org). Make sure that feed is configured as a NuGet source on your machine before restoring. The last public release, [`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0), is published on public nuget.org as a self-contained package — NuGet restore pulls the SDK and its bundled runtime dependencies automatically. See the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/#procedure) for the full prerequisite list (APS app, OAuth scopes, Forma/ACC access).
+This branch targets [`Autodesk.DataExchange` 8.1.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.1.0), published on public nuget.org — no additional package source is required. NuGet restore pulls the SDK and its dependencies automatically. See the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/#procedure) for the full prerequisite list (APS app, OAuth scopes, Forma/ACC access).
 
 **Option A: Visual Studio**
 - Open `ConsoleConnector.sln`
