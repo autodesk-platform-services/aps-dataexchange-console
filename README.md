@@ -72,7 +72,7 @@ cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-This branch targets **`Autodesk.DataExchange` 8.1.0-alpha.291026**, a pre-release published on Autodesk's internal Artifactory feed (not nuget.org). Make sure that feed is configured as a NuGet source on your machine before restoring. The last public release, [`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0), is published on public nuget.org as a self-contained package — NuGet restore pulls the SDK and its bundled runtime dependencies automatically. See the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/#procedure) for the full prerequisite list (APS app, OAuth scopes, Forma/ACC access).
+This branch targets [`Autodesk.DataExchange` 8.1.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.1.0), published on public nuget.org — no additional package source is required. NuGet restore pulls the SDK and its dependencies automatically. See the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/#procedure) for the full prerequisite list (APS app, OAuth scopes, Forma/ACC access).
 
 **Option A: Visual Studio**
 - Open `ConsoleConnector.sln`
@@ -372,15 +372,13 @@ This validates every registered sample across all 11 categories runs without thr
 
 ---
 
-## 🔄 Migration Guide: SDK 8.1.0-alpha Upgrade
+## 🔄 Migration Guide: SDK 8.1.0 Upgrade
 
-This section documents the migration from SDK 8.0.0 to **Autodesk Data Exchange SDK 8.1.0-alpha.291026** (pre-release, Artifactory).
+This section documents the migration from SDK 8.0.0 to **Autodesk Data Exchange SDK 8.1.0**.
 
 ### Overview of Changes
 
-- **SDK Version**: Upgraded to `Autodesk.DataExchange 8.1.0-alpha.291026` (assembly version `8.1.0.0`)
-- **Feed**: pre-release package — restore requires the Artifactory NuGet source
-- **Breaking change**: `IClient.DownloadCompleteExchangeAsIFC` now requires an `IfcSchema` argument
+- **SDK Version**: Upgraded to `Autodesk.DataExchange 8.1.0` (assembly version `8.1.0.0`)
 - **New feature — SAT support**: attach SAT files as BREP (`GeometryFormat.Sat`) and download a whole exchange as SAT (`IClient.DownloadCompleteExchangeAsSAT`)
 - **Build result**: 0 errors, 39/39 unit tests passing
 
@@ -403,40 +401,21 @@ Things to know about SAT:
 - A SAT file name must end in `.sat`, otherwise `CreateFileGeometry` throws `ArgumentException`.
 - No SAT file is bundled in `Assets/`; the attach samples ask for a path (remembered in the session as `SatPath`). Run `7.4` on an exchange with BREP to produce one.
 
-### Breaking Change: DownloadCompleteExchangeAsIFC takes an IfcSchema
-
-```csharp
-// 8.0.0
-client.DownloadCompleteExchangeAsIFC(identifier, ifcFilePath, cancellationToken);
-
-// 8.1.0-alpha
-client.DownloadCompleteExchangeAsIFC(identifier, ifcFilePath, IfcSchema.Ifc4, cancellationToken);
-```
-
-`IfcSchema` lives in `Autodesk.DataExchange.Core.Enums` and has two values: `Ifc4` (SDK default) and `Ifc2x3`.
-`ifcFilePath` is now documented as the directory the IFC output is written under (a uniquely-named subfolder is created inside it).
-
-In this connector `Common/DownloadSampleHelper.cs` provides `PickIfcSchema`. Both
-IFC download samples (`Samples/DownloadExchange/DownloadExchangeAsIfcSample.cs` and
-`Samples/E2EWorkflowScenarios/DownloadAllFormatsScenarioSample.cs`) prompt for IFC4 / IFC2x3; batch mode and cancel fall back to IFC4.
-
 ### Migration Steps
 
-1. Update `packages.config` in both projects (`version="8.1.0-alpha.291026"`)
-2. Update `.csproj` HintPaths / `Import` / `Error` conditions to `Autodesk.DataExchange.8.1.0-alpha.291026`
+1. Update `packages.config` in both projects (`version="8.1.0"`)
+2. Update `.csproj` HintPaths / `Import` / `Error` conditions to `Autodesk.DataExchange.8.1.0`
 3. Bump the assembly reference to `Version=8.1.0.0`
-4. Pass an `IfcSchema` to `DownloadCompleteExchangeAsIFC`
-5. (Optional) Adopt SAT: `GeometryFormat.Sat` for attach, `DownloadCompleteExchangeAsSAT` for export
-6. Restore NuGet packages (Artifactory source configured) and rebuild
+4. (Optional) Adopt SAT: `GeometryFormat.Sat` for attach, `DownloadCompleteExchangeAsSAT` for export
+5. Restore NuGet packages and rebuild
 
 **Migration Checklist:**
-- [x] Bumped `packages.config` and both `.csproj` files to 8.1.0-alpha.291026 / `Version=8.1.0.0`
-- [x] Fixed the `DownloadCompleteExchangeAsIFC` signature change
+- [x] Bumped `packages.config` and both `.csproj` files to 8.1.0 / `Version=8.1.0.0`
 - [x] Rebuilt clean with `-t:Rebuild` (0 errors) and verified the output assembly is 8.1.0.0
 - [x] Added SAT samples (4.6.1, 4.6.2, 7.4), SAT read-back in 4.5.10, and SAT in the Download All Formats scenario
 - [x] Ran the MSTest unit test suite (39/39 passed)
-- [ ] Ran the IFC download (IFC4 and IFC2x3) end to end against ACC
-- [ ] Ran the SAT attach and SAT download end to end against ACC
+- [x] Ran the IFC download end to end against ACC
+- [x] Ran the SAT attach and SAT download end to end against ACC
 
 ---
 

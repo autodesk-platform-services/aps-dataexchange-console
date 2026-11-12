@@ -35,10 +35,9 @@ namespace ConsoleConnector.Samples
             if (ifcSession != null)
             {
                 var path = DownloadSampleHelper.ResolveOutputPath("IFC output path", "exchange.ifc");
-                var schema = DownloadSampleHelper.PickIfcSchema();
                 await DownloadSampleHelper.RunExchangeDownloadAsync(
                     "IFC",
-                    () => ctx.Client.DownloadCompleteExchangeAsIFC(ifcSession.Identifier, path, schema, CancellationToken.None));
+                    () => ctx.Client.DownloadCompleteExchangeAsIFC(ifcSession.Identifier, path, CancellationToken.None));
             }
 
             var satSession = await DownloadSampleHelper.BeginAsync(ctx);

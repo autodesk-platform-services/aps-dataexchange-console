@@ -49,14 +49,6 @@ namespace ConsoleConnector.Common
             ctx.Client.DownloadCompleteExchangeAsOBJ(identifier, objFolderPath, CancellationToken.None);
 #endif
 
-        // 8.1.0: DownloadCompleteExchangeAsIFC takes a required IfcSchema. IFC4 is the SDK default
-        // and is also what batch mode / cancel falls back to.
-        internal static IfcSchema PickIfcSchema()
-        {
-            var choice = ListPicker.PickBinary("IFC schema", "IFC4 (default)", "IFC2x3");
-            return choice == 2 ? IfcSchema.Ifc2x3 : IfcSchema.Ifc4;
-        }
-
         internal static async Task RunExchangeDownloadAsync(
             string format,
             Func<IResponse<string>> download)
