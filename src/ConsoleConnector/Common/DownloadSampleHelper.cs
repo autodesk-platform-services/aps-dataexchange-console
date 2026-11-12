@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.Core.Models;
 using Autodesk.DataExchange.Interface;
 using Autodesk.DataExchange.Models;

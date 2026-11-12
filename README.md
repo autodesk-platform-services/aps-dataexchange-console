@@ -72,7 +72,7 @@ cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-This branch targets [`Autodesk.DataExchange` 8.1.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.1.0), published on public nuget.org — no additional package source is required. NuGet restore pulls the SDK and its dependencies automatically. See the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/#procedure) for the full prerequisite list (APS app, OAuth scopes, Forma/ACC access).
+This branch targets [`Autodesk.DataExchange` 8.1.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.1.0), published on public nuget.org — no additional package source is required. NuGet restore pulls the SDK and its dependencies automatically. See the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/developers_guide/getting_started/installing_the_sdk/#procedure) for the full prerequisite list (APS app, OAuth scopes, Forma/ACC access).
 
 **Option A: Visual Studio**
 - Open `ConsoleConnector.sln`
@@ -389,12 +389,12 @@ This section documents the migration from SDK 8.0.0 to **Autodesk Data Exchange 
 | `4.6.1` | Add SAT from SAT file | `ElementDataModel.CreateFileGeometry(path, GeometryFormat.Sat, …)` |
 | `4.6.2` | Add SAT from SAT stream | `ElementDataModel.CreateFileGeometry(stream, GeometryFormat.Sat, …)` |
 | `4.5.10` | Filter Geometry Output (now also picks BREP as STEP or SAT) | `GeometryOutputOptions.BrepOutputFormat` |
-| `7.4` | Download Exchange As SAT | `IClient.DownloadCompleteExchangeAsSAT(identifier, dir, ct)` |
+| `7.4` | Download Exchange As SAT | `IClient.DownloadCompleteExchangeAsSAT(identifier, path, ct)` |
 | `11.9` | Download All Formats (now STEP + IFC + SAT + OBJ) | all of the above |
 
 Things to know about SAT:
 - Input is ACIS SAT up to version 7, or ASM SAT. Output is ASM SAT at save version 7.
-- The SDK reads the file's own length unit from the SAT header (`SatFileUnits`); the download writes the exchange units into the header, so a downloaded SAT can be re-attached without passing units.
+- The SDK reads the file's own length unit from the SAT header; the download writes the exchange units into the header, so a downloaded SAT can be re-attached without passing units.
 - The SAT download writes BRep geometry only: an exchange with no BRep fails, and mesh geometry in a mixed exchange is omitted.
 - Reading geometry back: a geometry attached as SAT is read back as STEP by default. Set `GeometryOutputOptions.BrepOutputFormat = BrepOutputFormat.SAT` (sample `4.5.10`) to get SAT files; `FileGeometry.Format` then reports `Sat`.
 - A multi-body SAT file becomes one geometry per body on the element; several lumps inside one body stay one geometry.
@@ -1227,8 +1227,8 @@ public static MeshGeometry CreateMeshGeometry(
 
 ## 📖 Documentation
 
-- [Autodesk Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/overview/)
-- [SDK Without UI Tutorial](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/tutorials/sdk-without-ui/create-an-exchange-container/)
+- [Autodesk Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/developers_guide/overview/)
+- [SDK Without UI Tutorial](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/tutorials/sdk-without-ui/create-an-exchange-container/)
 - [Authentication Guide](https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/overview/)
 
 ## 🤝 Contributing
