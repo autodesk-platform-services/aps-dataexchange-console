@@ -2,7 +2,7 @@
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-v2-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
-![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-8.0.0-blue.svg)
+![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-8.1.0-blue.svg)
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 [![License](https://img.shields.io/badge/License-APS%20Terms-blue.svg)](https://www.autodesk.com/company/legal-notices-trademarks/terms-of-service-autodesk360-web-services/forge-platform-web-services-api-terms-of-service)
 
@@ -33,10 +33,10 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
 
 ### Core Functionality
 - ✅ **Exchange Management** - Create, update, and retrieve exchanges
-- ✅ **Multi-Format Geometry Processing** - BREP, IFC, Mesh, and Primitive geometries
+- ✅ **Multi-Format Geometry Processing** - BREP (STEP/SAT), IFC, Mesh, and Primitive geometries
 - ✅ **Parameter Operations** - Add, modify, and delete instance/type parameters
 - ✅ **Version Control** - Exchange synchronization and versioning
-- ✅ **Data Export** - Download exchanges as STEP, IFC, or OBJ files
+- ✅ **Data Export** - Download exchanges as STEP, IFC, OBJ, or SAT files
 - ✅ **Folder Management** - Navigate hubs, projects, and folders
 
 ### Developer Experience
@@ -188,10 +188,10 @@ Each scenario is a self-contained, runnable demonstration of a complete flow (e.
 | 1 | Navigation | Hubs, Projects, Folders, Exchanges |
 | 2 | Exchange Lifecycle | Create, Load, Sync, Refresh, Revisions, Delete |
 | 3 | Elements | Add root/child, list, get by id, delete, attributes, modifications |
-| 4 | Attach Geometry | BREP/STEP, IFC, Mesh, Primitives, Advanced (render style, transforms, units, streams) |
+| 4 | Attach Geometry | BREP/STEP, IFC, Mesh, Primitives, Advanced (render style, transforms, units, streams), SAT |
 | 5 | Parameters | Instance (built-in/custom/batch/update), Type, Misc (model/geometry-level, references) |
 | 6 | Design References | Create, instantiate, query by id/name |
-| 7 | Download Exchange | STEP, IFC, OBJ |
+| 7 | Download Exchange | STEP, IFC, OBJ, SAT |
 | 8 | Revisions | Created/modified/deleted/all-changed elements |
 | 9 | SDK Events | Subscribe/unsubscribe to exchange updates, viewable generation progress |
 | 10 | Debug & Telemetry | HTTP debug logging, feature flags, progress steps, telemetry sessions |
@@ -1187,6 +1187,7 @@ Key differences:
 | `GeometryFormat.Ifc` | IFC file format | `.ifc` |
 | `GeometryFormat.Bimdex` | Bimdex geometry format | - |
 | `GeometryFormat.LargePrimitive` | Large primitive format | - |
+| `GeometryFormat.Sat` | SAT (ACIS/ASM) file format | `.sat` |
 
 #### Method Signatures Reference
 
