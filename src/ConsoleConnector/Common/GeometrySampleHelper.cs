@@ -56,6 +56,8 @@ namespace ConsoleConnector.Common
                     ctx.Defaults.IfcPath = path;
                 else if (label.IndexOf("OBJ", StringComparison.OrdinalIgnoreCase) >= 0)
                     ctx.Defaults.ObjPath = path;
+                else if (label.IndexOf("SAT", StringComparison.OrdinalIgnoreCase) >= 0)
+                    ctx.Defaults.SatPath = path;
             }
 
             return path;

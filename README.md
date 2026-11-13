@@ -2,7 +2,7 @@
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-v2-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
-![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-8.0.0-blue.svg)
+![SDK Version](https://img.shields.io/badge/Data%20Exchange%20SDK-8.1.0-blue.svg)
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 [![License](https://img.shields.io/badge/License-APS%20Terms-blue.svg)](https://www.autodesk.com/company/legal-notices-trademarks/terms-of-service-autodesk360-web-services/forge-platform-web-services-api-terms-of-service)
 
@@ -33,10 +33,10 @@ This is a **sample console connector** that demonstrates how to use the Autodesk
 
 ### Core Functionality
 - ✅ **Exchange Management** - Create, update, and retrieve exchanges
-- ✅ **Multi-Format Geometry Processing** - BREP, IFC, Mesh, and Primitive geometries
+- ✅ **Multi-Format Geometry Processing** - BREP (STEP/SAT), IFC, Mesh, and Primitive geometries
 - ✅ **Parameter Operations** - Add, modify, and delete instance/type parameters
 - ✅ **Version Control** - Exchange synchronization and versioning
-- ✅ **Data Export** - Download exchanges as STEP, IFC, or OBJ files
+- ✅ **Data Export** - Download exchanges as STEP, IFC, OBJ, or SAT files
 - ✅ **Folder Management** - Navigate hubs, projects, and folders
 
 ### Developer Experience
@@ -72,7 +72,7 @@ cd aps-dataexchange-console
 ```
 
 ### 2. Install Dependencies
-[`Autodesk.DataExchange` 8.0.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.0.0) is published on public nuget.org as a self-contained package. NuGet restore pulls the SDK and its bundled runtime dependencies automatically — no side-loaded `.nupkg` files or private package feeds are required. See the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/#procedure) for the full prerequisite list (APS app, OAuth scopes, Forma/ACC access).
+[`Autodesk.DataExchange` 8.1.0](https://www.nuget.org/packages/Autodesk.DataExchange/8.1.0), published on public nuget.org — no additional package source is required. NuGet restore pulls the SDK and its dependencies automatically. See the [Data Exchange .NET SDK installation guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/developers_guide/getting_started/installing_the_sdk/#procedure) for the full prerequisite list (APS app, OAuth scopes, Forma/ACC access).
 
 **Option A: Visual Studio**
 - Open `ConsoleConnector.sln`
@@ -188,10 +188,10 @@ Each scenario is a self-contained, runnable demonstration of a complete flow (e.
 | 1 | Navigation | Hubs, Projects, Folders, Exchanges |
 | 2 | Exchange Lifecycle | Create, Load, Sync, Refresh, Revisions, Delete |
 | 3 | Elements | Add root/child, list, get by id, delete, attributes, modifications |
-| 4 | Attach Geometry | BREP/STEP, IFC, Mesh, Primitives, Advanced (render style, transforms, units, streams) |
+| 4 | Attach Geometry | BREP/STEP, IFC, Mesh, Primitives, Advanced (render style, transforms, units, streams), SAT |
 | 5 | Parameters | Instance (built-in/custom/batch/update), Type, Misc (model/geometry-level, references) |
 | 6 | Design References | Create, instantiate, query by id/name |
-| 7 | Download Exchange | STEP, IFC, OBJ |
+| 7 | Download Exchange | STEP, IFC, OBJ, SAT |
 | 8 | Revisions | Created/modified/deleted/all-changed elements |
 | 9 | SDK Events | Subscribe/unsubscribe to exchange updates, viewable generation progress |
 | 10 | Debug & Telemetry | HTTP debug logging, feature flags, progress steps, telemetry sessions |
@@ -369,6 +369,53 @@ This validates every registered sample across all 11 categories runs without thr
 - [x] Made all 10 E2E workflow scenarios self-contained (no sample instantiates another sample)
 - [x] Ported all 11 sample categories (104 samples total)
 - [x] Ran `--run-all` to confirm full-catalog coverage
+
+---
+
+## 🔄 Migration Guide: SDK 8.1.0 Upgrade
+
+This section documents the migration from SDK 8.0.0 to **Autodesk Data Exchange SDK 8.1.0**.
+
+### Overview of Changes
+
+- **SDK Version**: Upgraded to `Autodesk.DataExchange 8.1.0` (assembly version `8.1.0.0`)
+- **New feature — SAT support**: attach SAT files as BREP (`GeometryFormat.Sat`) and download a whole exchange as SAT (`IClient.DownloadCompleteExchangeAsSAT`)
+- **Build result**: 0 errors, 39/39 unit tests passing
+
+### New Feature: SAT Support
+
+| Sample key | Sample | SDK API |
+|------------|--------|---------|
+| `4.6.1` | Add SAT from SAT file | `ElementDataModel.CreateFileGeometry(path, GeometryFormat.Sat, …)` |
+| `4.6.2` | Add SAT from SAT stream | `ElementDataModel.CreateFileGeometry(stream, GeometryFormat.Sat, …)` |
+| `4.5.10` | Filter Geometry Output (now also picks BREP as STEP or SAT) | `GeometryOutputOptions.BrepOutputFormat` |
+| `7.4` | Download Exchange As SAT | `IClient.DownloadCompleteExchangeAsSAT(identifier, path, ct)` |
+| `11.9` | Download All Formats (now STEP + IFC + SAT + OBJ) | all of the above |
+
+Things to know about SAT:
+- Input is ACIS SAT up to version 7, or ASM SAT. Output is ASM SAT at save version 7.
+- The SDK reads the file's own length unit from the SAT header; the download writes the exchange units into the header, so a downloaded SAT can be re-attached without passing units.
+- The SAT download writes BRep geometry only: an exchange with no BRep fails, and mesh geometry in a mixed exchange is omitted.
+- Reading geometry back: a geometry attached as SAT is read back as STEP by default. Set `GeometryOutputOptions.BrepOutputFormat = BrepOutputFormat.SAT` (sample `4.5.10`) to get SAT files; `FileGeometry.Format` then reports `Sat`.
+- A multi-body SAT file becomes one geometry per body on the element; several lumps inside one body stay one geometry.
+- A SAT file name must end in `.sat`, otherwise `CreateFileGeometry` throws `ArgumentException`.
+- No SAT file is bundled in `Assets/`; the attach samples ask for a path (remembered in the session as `SatPath`). Run `7.4` on an exchange with BREP to produce one.
+
+### Migration Steps
+
+1. Update `packages.config` in both projects (`version="8.1.0"`)
+2. Update `.csproj` HintPaths / `Import` / `Error` conditions to `Autodesk.DataExchange.8.1.0`
+3. Bump the assembly reference to `Version=8.1.0.0`
+4. (Optional) Adopt SAT: `GeometryFormat.Sat` for attach, `DownloadCompleteExchangeAsSAT` for export
+5. Restore NuGet packages and rebuild
+
+**Migration Checklist:**
+- [x] Bumped `packages.config` and both `.csproj` files to 8.1.0 / `Version=8.1.0.0`
+- [x] Rebuilt clean with `-t:Rebuild` (0 errors) and verified the output assembly is 8.1.0.0
+- [x] Added SAT samples (4.6.1, 4.6.2, 7.4), SAT read-back in 4.5.10, and SAT in the Download All Formats scenario
+- [x] Ran the MSTest unit test suite (39/39 passed)
+- [x] Ran the IFC download end to end against ACC
+- [x] Ran the SAT attach and SAT download end to end against ACC
 
 ---
 
@@ -1140,6 +1187,7 @@ Key differences:
 | `GeometryFormat.Ifc` | IFC file format | `.ifc` |
 | `GeometryFormat.Bimdex` | Bimdex geometry format | - |
 | `GeometryFormat.LargePrimitive` | Large primitive format | - |
+| `GeometryFormat.Sat` | SAT (ACIS/ASM) file format | `.sat` |
 
 #### Method Signatures Reference
 
@@ -1180,8 +1228,8 @@ public static MeshGeometry CreateMeshGeometry(
 
 ## 📖 Documentation
 
-- [Autodesk Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/overview/)
-- [SDK Without UI Tutorial](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/tutorials/sdk-without-ui/create-an-exchange-container/)
+- [Autodesk Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/developers_guide/overview/)
+- [SDK Without UI Tutorial](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/tutorials/sdk-without-ui/create-an-exchange-container/)
 - [Authentication Guide](https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/overview/)
 
 ## 🤝 Contributing

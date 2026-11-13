@@ -6,8 +6,8 @@ using ConsoleConnector.Common;
 namespace ConsoleConnector.Samples
 {
     /// <summary>
-    /// What you learn: Export the same exchange as STEP, IFC, and OBJ.
-    /// SDK: DownloadCompleteExchangeAsSTEP/IFC/OBJ.
+    /// What you learn: Export the same exchange as STEP, IFC, SAT, and OBJ.
+    /// SDK: DownloadCompleteExchangeAsSTEP/IFC/SAT/OBJ.
     /// Console plumbing: ExchangeSessionHelper + DownloadSampleHelper.
     /// Prerequisites: folder in session.
     /// </summary>
@@ -15,11 +15,11 @@ namespace ConsoleConnector.Samples
     public sealed class DownloadAllFormatsScenarioSample : ISample
     {
         public string Name => "Download All Formats";
-        public string Description => "Download exchange as STEP, IFC, and OBJ";
+        public string Description => "Download exchange as STEP, IFC, SAT, and OBJ";
 
         public async Task RunAsync(SampleContext ctx)
         {
-            TerminalUi.Chat("Scenario 11.9: Load -> STEP + IFC + OBJ downloads");
+            TerminalUi.Chat("Scenario 11.9: Load -> STEP + IFC + SAT + OBJ downloads");
             await ExchangeSessionHelper.LoadPickedExchangeAsync(ctx);
 
             var stepSession = await DownloadSampleHelper.BeginAsync(ctx);
@@ -38,6 +38,15 @@ namespace ConsoleConnector.Samples
                 await DownloadSampleHelper.RunExchangeDownloadAsync(
                     "IFC",
                     () => ctx.Client.DownloadCompleteExchangeAsIFC(ifcSession.Identifier, path, CancellationToken.None));
+            }
+
+            var satSession = await DownloadSampleHelper.BeginAsync(ctx);
+            if (satSession != null)
+            {
+                var path = DownloadSampleHelper.ResolveOutputPath("SAT output path", "exchange.sat");
+                await DownloadSampleHelper.RunExchangeDownloadAsync(
+                    "SAT",
+                    () => ctx.Client.DownloadCompleteExchangeAsSAT(satSession.Identifier, path, CancellationToken.None));
             }
 
             var objSession = await DownloadSampleHelper.BeginAsync(ctx);

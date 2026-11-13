@@ -56,6 +56,7 @@ namespace ConsoleConnector.Samples
         public string? StepPath { get; set; }
         public string? IfcPath { get; set; }
         public string? ObjPath { get; set; }
+        public string? SatPath { get; set; }
         public string? BuiltInSchemaId { get; set; }
     }
 }

@@ -69,6 +69,7 @@ namespace ConsoleConnector.Driver
             ctx.Defaults.StepPath = session.Defaults.StepPath;
             ctx.Defaults.IfcPath = session.Defaults.IfcPath;
             ctx.Defaults.ObjPath = session.Defaults.ObjPath;
+            ctx.Defaults.SatPath = session.Defaults.SatPath;
             ctx.Defaults.BuiltInSchemaId = session.Defaults.BuiltInSchemaId;
         }
 
@@ -82,6 +83,7 @@ namespace ConsoleConnector.Driver
                 StepPath = ctx.Defaults.StepPath,
                 IfcPath = ctx.Defaults.IfcPath,
                 ObjPath = ctx.Defaults.ObjPath,
+                SatPath = ctx.Defaults.SatPath,
                 BuiltInSchemaId = ctx.Defaults.BuiltInSchemaId,
             };
         }

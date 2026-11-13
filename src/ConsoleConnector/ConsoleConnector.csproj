@@ -61,8 +61,8 @@
     <Reference Include="AngleSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AngleSharp.1.2.0\lib\net472\AngleSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange, Version=8.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\Autodesk.DataExchange.8.0.0\lib\net48\Autodesk.DataExchange.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange, Version=8.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\Autodesk.DataExchange.8.1.0\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf, Version=3.30.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Google.Protobuf.3.30.1\lib\net45\Google.Protobuf.dll</HintPath>
@@ -445,6 +445,8 @@
     <Compile Include="Samples\AttachGeometry\BrepStep\OverrideStepRenderStyleSample.cs" />
     <Compile Include="Samples\AttachGeometry\Ifc\AddIfcFromIfcFileSample.cs" />
     <Compile Include="Samples\AttachGeometry\Ifc\AddIfcFromIfcStreamSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Sat\AddSatFromSatFileSample.cs" />
+    <Compile Include="Samples\AttachGeometry\Sat\AddSatFromSatStreamSample.cs" />
     <Compile Include="Samples\AttachGeometry\Mesh\AddMeshFromObjFileSample.cs" />
     <Compile Include="Samples\AttachGeometry\Mesh\AddMeshFromObjStreamSample.cs" />
     <Compile Include="Samples\AttachGeometry\Mesh\AddMeshFromTritonSample.cs" />
@@ -493,6 +495,7 @@
     <Compile Include="Samples\DownloadExchange\DownloadExchangeAsStepSample.cs" />
     <Compile Include="Samples\DownloadExchange\DownloadExchangeAsIfcSample.cs" />
     <Compile Include="Samples\DownloadExchange\DownloadExchangeAsObjSample.cs" />
+    <Compile Include="Samples\DownloadExchange\DownloadExchangeAsSatSample.cs" />
     <Compile Include="Samples\Revisions\ListCreatedElementsSample.cs" />
     <Compile Include="Samples\Revisions\ListModifiedElementsSample.cs" />
     <Compile Include="Samples\Revisions\ListDeletedElementsSample.cs" />
@@ -570,8 +573,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Autodesk.DataExchange.8.0.0\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Autodesk.DataExchange.8.0.0\build\Autodesk.DataExchange.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Autodesk.DataExchange.8.1.0\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Autodesk.DataExchange.8.1.0\build\Autodesk.DataExchange.targets'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
-  <Import Project="..\..\packages\Autodesk.DataExchange.8.0.0\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\packages\Autodesk.DataExchange.8.0.0\build\Autodesk.DataExchange.targets')" />
+  <Import Project="..\..\packages\Autodesk.DataExchange.8.1.0\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\packages\Autodesk.DataExchange.8.1.0\build\Autodesk.DataExchange.targets')" />
 </Project>
