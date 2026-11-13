@@ -17,6 +17,6 @@ namespace ConsoleConnector.Samples
         public string Description => "Attach SAT geometry from a memory stream";
 
         public Task RunAsync(SampleContext ctx) =>
-            GeometrySampleHelper.AttachStreamGeometryAsync(ctx, GeometryFormat.Sat, "SAT path", ctx.Defaults.SatPath, "exchange.sat");
+            GeometrySampleHelper.AttachStreamGeometryAsync(ctx, GeometryFormat.Sat, "SAT path", ctx.Defaults.SatPath, "box.sat");
         }
 }
