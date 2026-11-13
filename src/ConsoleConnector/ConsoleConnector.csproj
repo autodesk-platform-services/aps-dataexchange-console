@@ -540,6 +540,9 @@
     <None Include="Assets\Beam.ifc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Assets\box.sat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\box.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

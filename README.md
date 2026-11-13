@@ -399,7 +399,7 @@ Things to know about SAT:
 - Reading geometry back: a geometry attached as SAT is read back as STEP by default. Set `GeometryOutputOptions.BrepOutputFormat = BrepOutputFormat.SAT` (sample `4.5.10`) to get SAT files; `FileGeometry.Format` then reports `Sat`.
 - A multi-body SAT file becomes one geometry per body on the element; several lumps inside one body stay one geometry.
 - A SAT file name must end in `.sat`, otherwise `CreateFileGeometry` throws `ArgumentException`.
-- No SAT file is bundled in `Assets/`; the attach samples ask for a path (remembered in the session as `SatPath`). Run `7.4` on an exchange with BREP to produce one.
+- `Assets/box.sat` (the bundled `box.stp` exported as SAT) is the default for the attach samples; enter another path to use your own file (remembered in the session as `SatPath`).
 
 ### Migration Steps
 
